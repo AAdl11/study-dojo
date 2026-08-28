@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>道場 · COMM L1 — Ch 9–11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F3EC; --ink:#26282D; --seal:#A63A2B; --pine:#35695A;
+  --mut:#8B867A; --card:#FFFFFF; --line:#E3DFD2;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-serif;font-size:16px;line-height:1.65;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:760px;margin:0 auto;padding:16px 16px 80px}
+header{padding:20px 0 8px;border-bottom:2px solid var(--ink)}
+.hd-top{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:4px}
+h1{font-family:'Noto Serif TC',serif;font-weight:900;font-size:26px;letter-spacing:.06em}
+.hd-sub{font-size:13px;color:var(--mut)}
+.due{margin-top:6px;font-size:13px}
+.due b{color:var(--seal)}
+nav{display:flex;gap:8px;margin:16px 0 20px;overflow-x:auto;padding-bottom:4px}
+.tab{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 6px}
+.tab .st{width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif TC',serif;font-weight:900;font-size:22px;border:2px solid var(--ink);color:var(--ink);background:var(--card);border-radius:6px;transition:all .15s}
+.tab .lb{font-size:12px;color:var(--mut)}
+.tab.on .st{background:var(--seal);border-color:var(--seal);color:#fff;transform:rotate(-3deg)}
+.tab.on .lb{color:var(--seal);font-weight:700}
+section{display:none}
+section.on{display:block;animation:fade .2s}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+h2{font-family:'Noto Serif TC',serif;font-weight:900;font-size:19px;margin:22px 0 10px;padding-left:10px;border-left:4px solid var(--seal)}
+h2:first-child{margin-top:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.card b{font-weight:700}
+.tag{display:inline-block;font-size:12px;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:0 6px;margin-right:6px;color:var(--mut)}
+ul{padding-left:20px}
+li{margin-bottom:4px}
+.note{font-size:13px;color:var(--mut);margin-top:6px}
+/* 單字 */
+.vrow{display:flex;align-items:flex-start;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.vrow .spk{flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--seal);background:none;color:var(--seal);font-size:16px;cursor:pointer;margin-top:2px}
+.vrow .spk:active{background:var(--seal);color:#fff}
+.vterm{font-weight:700}
+.vch{font-size:13px;color:var(--mut)}
+.vdef{font-size:14px;margin-top:2px}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1.5px solid var(--ink);background:var(--card);border-radius:20px;padding:4px 14px;font-size:14px;cursor:pointer}
+.chip.on{background:var(--ink);color:#fff}
+/* 字卡 */
+.fc-stage{perspective:1200px;margin:10px 0}
+.fc{position:relative;width:100%;min-height:210px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s}
+.fc.flip{transform:rotateY(180deg)}
+.fface{position:absolute;inset:0;backface-visibility:hidden;background:var(--card);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;gap:8px}
+.fface.back{transform:rotateY(180deg);background:var(--ink);color:#F5F3EC}
+.fc-term{font-family:'Noto Serif TC',serif;font-weight:900;font-size:26px}
+.fc-hint{font-size:12px;color:var(--mut)}
+.fface.back .fc-hint{color:#B8B2A2}
+.fc-ctl{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.btn{border:1.5px solid var(--ink);background:var(--card);color:var(--ink);border-radius:8px;padding:9px 16px;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit}
+.btn.pri{background:var(--seal);border-color:var(--seal);color:#fff}
+.btn.grn{background:var(--pine);border-color:var(--pine);color:#fff}
+.btn:disabled{opacity:.4}
+.fc-count{text-align:center;font-size:13px;color:var(--mut);margin-top:8px}
+/* 測驗 */
+.qnum{font-size:13px;color:var(--mut);margin-bottom:4px}
+.qtext{font-weight:700;margin-bottom:12px}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;margin-bottom:8px;font-size:15px;cursor:pointer;font-family:inherit;color:var(--ink)}
+.opt.right{border-color:var(--pine);background:#EAF2EE}
+.opt.wrong{border-color:var(--seal);background:#F6E9E6}
+.exp{background:var(--paper);border-left:3px solid var(--pine);padding:10px 12px;font-size:14px;margin:10px 0;border-radius:0 8px 8px 0}
+.exp.bad{border-left-color:var(--seal)}
+.score-line{font-size:14px;margin-bottom:10px}
+.score-line b{color:var(--seal)}
+/* Jeopardy */
+.jscore{font-family:'Noto Serif TC',serif;font-weight:900;font-size:30px;text-align:center;margin:6px 0 14px}
+.jscore span{color:var(--seal)}
+.jboard{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.jhead{font-size:12px;font-weight:700;text-align:center;padding:6px 2px;background:var(--ink);color:#F5F3EC;border-radius:6px;line-height:1.3}
+.jcell{background:var(--card);border:1.5px solid var(--ink);border-radius:6px;padding:14px 2px;text-align:center;font-family:'Noto Serif TC',serif;font-weight:900;font-size:17px;color:var(--seal);cursor:pointer}
+.jcell.used{border-color:var(--line);color:var(--line);background:var(--paper);cursor:default}
+.modal{position:fixed;inset:0;background:rgba(38,40,45,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+.modal.on{display:flex}
+.mbox{background:var(--card);border-radius:14px;max-width:520px;width:100%;padding:22px 20px;max-height:80vh;overflow-y:auto}
+.mcat{font-size:13px;color:var(--seal);font-weight:700;margin-bottom:6px}
+.mq{font-weight:700;font-size:17px;margin-bottom:14px}
+.mans{background:var(--paper);border-radius:8px;padding:12px;margin-bottom:14px;display:none}
+.mans.on{display:block}
+.mctl{display:flex;gap:8px;flex-wrap:wrap}
+footer{margin-top:36px;font-size:12px;color:var(--mut);text-align:center}
+@media(max-width:420px){.wrap{padding:12px 12px 70px}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="hd-top">
+    <h1>道場 · 公開演說</h1>
+    <div class="hd-sub">COMM L1 · Natalie Kellner · Fall 2026</div>
+  </div>
+  <div class="due">本輪範圍 <b>Ch 9–11</b>（Saylor 版 p.282–375）｜三個 quiz 各 5 分 ｜ 截止 <b>9/6（日）23:59</b> ｜ 考 9–11，<b>不考 Ch 12</b></div>
+</header>
+
+<nav id="nav">
+  <button class="tab on" data-t="map"><span class="st">圖</span><span class="lb">重點</span></button>
+  <button class="tab" data-t="vocab"><span class="st">字</span><span class="lb">單字</span></button>
+  <button class="tab" data-t="fc"><span class="st">卡</span><span class="lb">字卡</span></button>
+  <button class="tab" data-t="quiz"><span class="st">試</span><span class="lb">測驗</span></button>
+  <button class="tab" data-t="jeo"><span class="st">台</span><span class="lb">答題台</span></button>
+</nav>
+
+<!-- ========== 重點地圖 ========== -->
+<section id="map" class="on">
+  <h2>三個核心思維模式（三問法・問題 1）</h2>
+  <div class="card"><b>1. 演講是為聽眾設計的，不是為講者。</b><br>Credibility 不是你的資歷，是<b>聽眾的知覺</b>（McCroskey &amp; Teven：competence／trustworthiness／caring-goodwill）。開場的 "reasons to listen" 回答的是聽眾心裡那句 <i>"What's in it for me?"</i></div>
+  <div class="card"><b>2. 結構本身就是訊息。</b><br>Main points 只留 2–5 個，彼此獨立、份量平衡、句型平行；八種 organizing pattern 是照「你要聽眾怎麼想」來挑的，不是隨便套。</div>
+  <div class="card"><b>3. 記憶有形狀——開頭與結尾承重。</b><br>Serial position effect（Ebbinghaus, 1885）：聽眾最記得最先（primacy）與最後（recency）聽到的。所以開場有五件工作、收尾有三步驟＋十種裝置，中段靠 transitions 家族撐住。</div>
+
+  <h2>Ch 9 · 開場（Introductions Matter, p.282）</h2>
+  <div class="card">
+    <b>開場五件工作（順序記牢）：</b>
+    <ul><li>Gain Attention（十一種 attention-getter）</li><li>State Purpose／Thesis</li><li>Establish Credibility</li><li>Provide Reasons to Listen</li><li>Preview Main Ideas</li></ul>
+    <div class="note">開場約占全篇 10–15%。Credibility 三因素見上方模式 1。</div>
+  </div>
+  <div class="card">
+    <b>⚠️ 課本五件工作 vs Natalie 課程版四元件（Canvas Ch9 Lecture 頁）：</b>
+    <ul><li>課程版：<b>Attention Getter → Audience Connection → Thesis Statement → Preview</b></li><li>對照：Audience Connection ≈ 課本的 "reasons to listen"；credibility 被收進裡面自然帶過</li><li>Rhetorical question 她的講義特別註明：<b>不要真的等聽眾回答</b></li></ul>
+    <div class="note"><b>Quiz 以課本五件工作為準（讀 p.282–375）；上台寫稿以課程版四元件為準（rubric 用它）。</b>兩套都要認得。</div>
+  </div>
+
+  <h2>Ch 10 · 主體（Creating the Body, p.321）</h2>
+  <div class="card">
+    <b>八種 organizing patterns：</b>Categorical/Topical・Comparison–Contrast・Spatial・Chronological・Biographical・Causal・Problem–Cause–Solution・Psychological
+    <div class="note">本課實戰對應：Informative 常用 topical／chronological／spatial；Persuasive 教授已鎖 <b>problem–cause–solution</b>。</div>
+  </div>
+  <div class="card">
+    <b>Transitions 家族四成員：</b>
+    <ul><li><b>transition</b> — 連接兩個 main point 的橋句</li><li><b>internal preview</b> — 段內先預告接下來幾點</li><li><b>internal summary</b> — 段內先收剛講過的幾點</li><li><b>signpost</b> — 單詞路標（first / next / finally）</li></ul>
+  </div>
+
+  <h2>Ch 11 · 收尾（Concluding with Power, p.358）</h2>
+  <div class="card">
+    <b>收尾三步驟：</b>Restate Thesis → Review Main Points → Concluding Device
+    <br><b>Miller (1946) 十種收尾裝置：</b>Challenge・Quotation・Summary・Visualize the Future・Appeal for Action・Inspiration・Advice・Propose a Solution・Question・Reference to Audience
+    <div class="note">收尾大忌：引入全新論點。L.O.V.E. 那場的收法（回扣開頭的「愛」字）就是標準 concluding device。</div>
+  </div>
+
+  <h2>考前提醒</h2>
+  <div class="card">
+    <ul>
+      <li>只讀<b>你上傳的 Saylor 版 PDF</b>，別拿 UMN／Lumen 版對頁碼。</li>
+      <li>Quiz 名稱寫 "Outlining" 是<b>週主題</b>，考的是 9–11，不是 Ch 12。</li>
+      <li>提早做（教授建議）：留時間排除技術問題。</li>
+      <li>寫作格式：這門課是 <b>APA</b>（暑假英文課的 MLA 不要帶過來）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== 單字 ========== -->
+<section id="vocab">
+  <div class="chip-row" id="vchips"></div>
+  <div id="vlist"></div>
+  <div class="note">🔊 用瀏覽器內建語音（en-US）唸給你聽；跟著唸一次，pacing 順便練。</div>
+</section>
+
+<!-- ========== 字卡 ========== -->
+<section id="fc">
+  <div class="chip-row" id="fchips"></div>
+  <div class="fc-stage"><div class="fc" id="fcCard">
+    <div class="fface front"><div class="fc-term" id="fcFront"></div><div class="fc-hint">點卡片翻面</div></div>
+    <div class="fface back"><div id="fcBack" style="font-size:16px"></div><div class="fc-hint">再點一下翻回去</div></div>
+  </div></div>
+  <div class="fc-ctl">
+    <button class="btn" id="fcPrev">上一張</button>
+    <button class="btn grn" id="fcSpeak">🔊</button>
+    <button class="btn" id="fcShuffle">洗牌</button>
+    <button class="btn pri" id="fcNext">下一張</button>
+  </div>
+  <div class="fc-count" id="fcCount"></div>
+</section>
+
+<!-- ========== 測驗 ========== -->
+<section id="quiz">
+  <div class="score-line" id="qScore"></div>
+  <div class="chip-row">
+    <button class="btn pri" id="qStart">從頭開始</button>
+    <button class="btn" id="qWrongBtn">只練錯題</button>
+  </div>
+  <div id="qBox"></div>
+</section>
+
+<!-- ========== Jeopardy 答題台 ========== -->
+<section id="jeo">
+  <div class="jscore">分數：<span id="jScore">0</span></div>
+  <div class="jboard" id="jBoard"></div>
+  <div class="chip-row" style="margin-top:12px"><button class="btn" id="jReset">重開一局</button></div>
+  <div class="note">出聲回答完再看答案——這是給 Kahoot 抽考練反應用的，嘴巴要動。</div>
+</section>
+
+<footer>明暺的道場 · comm-l1 · 內容基準：Saylor 版《Stand Up, Speak Out》Ch 9–11 ＋ Natalie 課堂規則</footer>
+</div>
+
+<div class="modal" id="jModal">
+  <div class="mbox">
+    <div class="mcat" id="mCat"></div>
+    <div class="mq" id="mQ"></div>
+    <div class="mans" id="mA"></div>
+    <div class="mctl" id="mCtl">
+      <button class="btn pri" id="mShow">看答案</button>
+      <button class="btn grn" id="mRight" style="display:none">我答對 ＋</button>
+      <button class="btn" id="mWrong" style="display:none">我答錯 −</button>
+      <button class="btn" id="mClose">關閉</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- 資料 ---------- */
+const VOCAB=[
+ {c:9,t:"attention-getter",z:"抓注意裝置",d:"開場第一件工作用的裝置，課本列十一種（anecdote、quotation、question、startling statement、humor、reference to audience/occasion/current events、historical/personal reference、reference to subject）。"},
+ {c:9,t:"thesis statement",z:"中心論旨",d:"一句話說出整場演講的核心主張，開場要 state 出來。"},
+ {c:9,t:"credibility",z:"可信度",d:"聽眾對講者可不可信的『知覺』——存在於聽眾腦中，不是講者的履歷。"},
+ {c:9,t:"competence",z:"專業能力",d:"Credibility 三因素之一：聽眾覺得你懂不懂這個主題。"},
+ {c:9,t:"trustworthiness",z:"可信賴",d:"Credibility 三因素之二：聽眾覺得你誠不誠實。"},
+ {c:9,t:"caring / goodwill",z:"關懷與善意",d:"Credibility 三因素之三：聽眾覺得你在不在乎他們的利益（McCroskey & Teven）。"},
+ {c:9,t:"anecdote",z:"軼事",d:"用一個簡短的小故事開場；L.O.V.E. 講稿用的就是它。"},
+ {c:9,t:"rhetorical question",z:"修辭性提問",d:"不期待聽眾真的回答的問題，用來勾住注意力。"},
+ {c:9,t:"startling statement",z:"驚人陳述",d:"用出乎意料的事實或數字開場。"},
+ {c:9,t:"preview",z:"預告",d:"開場最後一件工作：把主要論點先報一遍，給聽眾一張地圖。"},
+ {c:10,t:"main points",z:"主要論點",d:"支撐 thesis 的骨幹，建議 2–5 個；要獨立、平衡、句型平行。"},
+ {c:10,t:"parallelism",z:"句型平行",d:"各 main point 用相同的句法結構，聽眾更容易跟上與記住。"},
+ {c:10,t:"topical (categorical) pattern",z:"主題式結構",d:"把主題切成幾個並列類別；informative 最常用。"},
+ {c:10,t:"chronological pattern",z:"時間序結構",d:"照時間先後排：歷史事件、流程步驟。"},
+ {c:10,t:"spatial pattern",z:"空間序結構",d:"照空間位置排：例如夏威夷群島由東北講到西南。"},
+ {c:10,t:"causal pattern",z:"因果結構",d:"先講原因再講結果（或反過來）。"},
+ {c:10,t:"comparison–contrast",z:"比較對照",d:"並排兩個對象講異同。"},
+ {c:10,t:"biographical pattern",z:"傳記式結構",d:"照一個人的生平階段來組織。"},
+ {c:10,t:"problem–cause–solution",z:"問題–成因–解方",d:"問題多嚴重→為什麼發生→怎麼解決；Natalie 指定 persuasive 用這個。"},
+ {c:10,t:"psychological pattern",z:"心理式結構",d:"a 導致 b、b 導致 c 的 'this leads to that' 推進，順著聽眾心理走。"},
+ {c:10,t:"transition",z:"轉場句",d:"連接兩個 main point 的完整橋句。"},
+ {c:10,t:"internal preview",z:"內部預告",d:"在主體中段先預告接下來要講的幾個小點。"},
+ {c:10,t:"internal summary",z:"內部小結",d:"在主體中段先把剛講完的幾點收攏一次。"},
+ {c:10,t:"signpost",z:"路標詞",d:"單詞或短語路標：first、next、finally、most importantly。"},
+ {c:11,t:"serial position effect",z:"序列位置效應",d:"Ebbinghaus（1885）：序列中最先與最後的項目記得最牢。"},
+ {c:11,t:"primacy effect",z:"初始效應",d:"最先聽到的內容記得牢——所以開場承重。"},
+ {c:11,t:"recency effect",z:"新近效應",d:"最後聽到的內容記得牢——所以收尾承重。"},
+ {c:11,t:"concluding device",z:"收尾裝置",d:"收尾第三步；Miller（1946）整理出十種。"},
+ {c:11,t:"appeal for action",z:"行動呼籲",d:"十種裝置之一：請聽眾當下做出具體行動。"},
+ {c:11,t:"visualize the future",z:"描繪未來",d:"十種裝置之一：帶聽眾想像採納你的主張之後的景象。"},
+ {c:11,t:"challenge",z:"下戰帖",d:"十種裝置之一：向聽眾提出一個做得到的挑戰。"},
+ {c:11,t:"restate thesis",z:"重述論旨",d:"收尾第一步：換句話把中心主張再說一次。"}
+];
+const QUIZ=[
+ {c:9,q:"開場的五件工作『不』包括哪一項？",o:["Gain attention","Establish credibility","反駁對方論點","Preview main ideas"],a:2,e:"五件工作：抓注意、講論旨、建立可信度、給聽的理由、預告論點。反駁是說服主體的事。"},
+ {c:9,q:"McCroskey & Teven 的 credibility 三因素是？",o:["權威、外表、口條","Competence、Trustworthiness、Caring-goodwill","學歷、經歷、頭銜","邏輯、情感、品格"],a:1,e:"最後一項『邏輯情感品格』是亞里斯多德的 logos/pathos/ethos，別混。"},
+ {c:9,q:"課本說 credibility 存在於哪裡？",o:["講者的履歷","聽眾的知覺","主辦單位的介紹詞","講稿的引用數"],a:1,e:"它是聽眾『覺得』你可不可信——所以要在開場主動建立。"},
+ {c:9,q:"開場先講一個 Lulu 打電話找志工的小故事，這是哪種 attention-getter？",o:["Startling statement","Anecdote","Rhetorical question","Humor"],a:1,e:"簡短的個人小故事＝anecdote。"},
+ {c:9,q:"『Provide reasons to listen』要回答聽眾心裡哪個問題？",o:["Who are you?","What's in it for me?","How long is this?","Is this true?"],a:1,e:"聽眾先關心跟自己有什麼關係，才決定要不要繼續聽。"},
+ {c:9,q:"開場大約占整場演講的多少？",o:["1–2%","10–15%","30%","一半"],a:1,e:"太長會吃掉主體；太短五件工作做不完。"},
+ {c:9,q:"開場建立 credibility 最直接的做法是？",o:["先道歉說自己不專業","說明你與主題的關聯或經驗","講一個笑話","把來源清單唸一遍"],a:1,e:"自貶開場是課本點名的大忌。"},
+ {c:9,q:"attention-getter 課本一共列了幾種？",o:["五種","八種","十一種","十五種"],a:2,e:"十一種——跟 Miller 收尾的『十』種分開記：開場 11、收尾 10。"},
+ {c:10,q:"Main points 的建議數量是？",o:["1 個","2–5 個","6–8 個","越多越完整"],a:1,e:"聽眾的工作記憶有限；每點要獨立、平衡、平行。"},
+ {c:10,q:"介紹夏威夷群島，由東北一路講到西南——哪種 pattern？",o:["Chronological","Spatial","Causal","Topical"],a:1,e:"照空間位置移動＝spatial，這是 Natalie 自己舉的例子。"},
+ {c:10,q:"從事件的開端講到結束——哪種 pattern？",o:["Spatial","Biographical","Chronological","Psychological"],a:2,e:"照時間軸走＝chronological。"},
+ {c:10,q:"『問題多嚴重 → 為什麼發生 → 我們怎麼辦』是？",o:["Causal","Problem–Cause–Solution","Comparison–Contrast","Categorical"],a:1,e:"也是 Natalie 指定 persuasive speech 必用的結構。"},
+ {c:10,q:"『首先…其次…最後』這種單詞路標叫？",o:["Transition","Internal preview","Signpost","Internal summary"],a:2,e:"signpost 是最小單位的路標；完整橋句才叫 transition。"},
+ {c:10,q:"主體中段說『進入解方之前，先回顧剛剛看到的兩個現象』——這是？",o:["Internal summary","Internal preview","Signpost","Conclusion"],a:0,e:"往回收＝internal summary；往前報＝internal preview。方向決定名字。"},
+ {c:10,q:"主體中段說『接下來我會談三個解方：成本、時程、人力』——這是？",o:["Preview（開場的）","Internal preview","Internal summary","Restate thesis"],a:1,e:"位置在主體內、方向朝前＝internal preview。開場那個叫 preview。"},
+ {c:10,q:"想並排比較手沖與義式咖啡的優缺點——哪種 pattern？",o:["Comparison–Contrast","Causal","Spatial","Chronological"],a:0,e:"兩個對象講異同＝comparison–contrast。"},
+ {c:10,q:"好的 main points 三個特性是？",o:["有趣、簡短、好背","獨立、平衡、句型平行","越細越好、有數據、有圖","照課本順序"],a:1,e:"獨立（不重疊）、平衡（份量相當）、平行（句法一致）。"},
+ {c:10,q:"『a 導致 b、b 導致 c』順著聽眾心理一路推進的 pattern 是？",o:["Psychological","Causal","Biographical","Spatial"],a:0,e:"psychological 是 'this leads to that' 的連鎖推進；causal 只有因→果一層。"},
+ {c:11,q:"Serial position effect 是誰、哪一年提出？",o:["Miller, 1946","Ebbinghaus, 1885","McCroskey, 1999","Aristotle, 350 BC"],a:1,e:"Ebbinghaus 1885。Miller 1946 是十種收尾裝置——兩個年份是 quiz 最愛考的配對。"},
+ {c:11,q:"根據 serial position effect，聽眾記得最牢的是？",o:["中段的細節","開頭與結尾","有數據的部分","講最大聲的部分"],a:1,e:"primacy＋recency——這就是開場與收尾各自有整章的原因。"},
+ {c:11,q:"收尾三步驟的正確順序是？",o:["Review → Restate → Device","Restate thesis → Review main points → Concluding device","Device → Restate → Review","Q&A → Summary → Thank you"],a:1,e:"先收論旨、再收論點、最後用裝置落地。"},
+ {c:11,q:"Miller（1946）整理的收尾裝置有幾種？",o:["三種","七種","十種","十一種"],a:2,e:"十種。十一是開場 attention-getter 的數字。"},
+ {c:11,q:"『想像五年後的社區，每個孩子都能看懂 AI』——哪種收尾裝置？",o:["Challenge","Visualize the future","Advice","Question"],a:1,e:"帶聽眾看見採納主張後的景象＝visualize the future。"},
+ {c:11,q:"『請大家今天回去就簽署這份連署』——哪種收尾裝置？",o:["Appeal for action","Inspiration","Summary","Reference to audience"],a:0,e:"要求當下的具體行動＝appeal for action，persuasive 的 call to action 就是它。"},
+ {c:11,q:"收尾最不該做的事是？",o:["重述論旨","回扣開場","引入全新論點","感謝聽眾"],a:2,e:"新論點沒時間展開，只會稀釋 recency 效應。"}
+];
+const JEO=[
+ {cat:"開場 Ch9",cl:[
+  {v:100,q:"開場五件工作，說出任三件。",a:"Gain attention／State purpose／Establish credibility／Provide reasons to listen／Preview main ideas"},
+  {v:200,q:"Credibility 存在於誰身上？",a:"聽眾——它是聽眾的知覺，不是講者的資歷。"},
+  {v:300,q:"Credibility 三因素？",a:"Competence、Trustworthiness、Caring-goodwill（McCroskey & Teven）"},
+  {v:400,q:"attention-getter 共幾種？並說出四種。",a:"十一種；如 anecdote、quotation、rhetorical question、startling statement、humor、reference to audience…"},
+  {v:500,q:"『Reasons to listen』回答聽眾心中哪句話？為什麼放在開場？",a:"\"What's in it for me?\"——聽眾決定投不投注意力，就在開場前幾十秒（primacy）。"}]},
+ {cat:"主體 Ch10",cl:[
+  {v:100,q:"Main points 建議幾個？",a:"2–5 個"},
+  {v:200,q:"八種 organizing pattern 說出四種。",a:"Topical/Categorical、Comparison–Contrast、Spatial、Chronological、Biographical、Causal、Problem–Cause–Solution、Psychological"},
+  {v:300,q:"Transitions 家族四成員？",a:"transition（橋句）、internal preview、internal summary、signpost"},
+  {v:400,q:"好的 main points 三特性，並各用一句解釋。",a:"獨立＝彼此不重疊；平衡＝份量相當；平行＝句法一致好記。"},
+  {v:500,q:"為什麼 Natalie 的 persuasive 指定 problem–cause–solution？",a:"說服要走完『問題嚴重→成因→解方＋call to action』的完整鏈，一般 informative pattern 缺最後一步。"}]},
+ {cat:"收尾 Ch11",cl:[
+  {v:100,q:"收尾三步驟？",a:"Restate thesis → Review main points → Concluding device"},
+  {v:200,q:"Serial position effect：誰？哪年？",a:"Ebbinghaus，1885"},
+  {v:300,q:"Miller 十種收尾裝置說出五種。",a:"Challenge、Quotation、Summary、Visualize the Future、Appeal for Action、Inspiration、Advice、Propose a Solution、Question、Reference to Audience"},
+  {v:400,q:"Primacy 和 recency 差在哪？各對應演講哪一段？",a:"Primacy＝最先聽到記得牢→開場；Recency＝最後聽到記得牢→收尾。"},
+  {v:500,q:"收尾為什麼不能丟新論點？用記憶原理解釋。",a:"新論點沒時間展開也沒被 preview 過，會佔走 recency 位置、稀釋你要聽眾帶走的主張。"}]},
+ {cat:"課程陷阱",cl:[
+  {v:100,q:"9/6 的 quiz 考哪幾章？不考哪章？",a:"考 Ch 9–11；名稱裡的 Outlining 是週主題，Ch 12 不考。"},
+  {v:200,q:"這門課的引註與書面格式是？",a:"APA（Times New Roman 12pt、雙行距）——不是暑假英文課的 MLA。"},
+  {v:300,q:"上台看 note cards 的視線比例上限？",a:"最多 40% 看卡片、至少 60% 看觀眾（extemporaneous）。"},
+  {v:400,q:"演講超時／不足的罰則？",a:"差 30 秒 −3 分；差 60 秒 −6 分；到時限給 30 秒警告手勢。"},
+  {v:500,q:"Weeks 1–15 遲交規則完整說一遍。",a:"截止後 24 小時內交＝全額；過 24 小時＝自動扣 50%；一週內沒跟教授談就不收。Week 16 零遲交。"}]}
+];
+/* ---------- 共用 ---------- */
+function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=0.82;speechSynthesis.speak(u);}catch(e){}}
+document.querySelectorAll("#nav .tab").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#nav .tab").forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll("section").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");document.getElementById(b.dataset.t).classList.add("on");window.scrollTo(0,0);
+}));
+function chipRow(el,onPick){["全部",9,10,11].forEach(c=>{
+  const b=document.createElement("button");b.className="chip"+(c==="全部"?" on":"");
+  b.textContent=c==="全部"?"全部":"Ch "+c;
+  b.addEventListener("click",()=>{el.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));b.classList.add("on");onPick(c==="全部"?null:c);});
+  el.appendChild(b);});}
+/* ---------- 單字 ---------- */
+const vlist=document.getElementById("vlist");
+function renderVocab(ch){vlist.innerHTML="";VOCAB.filter(v=>!ch||v.c===ch).forEach(v=>{
+  const r=document.createElement("div");r.className="vrow";
+  r.innerHTML=`<button class="spk">🔊</button><div><span class="vterm">${v.t}</span> <span class="vch">Ch${v.c} · ${v.z}</span><div class="vdef">${v.d}</div></div>`;
+  r.querySelector(".spk").addEventListener("click",()=>say(v.t));vlist.appendChild(r);});}
+chipRow(document.getElementById("vchips"),renderVocab);renderVocab(null);
+/* ---------- 字卡 ---------- */
+let deck=[...VOCAB],fi=0;
+const fcCard=document.getElementById("fcCard");
+function renderFC(){const v=deck[fi];fcCard.classList.remove("flip");
+  document.getElementById("fcFront").textContent=v.t;
+  document.getElementById("fcBack").innerHTML=`<b>${v.z}</b><br>${v.d}`;
+  document.getElementById("fcCount").textContent=`${fi+1} / ${deck.length}　(Ch ${v.c})`;}
+fcCard.addEventListener("click",()=>fcCard.classList.toggle("flip"));
+document.getElementById("fcNext").addEventListener("click",()=>{fi=(fi+1)%deck.length;renderFC();});
+document.getElementById("fcPrev").addEventListener("click",()=>{fi=(fi-1+deck.length)%deck.length;renderFC();});
+document.getElementById("fcSpeak").addEventListener("click",()=>say(deck[fi].t));
+document.getElementById("fcShuffle").addEventListener("click",()=>{deck.sort(()=>Math.random()-.5);fi=0;renderFC();});
+chipRow(document.getElementById("fchips"),ch=>{deck=VOCAB.filter(v=>!ch||v.c===ch);fi=0;renderFC();});
+renderFC();
+/* ---------- 測驗 ---------- */
+const LS="dojo_comm_wrong";
+let qOrder=[],qi=0,qRight=0,wrongSet=new Set(JSON.parse(localStorage.getItem(LS)||"[]"));
+const qBox=document.getElementById("qBox"),qScore=document.getElementById("qScore");
+function saveWrong(){localStorage.setItem(LS,JSON.stringify([...wrongSet]));}
+function startQuiz(ids){qOrder=ids.slice().sort(()=>Math.random()-.5);qi=0;qRight=0;renderQ();}
+function renderQ(){
+  if(qi>=qOrder.length){
+    qBox.innerHTML=`<div class="card"><b>本輪結束：${qRight} / ${qOrder.length}</b><br>${wrongSet.size?`錯題庫目前 ${wrongSet.size} 題——按「只練錯題」把它清空，這就是你的認知漏洞清單。`:"錯題庫是空的，9/6 可以放心去考。"}</div>`;
+    updateScoreLine();return;}
+  const id=qOrder[qi],Q=QUIZ[id];
+  qBox.innerHTML=`<div class="qnum">第 ${qi+1} / ${qOrder.length} 題 · Ch ${Q.c}</div><div class="qtext">${Q.q}</div>`+
+    Q.o.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("")+`<div id="qExp"></div>`;
+  qBox.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+    if(qBox.dataset.done)return;qBox.dataset.done=1;
+    const pick=+b.dataset.i,ok=pick===Q.a;
+    qBox.querySelectorAll(".opt").forEach((x,i)=>{if(i===Q.a)x.classList.add("right");else if(i===pick)x.classList.add("wrong");x.disabled=true;});
+    if(ok){qRight++;wrongSet.delete(id);}else wrongSet.add(id);saveWrong();
+    document.getElementById("qExp").innerHTML=`<div class="exp ${ok?"":"bad"}">${ok?"✔":"✘"} ${Q.e}</div><button class="btn pri">下一題</button>`;
+    document.getElementById("qExp").querySelector("button").addEventListener("click",()=>{delete qBox.dataset.done;qi++;renderQ();});
+    updateScoreLine();
+  }));}
+function updateScoreLine(){qScore.innerHTML=`共 ${QUIZ.length} 題 ｜ 錯題庫 <b>${wrongSet.size}</b> 題`;}
+document.getElementById("qStart").addEventListener("click",()=>startQuiz(QUIZ.map((_,i)=>i)));
+document.getElementById("qWrongBtn").addEventListener("click",()=>{wrongSet.size?startQuiz([...wrongSet]):qBox.innerHTML=`<div class="card">錯題庫是空的。</div>`;});
+updateScoreLine();
+/* ---------- Jeopardy ---------- */
+let jScore=0,jCur=null;
+const jBoard=document.getElementById("jBoard"),jModal=document.getElementById("jModal");
+function buildBoard(){jBoard.innerHTML="";jScore=0;updJ();
+  JEO.forEach(c=>{const h=document.createElement("div");h.className="jhead";h.textContent=c.cat;jBoard.appendChild(h);});
+  for(let r=0;r<5;r++)JEO.forEach((c,ci)=>{
+    const cl=c.cl[r],cell=document.createElement("div");cell.className="jcell";cell.textContent=cl.v;
+    cell.addEventListener("click",()=>{if(cell.classList.contains("used"))return;jCur={cl,cell};
+      document.getElementById("mCat").textContent=c.cat+" · "+cl.v;
+      document.getElementById("mQ").textContent=cl.q;
+      const mA=document.getElementById("mA");mA.textContent=cl.a;mA.classList.remove("on");
+      document.getElementById("mShow").style.display="";document.getElementById("mRight").style.display="none";document.getElementById("mWrong").style.display="none";
+      jModal.classList.add("on");});
+    jBoard.appendChild(cell);});}
+function updJ(){document.getElementById("jScore").textContent=jScore;}
+document.getElementById("mShow").addEventListener("click",()=>{
+  document.getElementById("mA").classList.add("on");
+  document.getElementById("mShow").style.display="none";
+  document.getElementById("mRight").style.display="";document.getElementById("mWrong").style.display="";});
+function closeJ(delta){if(jCur){jScore+=delta;updJ();jCur.cell.classList.add("used");jCur=null;}jModal.classList.remove("on");}
+document.getElementById("mRight").addEventListener("click",()=>closeJ(+parseInt(document.getElementById("mCat").textContent.split("·")[1])));
+document.getElementById("mWrong").addEventListener("click",()=>closeJ(-parseInt(document.getElementById("mCat").textContent.split("·")[1])));
+document.getElementById("mClose").addEventListener("click",()=>{jModal.classList.remove("on");jCur=null;});
+document.getElementById("jReset").addEventListener("click",buildBoard);
+buildBoard();
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>明暺的道場</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F5F3EC;--ink:#26282D;--seal:#A63A2B;--mut:#8B867A;--card:#FFFFFF;--line:#E3DFD2}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-serif;line-height:1.6}
+.wrap{max-width:640px;margin:0 auto;padding:32px 18px 60px}
+h1{font-family:'Noto Serif TC',serif;font-weight:900;font-size:34px;letter-spacing:.1em}
+.sub{color:var(--mut);font-size:14px;margin:6px 0 28px}
+a.hall{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px;text-decoration:none;color:var(--ink)}
+a.hall .seal{flex:0 0 auto;width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif TC',serif;font-weight:900;font-size:24px;border-radius:8px;background:var(--seal);color:#fff;transform:rotate(-3deg)}
+a.hall.closed .seal{background:var(--paper);color:var(--mut);border:2px solid var(--line)}
+a.hall .t{font-weight:700;font-size:17px}
+a.hall .d{font-size:13px;color:var(--mut)}
+a.hall.closed{opacity:.75;pointer-events:none}
+.rule{margin-top:32px;font-size:13px;color:var(--mut);border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>道　場</h1>
+  <div class="sub">每門課一間，各自往上長。單字要有發音、字卡、自測、答題台——為 Kahoot 抽考而練。</div>
+
+  <a class="hall" href="comm-l1/">
+    <span class="seal">說</span>
+    <span><span class="t">COMM L1 · Public Speaking</span><br><span class="d">Ch 9–11 已開張 ｜ quiz 截止 9/6（日）23:59</span></span>
+  </a>
+  <a class="hall closed" href="psyc4/">
+    <span class="seal">腦</span>
+    <span><span class="t">PSYC 4</span><br><span class="d">整備中——第一批教材上傳後開張</span></span>
+  </a>
+  <a class="hall closed" href="psyc21/">
+    <span class="seal">識</span>
+    <span><span class="t">PSYC 21 · Race &amp; Identity</span><br><span class="d">整備中——第一批教材上傳後開張</span></span>
+  </a>
+  <a class="hall closed" href="psyc-c1000/">
+    <span class="seal">基</span>
+    <span><span class="t">PSYC C1000 · 暑期基礎</span><br><span class="d">整備中——舊視窗內容搬入後開張（本週末）</span></span>
+  </a>
+  <a class="hall closed" href="eng7/">
+    <span class="seal">文</span>
+    <span><span class="t">ENG 7 · 暑期英文</span><br><span class="d">整備中——舊道場檔案搬入後開張</span></span>
+  </a>
+
+  <div class="rule">維護規則：一課一資料夾、一夾一個 index.html、內容全在檔內的資料陣列裡——加題只改陣列，不動骨架。只增不刪。</div>
+</div>
+</body>
+</html>
