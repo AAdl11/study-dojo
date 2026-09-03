@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f1020">
+<title>PSYC 4 · Chapter 2 神經解剖道場</title>
+<style>
+  :root{--bg:#0f1020;--panel:#1a1b34;--panel2:#232544;--ink:#eef0ff;--muted:#9aa0c9;--line:#33355e;
+    --brand:#7c6cff;--brand2:#4dd6c0;--gold:#ffcc4d;--ok:#3ddc84;--bad:#ff6b81;
+    --shadow:0 10px 30px rgba(0,0,0,.35);}
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  body{font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+    background:radial-gradient(1200px 700px at 15% -10%,#26234d 0,transparent 55%),
+               radial-gradient(1000px 600px at 110% 10%,#1c3b3a 0,transparent 50%),var(--bg);
+    color:var(--ink);line-height:1.6;min-height:100vh;font-size:16px}
+  .wrap{max-width:860px;margin:0 auto;padding:20px 14px 80px}
+  header{background:linear-gradient(135deg,#211f45,#181a33);border:1px solid var(--line);
+    border-radius:20px;padding:20px 22px;box-shadow:var(--shadow)}
+  .kicker{color:var(--brand2);font-weight:700;letter-spacing:.12em;font-size:11px;text-transform:uppercase}
+  h1{margin:.15em 0 .1em;font-size:24px}
+  .sub{color:var(--muted);font-size:14px}
+  .tools{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .tools button{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:10px;
+    padding:8px 12px;font-size:14px;cursor:pointer;font-family:inherit}
+  .tools button.on{border-color:var(--brand2);color:var(--brand2)}
+  .tabs{display:flex;gap:8px;margin:18px 0 14px;flex-wrap:wrap}
+  .tab{flex:1;min-width:96px;background:var(--panel);border:1px solid var(--line);color:var(--muted);
+    border-radius:12px;padding:11px 8px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+  .tab.on{background:var(--brand);border-color:var(--brand);color:#fff}
+  .pane{display:none} .pane.on{display:block}
+  .grph{display:flex;align-items:center;gap:8px;margin:18px 4px 8px;font-weight:800;font-size:16px;color:var(--brand2)}
+  .grph .n{background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+    padding:1px 8px;font-size:12px;color:var(--muted);font-weight:600}
+  .item{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:13px 15px;margin-bottom:8px;cursor:pointer}
+  .item:hover{border-color:var(--brand)}
+  .row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .en{font-weight:800;font-size:17px}
+  .ipa{color:var(--gold);font-size:13px;font-family:ui-monospace,"SF Mono",Menlo,monospace}
+  .zh{color:var(--muted);font-size:14px}
+  .spk{background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--brand2);
+    padding:2px 9px;font-size:14px;cursor:pointer;font-family:inherit;margin-left:auto}
+  .spk:hover{border-color:var(--brand2)}
+  .body{display:none;margin-top:9px;padding-top:9px;border-top:1px dashed var(--line);font-size:15px}
+  .item.open .body{display:block}
+  .item.open{border-color:var(--brand)}
+  .k{color:var(--gold);font-weight:700}
+  .note{background:var(--panel2);border-left:3px solid var(--brand2);border-radius:0 8px 8px 0;
+    padding:9px 12px;margin-top:8px;font-size:14px;color:var(--muted)}
+  .warn{border-left-color:var(--gold)}
+  .drawer{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;background:var(--panel);
+    border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px;font-size:15px}
+  .drawer .d{font-weight:800;color:var(--brand2);white-space:nowrap}
+  .drawer .s{color:var(--ink)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;
+    padding:34px 20px;text-align:center;min-height:220px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:10px;box-shadow:var(--shadow);cursor:pointer}
+  .card .big{font-size:28px;font-weight:800}
+  .card .ans{display:none;font-size:16px;color:var(--ink);max-width:560px}
+  .card.flip .ans{display:block}
+  .card.flip .hint{display:none}
+  .hint{color:var(--muted);font-size:13px}
+  .ctr{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+  .btn{background:var(--brand);border:none;color:#fff;border-radius:12px;padding:11px 18px;
+    font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+  .btn.ghost{background:var(--panel);border:1px solid var(--line);color:var(--muted)}
+  .btn.ok{background:var(--ok);color:#062}
+  .q{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+  .qt{font-size:18px;font-weight:800;margin-bottom:12px}
+  .opt{display:block;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);
+    color:var(--ink);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:16px;cursor:pointer;font-family:inherit}
+  .opt:hover{border-color:var(--brand)}
+  .opt.right{border-color:var(--ok);background:rgba(61,220,132,.12)}
+  .opt.wrong{border-color:var(--bad);background:rgba(255,107,129,.12)}
+  .opt:disabled{cursor:default}
+  .bar{height:8px;background:var(--panel2);border-radius:99px;overflow:hidden;margin-bottom:12px}
+  .bar i{display:block;height:100%;background:var(--brand2);width:100%;transition:width .2s linear}
+  .bar i.late{background:var(--bad)}
+  .meta{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-bottom:8px}
+  .exp{display:none;margin-top:10px;padding:10px 12px;background:var(--panel2);border-radius:10px;font-size:15px}
+  .exp.on{display:block}
+  .score{font-size:22px;font-weight:800;text-align:center;margin:14px 0}
+  .bank .item{cursor:default}
+  .tpl{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:8px}
+  .tpl .row{align-items:center}
+  .tpl .en{font-size:16px;font-weight:700}
+  .tpl .blank{color:var(--gold)}
+  .sc{background:linear-gradient(135deg,#211f45,#181a33);border:1px solid var(--line);border-radius:16px;
+    padding:16px 18px;margin-bottom:14px}
+  .sc h3{margin:0 0 4px;font-size:18px}
+  .sc .why{color:var(--muted);font-size:14px;margin-bottom:10px}
+  .sc .rank{display:inline-block;background:var(--brand);color:#fff;border-radius:8px;padding:1px 9px;
+    font-size:12px;font-weight:700;margin-right:8px;vertical-align:middle}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line);
+    border-radius:10px;padding:5px 10px;margin:3px 4px 3px 0;font-size:14px}
+  .chip b{font-weight:800}
+  .chip .zh{font-size:12px}
+  .chip button{background:none;border:none;color:var(--brand2);cursor:pointer;font-size:14px;padding:0 2px}
+  .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:26px}
+  @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+  button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">PSYC 4 · Module 1 · Fall 2026</div>
+  <h1>Chapter 2 神經解剖道場</h1>
+  <div class="sub">Neuroanatomy of the Nervous System · 依 Canvas Reading Guide 六大項 + 9/1 課堂錄音建置</div>
+  <div class="tools">
+    <button id="slowBtn" onclick="toggleSlow()">🐢 慢速發音：關</button>
+    <button onclick="sayAll()">🔊 念完整份字彙</button>
+    <button onclick="speechSynthesis.cancel()">⏹ 停</button>
+  </div>
+</header>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">📖 總覽</button>
+  <button class="tab" data-p="p2">🃏 閃卡</button>
+  <button class="tab" data-p="p3">⏱ Kahoot</button>
+  <button class="tab" data-p="p4">⚡ 快問</button>
+  <button class="tab" data-p="p5">💬 討論</button>
+</div>
+
+<!-- ===================== 總覽 ===================== -->
+<div class="pane on" id="p1">
+  <div class="note warn">點任何一條會展開功能與註記。每一條的 🔊 念英文。整份字彙一次念完在最上面。</div>
+
+  <div class="grph">五個抽屜 <span class="n">整章骨架</span></div>
+  <div class="note">胚胎五個分區就是五個抽屜，所有構造各歸一格。由下往上、由舊到新。背散的名詞會死，記抽屜就活。</div>
+  <div class="drawer">
+    <div class="d">Myelencephalon</div><div class="s">medulla</div>
+    <div class="d">Metencephalon</div><div class="s">pons · cerebellum</div>
+    <div class="d">Mesencephalon</div><div class="s">midbrain</div>
+    <div class="d">Diencephalon</div><div class="s">thalamus · hypothalamus</div>
+    <div class="d">Telencephalon</div><div class="s">cerebral cortex · hippocampus · amygdala · basal ganglia · corpus callosum</div>
+  </div>
+  <div class="note">順序記法：<span class="k">Myel → Met → Mes → Di → Tel</span>。Myel 最底最原始（呼吸心跳），Tel 最上最新（思考）。名字裡有 thalamus 的都住 Di 那格。H.M. 被切掉的海馬迴住 Tel 那格。</div>
+
+  <div id="vocab"></div>
+</div>
+
+<!-- ===================== 閃卡 ===================== -->
+<div class="pane" id="p2">
+  <div class="note">點卡片翻面。正面是英文名詞，背面是功能與中文。翻面前先自己說出功能。</div>
+  <div class="card" id="fc" onclick="flipCard()">
+    <div class="big" id="fcFront"></div>
+    <div class="hint">點一下翻面</div>
+    <div class="ans" id="fcBack"></div>
+  </div>
+  <div class="ctr">
+    <button class="btn ghost" onclick="prevCard()">← 上一張</button>
+    <button class="btn ghost" onclick="sayCard()">🔊 念</button>
+    <button class="btn" onclick="nextCard()">下一張 →</button>
+  </div>
+  <div class="meta" style="justify-content:center;margin-top:10px"><span id="fcPos"></span></div>
+</div>
+
+<!-- ===================== Kahoot ===================== -->
+<div class="pane" id="p3">
+  <div class="note warn">每題 20 秒，跟 Kahoot 一樣。看到題目第一眼認出哪個詞就按，不要回頭想。答錯的題會進錯題庫，下次可以只練錯的。</div>
+  <div id="quizBox"></div>
+  <div class="grph" style="margin-top:22px">錯題庫 <span class="n" id="bankN">0</span></div>
+  <div class="bank" id="bank"><div class="note">還沒有錯題。</div></div>
+</div>
+
+<!-- ===================== 快問 ===================== -->
+<div class="pane" id="p4">
+  <div class="note">看到英文名詞，三秒內說出「它在哪個抽屜」或「它做什麼」。點一下看答案，再點下一個。這是練反應速度用的。</div>
+  <div class="card" id="rf" onclick="rfReveal()">
+    <div class="big" id="rfQ"></div>
+    <div class="hint">點一下看答案</div>
+    <div class="ans" id="rfA"></div>
+  </div>
+  <div class="ctr">
+    <button class="btn" onclick="rfNext()">下一個 →</button>
+  </div>
+</div>
+
+<!-- ===================== 討論 ===================== -->
+<div class="pane" id="p5">
+  <div class="note warn">她的模式（9/1 實測）：放一支有人的故事的影片 → 分 3 到 4 人一組 → 討論反應和疑問 → Canvas 交一句話。以下依可能性排序。每個劇本四個字，先握住，聽到就接得上。</div>
+
+  <div id="scenarios"></div>
+
+  <div class="grph">貼文句型 <span class="n">兩拍</span></div>
+  <div class="note">尖括號裡的內容要填你們組當天真的講的東西。這裡抄的是骨架，不是答案。全班拿到分的最短一則只有第一拍，一句話。先寫完第一拍再寫第二拍。</div>
+  <div id="templates"></div>
+
+  <div class="note">🔊 可以把整句念出來給你聽，讓你練習在組裡開口說。念的時候尖括號會跳過。</div>
+</div>
+
+<div class="foot">Study Dojo · PSYC 4 · Chapter 2 · 建於 2026-09-02</div>
+</div>
+
+<script>
+/* ---------- 語音 ---------- */
+const TTS=("speechSynthesis" in window);
+let voice=null, slow=false;
+function pickVoice(){
+  if(!TTS)return;
+  const vs=speechSynthesis.getVoices()||[];
+  voice = vs.find(v=>/en[-_]US/i.test(v.lang)&&/natural|google|samantha|aria/i.test(v.name))
+       || vs.find(v=>/en[-_]US/i.test(v.lang)) || vs.find(v=>/^en/i.test(v.lang)) || null;
+}
+if(TTS){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+/* 語音引擎容易念錯的字，給它拆好音節的版本 */
+const SPEAK={
+  "myelencephalon":"my el en sef a lon","metencephalon":"met en sef a lon",
+  "mesencephalon":"mes en sef a lon","diencephalon":"dy en sef a lon","telencephalon":"tel en sef a lon",
+  "hydrocephalus":"hy dro sef a lus","arachnoid mater":"a rack noid may ter",
+  "pia mater":"pee a may ter","dura mater":"doo ra may ter","choroid plexus":"kor oid plexus",
+  "meninges":"meh nin jeez","sagittal":"sadge it ul","neuraxis":"new rax iss",
+  "cerebral aqueduct":"seh ree brul ack wa duct","afferent":"aff er ent","efferent":"eff er ent"
+};
+function say(txt){
+  if(!TTS)return;
+  try{
+    speechSynthesis.cancel();
+    const c=txt.replace(/⟨[^⟩]*⟩/g,"").replace(/[🔊🔸⭐]/g,"").trim();
+    const u=new SpeechSynthesisUtterance(SPEAK[c.toLowerCase()]||c);
+    u.lang="en-US"; u.rate=slow?0.55:0.85; u.pitch=1;
+    if(voice)u.voice=voice;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function toggleSlow(){slow=!slow;const b=document.getElementById("slowBtn");
+  b.textContent="🐢 慢速發音："+(slow?"開":"關");b.classList.toggle("on",slow);}
+function sayAll(){
+  if(!TTS)return;
+  speechSynthesis.cancel();
+  VOCAB.forEach((v,i)=>{
+    const u=new SpeechSynthesisUtterance(SPEAK[v.en.toLowerCase()]||v.en);
+    u.lang="en-US";u.rate=slow?0.55:0.8;if(voice)u.voice=voice;
+    speechSynthesis.speak(u);
+    const p=new SpeechSynthesisUtterance(" ");p.rate=0.5;speechSynthesis.speak(p);
+  });
+}
+
+/* ---------- 字彙 ---------- */
+const VOCAB=[
+ {g:"中樞與周邊",en:"central nervous system (CNS)",ipa:"SEN-trul",zh:"中樞神經",fn:"Brain + spinal cord. Protected by bone (skull, vertebrae).",note:"她的比喻：Sacramento 加五號公路，重大決策在首府做。"},
+ {g:"中樞與周邊",en:"peripheral nervous system (PNS)",ipa:"puh-RIF-er-ul",zh:"周邊神經",fn:"All nerves outside the CNS. Carries signals in and out.",note:"所有的出口匝道和地方辦公室。"},
+ {g:"中樞與周邊",en:"somatic",ipa:"so-MAT-ik",zh:"體神經",fn:"Voluntary. Senses in, skeletal muscle out. You are aware of it.",note:""},
+ {g:"中樞與周邊",en:"autonomic",ipa:"aw-toh-NOM-ik",zh:"自律神經",fn:"Automatic. Organs and glands. Runs without your control.",note:"autonomic = 有 autonomy，自己管自己。"},
+ {g:"中樞與周邊",en:"sympathetic",ipa:"sim-puh-THET-ik",zh:"交感",fn:"Fight or flight. Heart races, sweat, energy spent.",note:"踩油門。熊走進房間，你還沒意識到心臟已經在跳。"},
+ {g:"中樞與周邊",en:"parasympathetic",ipa:"pair-uh-sim-puh-THET-ik",zh:"副交感",fn:"Rest and digest. Save energy for later.",note:"踩剎車。她強調兩個系統常常同時運作，不是簡單的二分。"},
+ {g:"中樞與周邊",en:"cranial nerves",ipa:"KRAY-nee-ul",zh:"腦神經",fn:"Connect directly to the brain, skipping the spinal cord. Vision, hearing, smell.",note:"不走五號公路的捷徑。"},
+ {g:"中樞與周邊",en:"spinal nerves",ipa:"SPY-nul",zh:"脊神經",fn:"Carry information into and out of the spinal cord.",note:""},
+
+ {g:"腦幹與間腦",en:"medulla",ipa:"meh-DUL-uh",zh:"延髓",fn:"Breathing, heart rate, blood pressure. Damage is fatal.",note:"抽屜：Myelencephalon。"},
+ {g:"腦幹與間腦",en:"pons",ipa:"PONZ",zh:"橋腦",fn:"Bridge between cerebellum and the rest of the brain. Sleep and arousal.",note:"抽屜：Metencephalon。"},
+ {g:"腦幹與間腦",en:"cerebellum",ipa:"sair-uh-BEL-um",zh:"小腦",fn:"Balance, coordination, motor learning.",note:"抽屜：Metencephalon。"},
+ {g:"腦幹與間腦",en:"midbrain",ipa:"MID-brain",zh:"中腦",fn:"Visual and auditory reflexes. Contains the substantia nigra (dopamine).",note:"抽屜：Mesencephalon。"},
+ {g:"腦幹與間腦",en:"thalamus",ipa:"THAL-uh-mus",zh:"視丘",fn:"Relay station for all senses except smell.",note:"抽屜：Diencephalon。「除了嗅覺」這點常考。"},
+ {g:"腦幹與間腦",en:"hypothalamus",ipa:"hy-poh-THAL-uh-mus",zh:"下視丘",fn:"Temperature, hunger, thirst, hormones, circadian rhythm.",note:"抽屜：Diencephalon。"},
+
+ {g:"端腦構造",en:"basal ganglia",ipa:"BAY-sul GANG-glee-uh",zh:"基底核",fn:"Voluntary movement control. Damaged in Parkinson's disease.",note:"9/1 她講深部腦刺激治 Parkinson's 時提過。"},
+ {g:"端腦構造",en:"hippocampus",ipa:"hip-oh-KAM-pus",zh:"海馬迴",fn:"Forms new declarative memories. Removed in H.M.",note:"永遠是兩個：hippocampi。"},
+ {g:"端腦構造",en:"amygdala",ipa:"uh-MIG-duh-luh",zh:"杏仁核",fn:"Fear, emotion, emotional memory.",note:""},
+ {g:"端腦構造",en:"corpus callosum",ipa:"KOR-pus kuh-LOH-sum",zh:"胼胝體",fn:"Connects the left and right hemispheres.",note:"9/1 講過：現代治嚴重癲癇改切這個，讓兩邊不再短路。"},
+ {g:"端腦構造",en:"cerebral cortex",ipa:"seh-REE-brul KOR-teks",zh:"大腦皮質",fn:"Outer layer. Thinking, perception, voluntary action.",note:""},
+
+ {g:"四葉",en:"frontal lobe",ipa:"FRUN-tul",zh:"額葉",fn:"Planning, decisions, personality, motor cortex. Broca's area (speech production).",note:"9/1 講 Broca's area 的由來：病人不能說話，死後解剖發現那塊壞了。自然實驗的經典例子。"},
+ {g:"四葉",en:"parietal lobe",ipa:"puh-RY-uh-tul",zh:"頂葉",fn:"Touch, body position, spatial awareness. Somatosensory cortex.",note:""},
+ {g:"四葉",en:"temporal lobe",ipa:"TEM-por-ul",zh:"顳葉",fn:"Hearing, language comprehension. Wernicke's area.",note:""},
+ {g:"四葉",en:"occipital lobe",ipa:"ok-SIP-ih-tul",zh:"枕葉",fn:"Vision. Visual cortex.",note:"9/1 PET 那段：想像一座山，視覺皮質也會亮。"},
+
+ {g:"方位詞",en:"anterior / posterior",ipa:"an-TEER-ee-er / pos-TEER-ee-er",zh:"前 / 後",fn:"Front / back. Does NOT move with the neuraxis.",note:"像房間的牆壁，固定不動。"},
+ {g:"方位詞",en:"rostral / caudal",ipa:"ROS-trul / KAW-dul",zh:"頭側 / 尾側",fn:"Toward the nose / toward the tail. Moves WITH the neuraxis.",note:"四足動物座標。人站起來之後會轉。"},
+ {g:"方位詞",en:"dorsal / ventral",ipa:"DOR-sul / VEN-trul",zh:"背側 / 腹側",fn:"Back (top) / belly (bottom). Moves WITH the neuraxis.",note:""},
+ {g:"方位詞",en:"superior / inferior",ipa:"soo-PEER-ee-er / in-FEER-ee-er",zh:"上 / 下",fn:"Above / below. Does NOT move with the neuraxis.",note:""},
+ {g:"方位詞",en:"medial / lateral",ipa:"MEE-dee-ul / LAT-er-ul",zh:"內側 / 外側",fn:"Toward the midline / away from the midline.",note:""},
+ {g:"方位詞",en:"ipsilateral / contralateral",ipa:"ip-sih-LAT-er-ul / kon-truh-LAT-er-ul",zh:"同側 / 對側",fn:"Same side / opposite side. Left brain controls right body.",note:"split-brain 的全部關鍵。"},
+ {g:"方位詞",en:"neuraxis",ipa:"new-RAK-sis",zh:"神經軸",fn:"In humans it bends 90 degrees. This is why the two sets of directional terms disagree.",note:"她在 Canvas 上特別點出來的考點。四足動物兩組一致，人站起來才錯開。"},
+
+ {g:"切面",en:"coronal section",ipa:"koh-ROH-nul",zh:"冠狀切",fn:"Divides front and back. Cut from ear to ear.",note:"想皇冠 crown 戴上去那個平面。"},
+ {g:"切面",en:"sagittal section",ipa:"SAJ-ih-tul",zh:"矢狀切",fn:"Divides left and right. Side view. Midsagittal is on the midline.",note:"想射手座拉弓，從側面看。"},
+ {g:"切面",en:"horizontal section",ipa:"hor-ih-ZON-tul",zh:"水平切",fn:"Divides top and bottom. Parallel to the floor.",note:"也叫 axial。"},
+
+ {g:"腦膜與腦脊髓液",en:"dura mater",ipa:"DOO-ruh MAY-ter",zh:"硬腦膜",fn:"Outermost meninx. Tough and protective.",note:"dura = 硬。"},
+ {g:"腦膜與腦脊髓液",en:"arachnoid mater",ipa:"uh-RAK-noid MAY-ter",zh:"蛛網膜",fn:"Middle meninx. Web-like.",note:""},
+ {g:"腦膜與腦脊髓液",en:"pia mater",ipa:"PEE-uh MAY-ter",zh:"軟腦膜",fn:"Innermost meninx. Clings to the brain surface.",note:"pia = 軟。硬的在外，軟的貼腦。順序題方向講反就整題錯。"},
+ {g:"腦膜與腦脊髓液",en:"cerebrospinal fluid (CSF)",ipa:"seh-ree-broh-SPY-nul",zh:"腦脊髓液",fn:"Cushions the brain, removes waste, keeps chemical balance.",note:""},
+ {g:"腦膜與腦脊髓液",en:"choroid plexus",ipa:"KOR-oid PLEK-sus",zh:"脈絡叢",fn:"Produces CSF inside the ventricles.",note:"工廠。導水管是通道不是工廠，常見陷阱。"},
+ {g:"腦膜與腦脊髓液",en:"ventricles",ipa:"VEN-trih-kulz",zh:"腦室",fn:"Lateral → third → cerebral aqueduct → fourth. CSF flows through them.",note:""},
+ {g:"腦膜與腦脊髓液",en:"hydrocephalus",ipa:"hy-droh-SEF-uh-lus",zh:"水腦症",fn:"Blocked CSF flow → fluid builds up → pressure damages the brain. Treated with a shunt.",note:"Reading Guide 單獨列一條，代表她會考。上一條的反面。"},
+
+ {g:"脊髓",en:"spinal cord",ipa:"SPY-nul",zh:"脊髓",fn:"Carries signals between brain and body. Segments: cervical, thoracic, lumbar, sacral.",note:"Reading Guide 漏列，但 Module 學習目標有要求。"},
+ {g:"脊髓",en:"afferent",ipa:"AF-er-ent",zh:"傳入",fn:"Sensory nerves carrying information IN toward the CNS. Enter via dorsal root.",note:"A = Arriving。"},
+ {g:"脊髓",en:"efferent",ipa:"EF-er-ent",zh:"傳出",fn:"Motor nerves carrying commands OUT from the CNS. Exit via ventral root.",note:"E = Exiting。"},
+ {g:"脊髓",en:"reflex",ipa:"REE-fleks",zh:"反射",fn:"Happens at the spinal level, before the information reaches the brain.",note:""},
+ {g:"脊髓",en:"gray matter / white matter",ipa:"",zh:"灰質 / 白質",fn:"Gray = cell bodies (inside, butterfly shape). White = myelinated axons (outside).",note:""}
+];
+
+function buildVocab(){
+  const box=document.getElementById("vocab");
+  let g="";
+  VOCAB.forEach((v,i)=>{
+    if(v.g!==g){g=v.g;box.insertAdjacentHTML("beforeend",`<div class="grph">${g}</div>`);}
+    box.insertAdjacentHTML("beforeend",`
+      <div class="item" onclick="this.classList.toggle('open')">
+        <div class="row"><span class="en">${v.en}</span>${v.ipa?`<span class="ipa">${v.ipa}</span>`:""}<span class="zh">${v.zh}</span>
+          <button class="spk" onclick="event.stopPropagation();say('${v.en.replace(/'/g,"\\'")}')">🔊</button></div>
+        <div class="body">${v.fn}${v.note?`<div class="note">${v.note}</div>`:""}</div>
+      </div>`);
+  });
+}
+
+/* ---------- 閃卡 ---------- */
+let fcI=0;
+function showCard(){
+  const v=VOCAB[fcI];
+  document.getElementById("fc").classList.remove("flip");
+  document.getElementById("fcFront").textContent=v.en;
+  document.getElementById("fcBack").innerHTML=`<b>${v.zh}</b><br>${v.fn}`;
+  document.getElementById("fcPos").textContent=`${fcI+1} / ${VOCAB.length}`;
+}
+function flipCard(){document.getElementById("fc").classList.toggle("flip");}
+function nextCard(){fcI=(fcI+1)%VOCAB.length;showCard();}
+function prevCard(){fcI=(fcI-1+VOCAB.length)%VOCAB.length;showCard();}
+function sayCard(){say(VOCAB[fcI].en);}
+
+/* ---------- Kahoot 自測 ---------- */
+const Q=[
+ {q:"Which embryological division contains the medulla?",o:["Telencephalon","Myelencephalon","Diencephalon","Mesencephalon"],a:1,e:"髓腦只裝延髓，管呼吸心跳。五個抽屜由下往上：Myel → Met → Mes → Di → Tel。"},
+ {q:"The pons and the cerebellum both belong to which division?",o:["Myelencephalon","Mesencephalon","Metencephalon","Telencephalon"],a:2,e:"後腦 = 橋腦 + 小腦。唯一裝兩個的低位抽屜。"},
+ {q:"The thalamus and hypothalamus are found in the:",o:["Diencephalon","Telencephalon","Metencephalon","Myelencephalon"],a:0,e:"名字有 thalamus 就在間腦。視丘是感覺轉運站，下視丘管體溫飢餓荷爾蒙。"},
+ {q:"Which structures belong to the telencephalon?",o:["Medulla, pons, cerebellum","Thalamus and hypothalamus","Hippocampus, amygdala, basal ganglia, cerebral cortex","Midbrain only"],a:2,e:"端腦最大最新。H.M. 的海馬迴住這裡。"},
+ {q:"In a four-legged animal, \"caudal\" means toward the:",o:["Nose","Tail","Back","Belly"],a:1,e:"caudal 往尾巴，rostral 往鼻子。"},
+ {q:"A coronal section divides the brain into which two parts?",o:["Left and right","Top and bottom","Front and back","Inner and outer"],a:2,e:"冠狀切分前後，矢狀切分左右，水平切分上下。"},
+ {q:"List the three meninges from OUTERMOST to innermost:",o:["Pia, arachnoid, dura","Arachnoid, dura, pia","Dura, arachnoid, pia","Dura, pia, arachnoid"],a:2,e:"硬的在外，軟的貼腦。dura → arachnoid → pia。"},
+ {q:"Cerebrospinal fluid (CSF) is produced by the:",o:["Corpus callosum","Choroid plexus","Basal ganglia","Cerebral aqueduct"],a:1,e:"脈絡叢是工廠，導水管是通道。"},
+ {q:"Hydrocephalus is caused by:",o:["Too little CSF being produced","Blocked CSF flow causing fluid buildup and pressure","Damage to the corpus callosum","Loss of the myelin sheath"],a:1,e:"是堵住不是不夠。用 shunt 分流管治。"},
+ {q:"The corpus callosum's main function is to:",o:["Produce cerebrospinal fluid","Control breathing and heart rate","Connect the left and right hemispheres","Store declarative memories"],a:2,e:"9/1 講過：現代治嚴重癲癇改切這個。"},
+ {q:"The central nervous system consists of:",o:["Brain and cranial nerves","Brain and spinal cord","Spinal cord and spinal nerves","All nerves in the body"],a:1,e:"CNS = 腦 + 脊髓，Sacramento 加五號公路。其他都是 PNS。"},
+ {q:"Your heart beats without you thinking about it. Which system is responsible?",o:["Somatic","Autonomic","Cranial","Central"],a:1,e:"autonomic = 有 autonomy，自己管自己。器官和腺體。"},
+ {q:"A bear walks into the room. Before you even realize it, your heart is racing. This is the:",o:["Parasympathetic system","Somatic system","Sympathetic system","Central nervous system"],a:2,e:"她影片裡的例子。交感 = fight or flight，踩油門。"},
+ {q:"How do cranial nerves differ from spinal nerves?",o:["Cranial nerves are only for movement","Cranial nerves connect directly to the brain, skipping the spinal cord","Cranial nerves are part of the CNS","There is no difference"],a:1,e:"不走五號公路的捷徑。視覺、聽覺、嗅覺走這條。"},
+ {q:"The thalamus relays information from all senses EXCEPT:",o:["Vision","Hearing","Touch","Smell"],a:3,e:"嗅覺是唯一不經過視丘的感覺。這點常考。"},
+ {q:"Which structure is damaged in Parkinson's disease?",o:["Hippocampus","Basal ganglia","Cerebellum","Amygdala"],a:1,e:"基底核管自主動作。9/1 她講深部腦刺激治 Parkinson's 時提過。"},
+ {q:"Broca's area, responsible for speech production, is in which lobe?",o:["Occipital","Temporal","Frontal","Parietal"],a:2,e:"額葉。9/1 講過它的由來：病人不能說話，死後解剖發現那塊壞了。"},
+ {q:"Afferent nerves carry:",o:["Motor commands out to muscles","Sensory information in toward the CNS","CSF through the ventricles","Signals between hemispheres"],a:1,e:"A = Arriving。efferent 是 E = Exiting。"},
+ {q:"Why are directional terms confusing in humans compared to four-legged animals?",o:["Humans have more nerves","The human neuraxis bends 90 degrees, so rostral/caudal/dorsal/ventral shift","Humans have no tail","The terms mean different things in different textbooks"],a:1,e:"她在 Canvas 特別點出來的：一組跟著 neuraxis 轉，另一組（anterior/posterior/superior/inferior）不轉。"},
+ {q:"A reflex is special because:",o:["It requires the cerebral cortex","It happens at the spinal level before the brain is involved","It only happens during sleep","It uses cranial nerves only"],a:1,e:"反射在脊髓層級完成，訊息還沒到腦就反應了。"}
+];
+let qOrder=[], qI=0, qScore=0, timer=null, tLeft=20, bank=[];
+try{bank=JSON.parse(localStorage.getItem("psyc4ch2bank")||"[]");}catch(e){bank=[];}
+function saveBank(){try{localStorage.setItem("psyc4ch2bank",JSON.stringify(bank));}catch(e){}}
+function startQuiz(onlyWrong){
+  qOrder = onlyWrong ? bank.slice() : Q.map((_,i)=>i);
+  if(!qOrder.length){alert("錯題庫是空的。");return;}
+  qOrder.sort(()=>Math.random()-.5);
+  qI=0;qScore=0;showQ();
+}
+function showQ(){
+  clearInterval(timer);
+  const box=document.getElementById("quizBox");
+  if(qI>=qOrder.length){
+    box.innerHTML=`<div class="q"><div class="score">${qScore} / ${qOrder.length}</div>
+      <div class="ctr"><button class="btn" onclick="startQuiz(false)">再來一輪（全部）</button>
+      <button class="btn ghost" onclick="startQuiz(true)">只練錯題</button></div></div>`;
+    renderBank();return;
+  }
+  const q=Q[qOrder[qI]];
+  tLeft=20;
+  box.innerHTML=`<div class="q">
+    <div class="meta"><span>第 ${qI+1} / ${qOrder.length} 題</span><span id="tl">20 秒</span></div>
+    <div class="bar"><i id="tb"></i></div>
+    <div class="qt">${q.q}</div>
+    ${q.o.map((o,i)=>`<button class="opt" onclick="answer(${i})">${o}</button>`).join("")}
+    <div class="exp" id="exp"></div>
+    <div class="ctr" id="nextRow" style="display:none"><button class="btn" onclick="qI++;showQ()">下一題 →</button></div>
+  </div>`;
+  timer=setInterval(()=>{
+    tLeft--;
+    document.getElementById("tl").textContent=tLeft+" 秒";
+    const b=document.getElementById("tb");b.style.width=(tLeft/20*100)+"%";
+    if(tLeft<=5)b.classList.add("late");
+    if(tLeft<=0){clearInterval(timer);answer(-1);}
+  },1000);
+}
+function answer(i){
+  clearInterval(timer);
+  const q=Q[qOrder[qI]];
+  const opts=document.querySelectorAll(".opt");
+  opts.forEach((b,j)=>{b.disabled=true;if(j===q.a)b.classList.add("right");if(j===i&&i!==q.a)b.classList.add("wrong");});
+  const exp=document.getElementById("exp");
+  if(i===q.a){qScore++;exp.innerHTML="✅ "+q.e;bank=bank.filter(x=>x!==qOrder[qI]);}
+  else{exp.innerHTML=(i<0?"⏱ 時間到。":"❌ ")+q.e;if(!bank.includes(qOrder[qI]))bank.push(qOrder[qI]);}
+  saveBank();exp.classList.add("on");
+  document.getElementById("nextRow").style.display="flex";
+}
+function renderBank(){
+  const b=document.getElementById("bank");
+  document.getElementById("bankN").textContent=bank.length;
+  if(!bank.length){b.innerHTML='<div class="note">還沒有錯題。</div>';return;}
+  b.innerHTML=bank.map(i=>`<div class="item"><div class="en">${Q[i].q}</div><div class="zh">答案：${Q[i].o[Q[i].a]}</div><div class="note">${Q[i].e}</div></div>`).join("")
+    +`<div class="ctr"><button class="btn ghost" onclick="bank=[];saveBank();renderBank()">清空錯題庫</button></div>`;
+}
+function initQuiz(){
+  document.getElementById("quizBox").innerHTML=`<div class="q" style="text-align:center">
+    <div class="qt">20 題 · 每題 20 秒</div>
+    <div class="ctr"><button class="btn" onclick="startQuiz(false)">開始</button>
+    <button class="btn ghost" onclick="startQuiz(true)">只練錯題</button></div></div>`;
+  renderBank();
+}
+
+/* ---------- 快問 ---------- */
+let rfI=0;
+function rfShow(){
+  const v=VOCAB[rfI];
+  document.getElementById("rf").classList.remove("flip");
+  document.getElementById("rfQ").textContent=v.en;
+  document.getElementById("rfA").innerHTML=`<b>${v.zh}</b><br>${v.fn}`;
+}
+function rfReveal(){document.getElementById("rf").classList.toggle("flip");}
+function rfNext(){rfI=Math.floor(Math.random()*VOCAB.length);rfShow();say(VOCAB[rfI].en);}
+
+/* ---------- 討論劇本 ---------- */
+const SCEN=[
+ {r:"A · 最可能",t:"Brain-Computer Interface",why:"她 Module 1 頁面掛了 Stanford 的 Krishna Shenoy 演講，14 分鐘，講癱瘓病人用「想」的控制義肢和游標。整個 Module 唯一有人物故事和倫理張力的影片，其他都是解剖切片教學片。跟 H.M. 是同一個路數。",
+  v:[["brain-computer interface (BCI)","腦機介面"],["motor cortex","運動皮質"],["paralysis","癱瘓"],["prosthetic","義肢"]],
+  ask:"這算不算改變了「身體」的定義？誰負擔得起？如果它能讀出動作意圖，能不能讀出別的？"},
+ {r:"B · 她親口預告",t:"Split-brain",why:"9/1 她說：「星期四我可能會放給你們看那是什麼樣子。」但那支影片沒掛在 Module 1 頁面，可能臨時放或延到下週。",
+  v:[["corpus callosum","胼胝體"],["split-brain","裂腦"],["contralateral control","對側控制"],["lateralization","側化"]],
+  ask:"可以接上 9/1 那條：切胼胝體是為了阻止癲癇在兩半腦之間短路，病人日常幾乎不受影響。"},
+ {r:"C · 有畫面有病人",t:"Hydrocephalus 與 CSF Shunt",why:"她掛了一支 1 分鐘的裝分流管手術影片，配一張頭部腫脹的嬰兒照片，寫了這個病過去很難治、現在用分流管清除阻塞。Reading Guide 也單獨列一條。",
+  v:[["hydrocephalus","水腦症"],["shunt","分流管"],["ventricles","腦室"],["cerebrospinal fluid","腦脊髓液"]],
+  ask:"以前沒救現在有救的轉折，可以問：什麼時候能診斷？產前能不能發現？"},
+ {r:"D · 她影片裡講最激動",t:"Spinal Cord Injury",why:"她自己那支影片花一整段講：車禍傷到脊髓特別危險，因為大部分訊息都必須經過脊髓，傷到某一段就失去某部位的感覺或控制。",
+  v:[["afferent","傳入"],["efferent","傳出"],["reflex","反射"],["cervical / thoracic / lumbar / sacral","頸 / 胸 / 腰 / 薦"]],
+  ask:"A = Arriving，E = Exiting。傷在越高的段，影響的範圍越大。"}
+];
+const TPL=[
+ {k:"第一拍（必要，缺了就丟分）",s:[
+   "In my group, we discussed ⟨主題⟩ and how ⟨一個機制或關係⟩.",
+   "Our group talked about ⟨主題⟩, specifically ⟨一個細節⟩.",
+   "We discussed ⟨主題⟩ and learned that ⟨一個結論⟩."]},
+ {k:"第二拍（可選，這是加分的地方）",s:[
+   "We also wondered ⟨你真正好奇的問題⟩.",
+   "We were surprised that ⟨出乎意料的地方⟩.",
+   "My group also discussed whether ⟨一個取捨或兩難⟩."]},
+ {k:"接組員的話（Mason 的高分寫法）",s:[
+   "⟨組員名字⟩ suggested ⟨他的想法⟩, and we concluded that ⟨結論⟩.",
+   "When I asked Dr. Keller about ⟨問題⟩, she said ⟨她的回答⟩."]}
+];
+function buildDiscussion(){
+  const s=document.getElementById("scenarios");
+  SCEN.forEach(c=>{
+    s.insertAdjacentHTML("beforeend",`<div class="sc"><h3><span class="rank">${c.r}</span>${c.t}</h3>
+      <div class="why">${c.why}</div>
+      ${c.v.map(([en,zh])=>`<span class="chip"><b>${en}</b><span class="zh">${zh}</span><button onclick="say('${en.replace(/'/g,"\\'")}')">🔊</button></span>`).join("")}
+      <div class="note">${c.ask}</div></div>`);
+  });
+  const t=document.getElementById("templates");
+  TPL.forEach(g=>{
+    t.insertAdjacentHTML("beforeend",`<div class="grph">${g.k}</div>`);
+    g.s.forEach(x=>{
+      const html=x.replace(/⟨([^⟩]*)⟩/g,'<span class="blank">⟨$1⟩</span>');
+      t.insertAdjacentHTML("beforeend",`<div class="tpl"><div class="row"><span class="en">${html}</span>
+        <button class="spk" onclick="say('${x.replace(/'/g,"\\'")}')">🔊</button></div></div>`);
+    });
+  });
+}
+
+/* ---------- 分頁 ---------- */
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll(".pane").forEach(x=>x.classList.remove("on"));
+  t.classList.add("on");document.getElementById(t.dataset.p).classList.add("on");
+  speechSynthesis.cancel&&speechSynthesis.cancel();
+}));
+
+buildVocab();showCard();initQuiz();rfShow();buildDiscussion();
+</script>
+</body>
+</html>
