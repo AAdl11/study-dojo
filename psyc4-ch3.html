@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f1020">
+<title>PSYC 4 · Chapter 3 神經生理道場</title>
+<style>
+  :root{--bg:#0f1020;--panel:#1a1b34;--panel2:#232544;--ink:#eef0ff;--muted:#9aa0c9;--line:#33355e;
+    --brand:#7c6cff;--brand2:#4dd6c0;--gold:#ffcc4d;--ok:#3ddc84;--bad:#ff6b81;
+    --shadow:0 10px 30px rgba(0,0,0,.35);}
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  body{font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+    background:radial-gradient(1200px 700px at 15% -10%,#26234d 0,transparent 55%),
+               radial-gradient(1000px 600px at 110% 10%,#1c3b3a 0,transparent 50%),var(--bg);
+    color:var(--ink);line-height:1.6;min-height:100vh;font-size:16px}
+  .wrap{max-width:860px;margin:0 auto;padding:20px 14px 80px}
+  header{background:linear-gradient(135deg,#211f45,#181a33);border:1px solid var(--line);
+    border-radius:20px;padding:20px 22px;box-shadow:var(--shadow)}
+  .kicker{color:var(--brand2);font-weight:700;letter-spacing:.12em;font-size:11px;text-transform:uppercase}
+  h1{margin:.15em 0 .1em;font-size:24px}
+  .sub{color:var(--muted);font-size:14px}
+  .tabs{display:flex;gap:8px;margin:18px 0 14px;flex-wrap:wrap}
+  .tab{flex:1;min-width:96px;background:var(--panel);border:1px solid var(--line);color:var(--muted);
+    border-radius:12px;padding:11px 8px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+  .tab.on{background:var(--brand);border-color:var(--brand);color:#fff}
+  .pane{display:none} .pane.on{display:block}
+  .ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 14px}
+  .ctlb{background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:10px;
+    padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+  .ctlb.on{background:var(--brand2);border-color:var(--brand2);color:#0f1020}
+  .ctlnote{color:var(--muted);font-size:11.5px}
+  .grph{display:flex;align-items:center;gap:8px;margin:18px 4px 8px;font-weight:800;font-size:16px;color:var(--brand2)}
+  .grph .n{background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+    padding:1px 8px;font-size:12px;color:var(--muted);font-weight:600}
+  .item{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:12px 15px;margin-bottom:8px;cursor:pointer}
+  .item:hover{border-color:var(--brand)}
+  .item.open{border-color:var(--brand)}
+  .enrow{display:flex;align-items:center;gap:9px}
+  .en{font-weight:800;font-size:17px;flex:1}
+  .zh{color:var(--muted);font-size:14px}
+  .spk{background:transparent;border:1px solid var(--line);color:var(--brand2);border-radius:8px;
+    padding:3px 9px;font-size:13px;cursor:pointer;font-family:inherit;flex:none}
+  .spk:hover{border-color:var(--brand2);background:rgba(77,214,192,.12)}
+  .body{display:none;margin-top:9px;padding-top:9px;border-top:1px dashed var(--line);font-size:14.5px}
+  .item.open .body{display:block}
+  .k{color:var(--gold);font-weight:700}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;
+    padding:34px 20px;text-align:center;min-height:220px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:10px;box-shadow:var(--shadow);cursor:pointer}
+  .card .big{font-size:28px;font-weight:800}
+  .card .ans{display:none;font-size:16px;color:var(--ink);max-width:560px}
+  .card.flip .ans{display:block}
+  .card .tip{color:var(--muted);font-size:12px}
+  .row{display:flex;gap:8px;margin-top:12px}
+  button.btn{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  button.btn.g{background:transparent;border-color:var(--ok);color:var(--ok)}
+  button.btn.r{background:transparent;border-color:var(--bad);color:var(--bad)}
+  .bigspk{background:var(--panel2);border:1px solid var(--brand2);color:var(--brand2);border-radius:12px;
+    padding:9px 18px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px}
+  .q{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:12px}
+  .qn{color:var(--brand2);font-size:12px;font-weight:700;letter-spacing:.08em}
+  .qp{font-weight:700;margin:6px 0 12px;font-size:15.5px}
+  .opt{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px 13px;
+    margin-bottom:7px;cursor:pointer;font-size:15px;font-weight:600}
+  .opt:hover{border-color:var(--brand)}
+  .opt.ok{border-color:var(--ok);background:rgba(61,220,132,.12)}
+  .opt.no{border-color:var(--bad);background:rgba(255,107,129,.12)}
+  .exp{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13.5px;color:var(--muted)}
+  .exp.on{display:block}
+  .bar{height:7px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:12px 0}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));width:0}
+  .score{text-align:center;color:var(--muted);font-size:13px;margin-top:6px}
+  .ctr{display:flex;gap:8px;justify-content:center;margin:10px 0 16px;flex-wrap:wrap}
+  .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:26px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">PSYC 4 · Keller · Fall 2026</div>
+    <h1>Chapter 3 神經生理道場 ⚡</h1>
+    <div class="sub">Neurophysiology · Freberg 5e pp.65–102<br>
+      單字對齊用：英文是考卷上的字，中文只是給你看懂。照 Reading Guide 順序排。</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab on" data-p="p1">📖 對照表</button>
+    <button class="tab" data-p="p2">🃏 閃卡</button>
+    <button class="tab" data-p="p3">✍️ 對齊自測</button>
+    <button class="tab" data-p="p4">🔢 數字</button>
+  </div>
+
+  <div class="ctl">
+    <button class="ctlb on" id="brate">🐢 正常速</button>
+    <button class="ctlb" id="bauto">🔁 自動朗讀：關</button>
+    <span class="ctlnote" id="vnote"></span>
+  </div>
+
+  <div class="pane on" id="p1"></div>
+
+  <div class="pane" id="p2">
+    <div class="card" id="fc">
+      <div class="tip">點卡片翻面</div>
+      <div class="big" id="fcq">—</div>
+      <button class="bigspk" id="fcspk">🔊 唸英文</button>
+      <div class="ans" id="fca">—</div>
+    </div>
+    <div class="row">
+      <button class="btn r" id="again">還不熟 ↺</button>
+      <button class="btn g" id="know">記住了 ✓</button>
+    </div>
+    <div class="row"><button class="btn" id="reset">重新洗牌</button></div>
+    <div class="score" id="fcs"></div>
+  </div>
+
+  <div class="pane" id="p3">
+    <div class="ctr">
+      <button class="btn" onclick="startQuiz(false)">出 25 題</button>
+      <button class="btn" onclick="startQuiz(true)">只練錯過的</button>
+    </div>
+    <div class="bar"><i id="pb"></i></div>
+    <div class="score" id="qs"></div>
+    <div id="quiz"></div>
+  </div>
+
+  <div class="pane" id="p4">
+    <div class="ctr"><button class="btn" onclick="startNum()">出數字題</button></div>
+    <div id="numq"></div>
+  </div>
+
+  <div class="foot">
+    來源：Freberg, Discovering Behavioral Neuroscience 5e, Ch3；Keller Reading Guide for Chapter 3。<br>
+    數字全部對過課本：resting −70、threshold −65、peak +40。進度存在這台裝置上。
+  </div>
+</div>
+
+<script>
+const DATA=[
+{g:"1 · Glia and Neurons 細胞",items:[
+ {en:"neuron",zh:"神經元",d:"處理和傳訊息的細胞"},
+ {en:"glia",zh:"膠細胞",d:"支援神經元的細胞，Greek for glue"},
+ {en:"macroglia / microglia",zh:"大膠細胞／小膠細胞",d:"以大小分類"},
+ {en:"astrocyte",zh:"星狀膠細胞",d:"CNS，最多。支撐、隔離突觸、清 K⁺、血腦障壁"},
+ {en:"ependymal cell",zh:"室管膜細胞",d:"排在腦室內壁，纖毛推 CSF"},
+ {en:"oligodendrocyte",zh:"寡突膠細胞",d:"CNS 髓鞘，一顆包約 15 條軸突"},
+ {en:"Schwann cell",zh:"許旺細胞",d:"PNS 髓鞘，一顆包一段"},
+ {en:"microglia",zh:"微膠細胞",d:"免疫清潔工，吃碎屑、修剪突觸"},
+ {en:"blood-brain barrier",zh:"血腦障壁",d:"astrocyte 的 endfeet 包住微血管"},
+ {en:"myelin",zh:"髓鞘",d:"包在軸突外的脂肪絕緣層"},
+ {en:"node of Ranvier",zh:"蘭氏結",d:"髓鞘之間裸露的膜，離子通道密集"},
+ {en:"cell body / soma",zh:"細胞體",d:"有核和胞器"},
+ {en:"dendrite",zh:"樹突",d:"收訊息的分支"},
+ {en:"dendritic spine",zh:"樹突棘",d:"樹突上的小突起，增加突觸面積，會隨學習變形"},
+ {en:"axon",zh:"軸突",d:"送訊息的分支，通常一條"},
+ {en:"axon hillock",zh:"軸丘",d:"軸突離開細胞體的錐形段"},
+ {en:"initial segment",zh:"起始段",d:"軸丘到第一段髓鞘之間，動作電位在這裡開始"},
+ {en:"axon terminal",zh:"軸突終端",d:"軸突末端的膨大處，有囊泡"},
+ {en:"collateral",zh:"側枝",d:"軸突末端的分叉"},
+ {en:"synaptic vesicle",zh:"突觸囊泡",d:"裝神經化學物質的小包"},
+ {en:"ion channel",zh:"離子通道",d:"讓離子通過，不耗能"},
+ {en:"ion pump",zh:"離子幫浦",d:"搬離子，耗能"},
+ {en:"voltage-dependent channel",zh:"電壓閘通道",d:"看電位開關，用在動作電位"},
+ {en:"chemically-gated channel",zh:"化學閘通道",d:"看化學物質開關，用在突觸"},
+ {en:"sodium-potassium pump",zh:"鈉鉀幫浦",d:"3 Na⁺ 出、2 K⁺ 進"},
+ {en:"cytoskeleton",zh:"細胞骨架",d:"三種纖維"},
+ {en:"microtubule",zh:"微管",d:"最大，負責運輸"},
+ {en:"anterograde / retrograde transport",zh:"順向／逆向運輸",d:"往終端／回細胞體"},
+ {en:"unipolar / bipolar / multipolar",zh:"單極／雙極／多極",d:"以分支數分類"},
+ {en:"sensory / motor / interneuron",zh:"感覺／運動／中間神經元",d:"以功能分類"}
+]},
+{g:"2 · Generating Action Potentials 電訊號",items:[
+ {en:"intracellular / extracellular fluid",zh:"細胞內液／細胞外液",d:"內：K⁺ 多；外：Na⁺ Cl⁻ 多"},
+ {en:"ion",zh:"離子",d:"帶電粒子"},
+ {en:"resting potential",zh:"靜止膜電位",d:"約 −70 mV，內負外正"},
+ {en:"diffusion",zh:"擴散",d:"從濃到稀"},
+ {en:"concentration gradient",zh:"濃度梯度",d:"濃度差"},
+ {en:"electrostatic pressure",zh:"靜電壓力",d:"同性相斥、異性相吸"},
+ {en:"equilibrium",zh:"平衡",d:"K⁺ 和 Cl⁻ 兩力抵消"},
+ {en:"polarization",zh:"極化",d:"內外電位相反的狀態"},
+ {en:"depolarization",zh:"去極化",d:"電位往正走，Na⁺ 進"},
+ {en:"repolarization",zh:"再極化",d:"從峰值回到靜止，K⁺ 出"},
+ {en:"hyperpolarization",zh:"過極化",d:"比 −70 更負"},
+ {en:"threshold",zh:"閾值",d:"約 −65 mV，過了就開火"},
+ {en:"action potential",zh:"動作電位",d:"峰值 +40 mV，全有全無"},
+ {en:"all-or-none",zh:"全有全無",d:"要嘛完整，要嘛沒有"},
+ {en:"absolute refractory period",zh:"絕對不反應期",d:"Na⁺ 通道失活，怎麼刺激都不開火"},
+ {en:"relative refractory period",zh:"相對不反應期",d:"可開火，但要更強刺激"},
+ {en:"propagation",zh:"傳播",d:"動作電位沿軸突複製，不衰減"},
+ {en:"saltatory conduction",zh:"跳躍傳導",d:"有髓鞘軸突，節到節跳"},
+ {en:"firing rate",zh:"發放頻率",d:"強度用頻率編碼，不是高度"}
+]},
+{g:"3 · The Synapse 化學訊號",items:[
+ {en:"synapse",zh:"突觸",d:"兩顆神經元交接處"},
+ {en:"synaptic gap",zh:"突觸間隙",d:"化學突觸 20 nm"},
+ {en:"gap junction",zh:"間隙接合（電突觸）",d:"3.5 nm，離子直接過，只能興奮"},
+ {en:"chemical synapse",zh:"化學突觸",d:"放神經化學物質，可興奮可抑制"},
+ {en:"presynaptic / postsynaptic",zh:"突觸前／突觸後",d:"送的那顆／收的那顆"},
+ {en:"neurochemical",zh:"神經化學物質",d:"神經傳導物質"},
+ {en:"exocytosis",zh:"胞吐作用",d:"囊泡和膜融合，把內容物吐出去"},
+ {en:"calcium channel",zh:"鈣通道",d:"動作電位到終端 → Ca²⁺ 進 → 囊泡放"},
+ {en:"autoreceptor",zh:"自體受體",d:"突觸前的受體，回報自己放了多少"},
+ {en:"receptor",zh:"受體",d:"突觸後的蛋白質，鎖"},
+ {en:"ionotropic receptor",zh:"離子型受體",d:"受體就是通道，一步，快"},
+ {en:"metabotropic receptor",zh:"代謝型受體",d:"經 G protein，多步，慢但久"},
+ {en:"G protein",zh:"G 蛋白",d:"代謝型受體內側的信差"},
+ {en:"second messenger",zh:"第二傳訊",d:"細胞內的化學信號"},
+ {en:"reuptake",zh:"再回收",d:"突觸前把物質整顆收回"},
+ {en:"transporter",zh:"轉運體",d:"做再回收的蛋白質"},
+ {en:"deactivating enzyme",zh:"分解酶",d:"把物質拆掉"},
+ {en:"excitation / inhibition",zh:"興奮／抑制",d:"推向閾值／拉離閾值"},
+ {en:"EPSP",zh:"興奮性突觸後電位",d:"小去極化，Na⁺ 進"},
+ {en:"IPSP",zh:"抑制性突觸後電位",d:"小過極化，Cl⁻ 進或 K⁺ 出"},
+ {en:"graded potential",zh:"分級電位",d:"大小可變、可疊加、會衰減"},
+ {en:"neural integration",zh:"神經整合",d:"起始段把 EPSP 加、IPSP 減，決定開不開火"},
+ {en:"spatial summation",zh:"空間加總",d:"很多突觸同時來"},
+ {en:"temporal summation",zh:"時間加總",d:"一個突觸連續來"},
+ {en:"axo-axonic synapse",zh:"軸突對軸突突觸",d:"調節另一條軸突放多少"},
+ {en:"presynaptic facilitation / inhibition",zh:"突觸前促進／抑制",d:"放更多／放更少"}
+]}];
+
+const NUMS=[
+ {q:"Resting potential of a typical neuron",a:"about −70 mV",o:["about −70 mV","about −65 mV","about −93 mV","about +40 mV"]},
+ {q:"Threshold for an action potential (Freberg)",a:"about −65 mV",o:["about −55 mV","about −65 mV","about −70 mV","0 mV"]},
+ {q:"Peak of the action potential",a:"about +40 mV",o:["about +40 mV","about +60 mV","0 mV","about −65 mV"]},
+ {q:"If the membrane were permeable to K⁺ only, resting potential would be",a:"about −93 mV",o:["about −93 mV","about −70 mV","about −65 mV","about −55 mV"]},
+ {q:"Sodium-potassium pump moves",a:"3 Na⁺ out, 2 K⁺ in",o:["3 Na⁺ out, 2 K⁺ in","2 Na⁺ out, 3 K⁺ in","3 Na⁺ in, 2 K⁺ out","1 Na⁺ out, 1 K⁺ in"]},
+ {q:"Synaptic gap at a chemical synapse vs a gap junction",a:"20 nm vs 3.5 nm",o:["20 nm vs 3.5 nm","3.5 nm vs 20 nm","5 nm vs 40 nm","1 mm vs 1 µm"]},
+ {q:"One oligodendrocyte myelinates about how many axons?",a:"about 15",o:["about 15","1","about 100","about 1,000"]},
+ {q:"Conduction speed: unmyelinated vs myelinated human axon",a:"5 m/s vs 120 m/s",o:["5 m/s vs 120 m/s","120 m/s vs 5 m/s","1 m/s vs 10 m/s","both about 100 m/s"]},
+ {q:"Duration of an action potential vs an EPSP",a:"1 to 2 msec vs 5 to 10 msec",o:["1 to 2 msec vs 5 to 10 msec","5 to 10 msec vs 1 to 2 msec","both about 1 msec","100 msec vs 1 msec"]},
+ {q:"Maximum realistic neural firing rate",a:"about 800 per second",o:["about 800 per second","about 80 per second","about 8,000 per second","about 8 per second"]},
+ {q:"Channel density at a node of Ranvier compared with an unmyelinated axon",a:"about 10 times greater",o:["about 10 times greater","the same","about 2 times greater","about 100 times greater"]},
+ {q:"Depolarization needed to reach threshold from rest",a:"5 to 10 mV",o:["5 to 10 mV","20 to 30 mV","1 mV","50 mV"]}
+];
+
+const PRON={"astrocyte":"AS-troh-site","ependymal cell":"eh-PEN-dih-mul","oligodendrocyte":"OL-ih-goh-DEN-droh-site",
+ "Schwann cell":"SHWON","microglia":"my-kroh-GLEE-uh","node of Ranvier":"RAHN-vee-ay","axon hillock":"HIL-uk",
+ "cytoskeleton":"sy-toh-SKEL-ih-tun","depolarization":"dee-poh-lar-ih-ZAY-shun","hyperpolarization":"hy-per-poh-lar-ih-ZAY-shun",
+ "refractory":"rih-FRAK-tuh-ree","saltatory conduction":"SAL-tuh-tor-ee","exocytosis":"ek-soh-sy-TOH-sis",
+ "ionotropic receptor":"eye-on-oh-TROP-ik","metabotropic receptor":"meh-TAB-oh-TROP-ik","axo-axonic synapse":"AK-soh ak-SON-ik"};
+const TTS=("speechSynthesis" in window);
+let slow=false,auto=false,voice=null;
+function pickVoice(){if(!TTS)return;const vs=speechSynthesis.getVoices()||[];
+  voice=vs.find(v=>/en[-_]US/i.test(v.lang)&&/natural|google|samantha|aria/i.test(v.name))||vs.find(v=>/en[-_]US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;}
+if(TTS){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function say(t){if(!TTS)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/\//g," or "));
+  u.lang="en-US";u.rate=slow?0.55:0.88;if(voice)u.voice=voice;speechSynthesis.speak(u);}catch(e){}}
+function pron(t){for(const k in PRON){if(t.includes(k))return PRON[k];}return "";}
+
+const K="psyc4ch3";
+let st={known:[],wrong:[]};
+try{st=Object.assign(st,JSON.parse(localStorage.getItem(K))||{});}catch(e){}
+function save(){try{localStorage.setItem(K,JSON.stringify(st));}catch(e){}}
+
+const p1=document.getElementById("p1");
+DATA.forEach(g=>{
+  const h=document.createElement("div");h.className="grph";
+  h.innerHTML='<span>'+g.g+'</span><span class="n">'+g.items.length+'</span>';p1.appendChild(h);
+  g.items.forEach(it=>{
+    const d=document.createElement("div");d.className="item";const pr=pron(it.en);
+    d.innerHTML='<div class="enrow"><div class="en">'+it.en+'</div>'+(TTS?'<button class="spk">🔊</button>':'')+'</div>'+
+      (pr?'<div class="zh" style="color:var(--gold);font-family:ui-monospace,Menlo,monospace;font-size:12.5px">'+pr+'</div>':'')+
+      '<div class="zh">'+it.zh+'</div><div class="body">'+it.d+'</div>';
+    const b=d.querySelector(".spk");if(b)b.onclick=e=>{e.stopPropagation();say(it.en);};
+    d.onclick=()=>d.classList.toggle("open");p1.appendChild(d);
+  });
+});
+
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll(".pane").forEach(x=>x.classList.remove("on"));
+  t.classList.add("on");document.getElementById(t.dataset.p).classList.add("on");});
+
+const ALL=[];DATA.forEach(g=>g.items.forEach(i=>ALL.push(Object.assign({g:g.g},i))));
+let deck=[],cur=0;
+const fc=document.getElementById("fc"),fcq=document.getElementById("fcq"),fca=document.getElementById("fca"),fcs=document.getElementById("fcs");
+function build(){deck=ALL.filter(i=>!st.known.includes(i.en)).sort(()=>Math.random()-.5);cur=0;show();}
+function show(){fc.classList.remove("flip");
+  if(!deck.length){fcq.textContent="全部記住了 🎉";fca.innerHTML="按「重新洗牌」再來一輪。";fc.classList.add("flip");}
+  else{fcq.textContent=deck[cur].en;fca.innerHTML="<b>"+deck[cur].zh+"</b><div style='margin-top:6px;color:var(--muted)'>"+deck[cur].d+"</div>";if(auto)say(deck[cur].en);}
+  fcs.textContent="剩 "+deck.length+" 張 ｜ 已記住 "+st.known.length+" / "+ALL.length;}
+fc.onclick=()=>fc.classList.toggle("flip");
+document.getElementById("fcspk").onclick=e=>{e.stopPropagation();if(deck.length)say(deck[cur].en);};
+document.getElementById("know").onclick=()=>{if(!deck.length)return;if(!st.known.includes(deck[cur].en))st.known.push(deck[cur].en);save();deck.splice(cur,1);if(cur>=deck.length)cur=0;show();};
+document.getElementById("again").onclick=()=>{if(!deck.length)return;cur=(cur+1)%deck.length;show();};
+document.getElementById("reset").onclick=()=>{st.known=[];save();build();};
+build();
+
+function shuffle(a){return a.slice().sort(()=>Math.random()-.5);}
+function startQuiz(onlyWrong){
+  let pool=onlyWrong?ALL.filter(i=>st.wrong.includes(i.en)):ALL;
+  if(!pool.length){document.getElementById("quiz").innerHTML='<div class="q" style="text-align:center">沒有錯題，去出 25 題。</div>';return;}
+  const qs=shuffle(pool).slice(0,25);
+  const box=document.getElementById("quiz");box.innerHTML="";let done=0,ok=0;
+  function upd(){document.getElementById("pb").style.width=(done/qs.length*100)+"%";document.getElementById("qs").textContent="作答 "+done+" / "+qs.length+"　答對 "+ok;}
+  qs.forEach((q,i)=>{
+    const same=ALL.filter(x=>x.g===q.g&&x.en!==q.en);
+    const opts=shuffle([q].concat(shuffle(same).slice(0,3)));
+    const d=document.createElement("div");d.className="q";
+    let h='<div class="qn">Q'+(i+1)+'</div><div class="qp">'+q.d+'<div style="color:var(--muted);font-weight:600;font-size:13px;margin-top:2px">'+q.zh+'　→ 英文是哪一個？</div></div>';
+    opts.forEach(o=>h+='<div class="opt" data-en="'+o.en+'">'+o.en+'</div>');
+    h+='<div class="exp">✓ '+q.en+'</div>';d.innerHTML=h;box.appendChild(d);
+    let answered=false;
+    d.querySelectorAll(".opt").forEach(o=>o.onclick=()=>{if(answered)return;answered=true;
+      d.querySelectorAll(".opt").forEach(x=>{if(x.dataset.en===q.en)x.classList.add("ok");});
+      if(o.dataset.en!==q.en){o.classList.add("no");if(!st.wrong.includes(q.en))st.wrong.push(q.en);}
+      else{ok++;st.wrong=st.wrong.filter(w=>w!==q.en);}
+      save();d.querySelector(".exp").classList.add("on");done++;upd();say(q.en);});
+  });
+  upd();
+}
+function startNum(){
+  const box=document.getElementById("numq");box.innerHTML="";
+  shuffle(NUMS).forEach((q,i)=>{
+    const d=document.createElement("div");d.className="q";
+    let h='<div class="qn">N'+(i+1)+'</div><div class="qp">'+q.q+'</div>';
+    shuffle(q.o).forEach(o=>h+='<div class="opt" data-a="'+o+'">'+o+'</div>');
+    d.innerHTML=h;box.appendChild(d);let answered=false;
+    d.querySelectorAll(".opt").forEach(o=>o.onclick=()=>{if(answered)return;answered=true;
+      d.querySelectorAll(".opt").forEach(x=>{if(x.dataset.a===q.a)x.classList.add("ok");});
+      if(o.dataset.a!==q.a)o.classList.add("no");});
+  });
+}
+
+const br=document.getElementById("brate"),ba=document.getElementById("bauto"),vn=document.getElementById("vnote");
+if(!TTS){br.style.display="none";ba.style.display="none";vn.textContent="這台裝置的瀏覽器不支援朗讀。";}
+else{br.onclick=()=>{slow=!slow;br.textContent=slow?"🐢 慢速":"🐢 正常速";br.classList.toggle("on",!slow);};
+  ba.onclick=()=>{auto=!auto;ba.textContent="🔁 自動朗讀："+(auto?"開":"關");ba.classList.toggle("on",auto);};
+  vn.textContent="🔊 點喇叭聽發音";}
+</script>
+</body>
+</html>
