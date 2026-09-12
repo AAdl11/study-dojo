@@ -18,33 +18,41 @@ a.hall.closed .seal{background:var(--paper);color:var(--mut);border:2px solid va
 a.hall .t{font-weight:700;font-size:17px}
 a.hall .d{font-size:13px;color:var(--mut)}
 a.hall.closed{opacity:.75;pointer-events:none}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 14px 66px}
+.row a.mini{font-size:13px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none}
+.row a.mini.hot{background:var(--seal);color:#fff;border-color:var(--seal)}
 .rule{margin-top:32px;font-size:13px;color:var(--mut);border-top:1px solid var(--line);padding-top:14px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>道　場</h1>
-  <div class="sub">每門課一間，各自往上長。單字要有發音、字卡、自測、答題台——為 Kahoot 抽考而練。</div>
+  <div class="sub">每門課一顆按鈕，點了直接進去練。單字有發音、字卡、自測、答題台，為 Kahoot 抽考而練。</div>
 
   <a class="hall" href="comm-l1/">
     <span class="seal">說</span>
     <span><span class="t">COMM L1 · Public Speaking</span><br><span class="d">Ch 9–11 已開張 ｜ quiz 截止 9/6（日）23:59</span></span>
   </a>
-  <a class="hall closed" href="psyc4/">
+  <a class="hall" href="psyc4/">
     <span class="seal">腦</span>
-    <span><span class="t">PSYC 4</span><br><span class="d">整備中——第一批教材上傳後開張</span></span>
+    <span><span class="t">PSYC 4 · Brain, Mind &amp; Behavior</span><br><span class="d">Module 0 腦研究方法 ｜ 47 術語・20 題・發音</span></span>
   </a>
-  <a class="hall closed" href="psyc21/">
+  <div class="row">
+    <a class="mini" href="../psyc4-ch2.html">Ch 2 神經解剖</a>
+    <a class="mini" href="../psyc4-ch3.html">Ch 3 神經生理</a>
+    <a class="mini hot" href="../PSYC4_Ch3_Kahoot_40.html">Ch 3 Kahoot 40 題 ⚡</a>
+  </div>
+  <a class="hall" href="psyc21/">
     <span class="seal">識</span>
-    <span><span class="t">PSYC 21 · Race &amp; Identity</span><br><span class="d">整備中——第一批教材上傳後開張</span></span>
+    <span><span class="t">PSYC 21 · Race &amp; Identity</span><br><span class="d">Ch 1 已開張 ｜ 44 個字・30 題・答題台 ｜ 期中考 10/22</span></span>
   </a>
-  <a class="hall closed" href="psyc-c1000/">
+  <a class="hall" href="../index.html">
     <span class="seal">基</span>
-    <span><span class="t">PSYC C1000 · 暑期基礎</span><br><span class="d">整備中——舊視窗內容搬入後開張（本週末）</span></span>
+    <span><span class="t">PSYC C1000 · 暑期基礎</span><br><span class="d">15 章・329 考點・90 題自測 ｜ 在舊複習中心，點了直達</span></span>
   </a>
-  <a class="hall closed" href="eng7/">
+  <a class="hall" href="../index.html">
     <span class="seal">文</span>
-    <span><span class="t">ENG 7 · 暑期英文</span><br><span class="d">整備中——舊道場檔案搬入後開張</span></span>
+    <span><span class="t">ENG 7 · 英文寫作</span><br><span class="d">批判文道場・政策主張道場 ｜ 在舊複習中心，點了直達</span></span>
   </a>
 
   <div class="rule">維護規則：一課一資料夾、一夾一個 index.html、內容全在檔內的資料陣列裡——加題只改陣列，不動骨架。只增不刪。</div>

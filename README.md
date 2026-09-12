@@ -9,7 +9,7 @@ Built for fast review before class Kahoots and Canvas quizzes.
 |---|---|---|
 | **[comm-l1](https://aadl11.github.io/study-dojo/dojo/comm-l1/)** | COMM L1 · Public Speaking | ✅ Ch 9–11 · 87 questions |
 | [psyc4](https://aadl11.github.io/study-dojo/) | PSYC 4 · Module 0 (legacy path) | 🔜 moving into `dojo/psyc4/` |
-| psyc21 | PSYC 21 · Race & Identity | Setting up |
+| **[psyc21](https://aadl11.github.io/study-dojo/dojo/psyc21/)** | PSYC 21 · Race & Identity | ✅ Ch 1 · 30 questions |
 | psyc-c1000 | PSYC C1000 · Summer foundations | Setting up |
 | eng7 | ENG 7 · Summer English | Setting up |
 

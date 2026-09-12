@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>道場 · PSYC 21 — Ch 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F3EC; --ink:#26282D; --seal:#A63A2B; --pine:#35695A;
+  --mut:#8B867A; --card:#FFFFFF; --line:#E3DFD2;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-serif;font-size:16px;line-height:1.65;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:760px;margin:0 auto;padding:16px 16px 80px}
+header{padding:20px 0 8px;border-bottom:2px solid var(--ink)}
+.hd-top{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:4px}
+h1{font-family:'Noto Serif TC',serif;font-weight:900;font-size:26px;letter-spacing:.06em}
+.hd-sub{font-size:13px;color:var(--mut)}
+.due{margin-top:6px;font-size:13px}
+.due b{color:var(--seal)}
+nav{display:flex;gap:8px;margin:16px 0 20px;overflow-x:auto;padding-bottom:4px}
+.tab{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 6px}
+.tab .st{width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif TC',serif;font-weight:900;font-size:22px;border:2px solid var(--ink);color:var(--ink);background:var(--card);border-radius:6px;transition:all .15s}
+.tab .lb{font-size:12px;color:var(--mut)}
+.tab.on .st{background:var(--seal);border-color:var(--seal);color:#fff;transform:rotate(-3deg)}
+.tab.on .lb{color:var(--seal);font-weight:700}
+section{display:none}
+section.on{display:block;animation:fade .2s}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+h2{font-family:'Noto Serif TC',serif;font-weight:900;font-size:19px;margin:22px 0 10px;padding-left:10px;border-left:4px solid var(--seal)}
+h2:first-child{margin-top:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.card b{font-weight:700}
+.tag{display:inline-block;font-size:12px;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:0 6px;margin-right:6px;color:var(--mut)}
+ul{padding-left:20px}
+li{margin-bottom:4px}
+.note{font-size:13px;color:var(--mut);margin-top:6px}
+/* 單字 */
+.vrow{display:flex;align-items:flex-start;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.vrow .spk{flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--seal);background:none;color:var(--seal);font-size:16px;cursor:pointer;margin-top:2px}
+.vrow .spk:active{background:var(--seal);color:#fff}
+.vterm{font-weight:700}
+.vch{font-size:13px;color:var(--mut)}
+.vdef{font-size:14px;margin-top:2px}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1.5px solid var(--ink);background:var(--card);border-radius:20px;padding:4px 14px;font-size:14px;cursor:pointer}
+.chip.on{background:var(--ink);color:#fff}
+/* 字卡 */
+.fc-stage{perspective:1200px;margin:10px 0}
+.fc{position:relative;width:100%;min-height:210px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s}
+.fc.flip{transform:rotateY(180deg)}
+.fface{position:absolute;inset:0;backface-visibility:hidden;background:var(--card);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;gap:8px}
+.fface.back{transform:rotateY(180deg);background:var(--ink);color:#F5F3EC}
+.fc-term{font-family:'Noto Serif TC',serif;font-weight:900;font-size:26px}
+.fc-hint{font-size:12px;color:var(--mut)}
+.fface.back .fc-hint{color:#B8B2A2}
+.fc-ctl{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.btn{border:1.5px solid var(--ink);background:var(--card);color:var(--ink);border-radius:8px;padding:9px 16px;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit}
+.btn.pri{background:var(--seal);border-color:var(--seal);color:#fff}
+.btn.grn{background:var(--pine);border-color:var(--pine);color:#fff}
+.btn:disabled{opacity:.4}
+.fc-count{text-align:center;font-size:13px;color:var(--mut);margin-top:8px}
+/* 測驗 */
+.qnum{font-size:13px;color:var(--mut);margin-bottom:4px}
+.qtext{font-weight:700;margin-bottom:12px}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;margin-bottom:8px;font-size:15px;cursor:pointer;font-family:inherit;color:var(--ink)}
+.opt.right{border-color:var(--pine);background:#EAF2EE}
+.opt.wrong{border-color:var(--seal);background:#F6E9E6}
+.exp{background:var(--paper);border-left:3px solid var(--pine);padding:10px 12px;font-size:14px;margin:10px 0;border-radius:0 8px 8px 0}
+.exp.bad{border-left-color:var(--seal)}
+.score-line{font-size:14px;margin-bottom:10px}
+.score-line b{color:var(--seal)}
+/* Jeopardy */
+.jscore{font-family:'Noto Serif TC',serif;font-weight:900;font-size:30px;text-align:center;margin:6px 0 14px}
+.jscore span{color:var(--seal)}
+.jboard{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.jhead{font-size:12px;font-weight:700;text-align:center;padding:6px 2px;background:var(--ink);color:#F5F3EC;border-radius:6px;line-height:1.3}
+.jcell{background:var(--card);border:1.5px solid var(--ink);border-radius:6px;padding:14px 2px;text-align:center;font-family:'Noto Serif TC',serif;font-weight:900;font-size:17px;color:var(--seal);cursor:pointer}
+.jcell.used{border-color:var(--line);color:var(--line);background:var(--paper);cursor:default}
+.modal{position:fixed;inset:0;background:rgba(38,40,45,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+.modal.on{display:flex}
+.mbox{background:var(--card);border-radius:14px;max-width:520px;width:100%;padding:22px 20px;max-height:80vh;overflow-y:auto}
+.mcat{font-size:13px;color:var(--seal);font-weight:700;margin-bottom:6px}
+.mq{font-weight:700;font-size:17px;margin-bottom:14px}
+.mans{background:var(--paper);border-radius:8px;padding:12px;margin-bottom:14px;display:none}
+.mans.on{display:block}
+.mctl{display:flex;gap:8px;flex-wrap:wrap}
+footer{margin-top:36px;font-size:12px;color:var(--mut);text-align:center}
+@media(max-width:420px){.wrap{padding:12px 12px 70px}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="hd-top">
+    <h1>道場 · 種族與認同心理學</h1>
+    <div class="hd-sub">PSYC 21 · Sheena Turner-August · Fall 2026</div>
+  </div>
+  <div class="due">本輪範圍 <b>Ch 1</b>（Mio 6e · What Is Multicultural Psychology?）｜Ch 1 Quiz 已考 13/15 ｜ 期中考 <b>10/22（四）23:59</b>，範圍 Ch 1・4・3・7・6 ｜ 章節順序照教授週次，<b>不照課本</b></div>
+</header>
+
+<nav id="nav">
+  <button class="tab on" data-t="map"><span class="st">圖</span><span class="lb">重點</span></button>
+  <button class="tab" data-t="vocab"><span class="st">字</span><span class="lb">單字</span></button>
+  <button class="tab" data-t="fc"><span class="st">卡</span><span class="lb">字卡</span></button>
+  <button class="tab" data-t="quiz"><span class="st">試</span><span class="lb">測驗</span></button>
+  <button class="tab" data-t="jeo"><span class="st">台</span><span class="lb">答題台</span></button>
+</nav>
+
+<!-- ========== 重點地圖 ========== -->
+<section id="map" class="on">
+  <h2>三個核心思維模式（三問法・問題 1）</h2>
+  <div class="card"><b>1. 所有行為都發生在文化脈絡裡。</b><br>All behavior occurs in a cultural context——這是整個領域的總前提。任何一題問「為什麼需要多元文化心理學」，從這句開始。</div>
+  <div class="card"><b>2. 種族是社會建構，不是生物事實。</b><br>Race was built to justify the African slave trade（Kendi）。因果鏈：<b>利益 → 造出種族主義觀念去合理化 → 才生出無知與仇恨</b>。基因研究：群體內部差異比群體之間更大。</div>
+  <div class="card"><b>3. 看得見的是表層，底下那套假設才是深層。</b><br>Surface structure（音樂食物服裝語言）對 deep structure（哲學假設、價值）。分析任何人的價值觀都從這裡切。</div>
+
+  <h2>Ch 1 · 三個詞不能混（culture / race / ethnicity）</h2>
+  <div class="card">
+    <ul><li><b>culture</b> 文化：價值、信念、實踐，透過符號分享，代代相傳</li><li><b>race</b> 種族：生理特徵，<b>且是社會建構的</b></li><li><b>ethnicity</b> 族裔 ＝ 種族 ＋ 文化（Afro-Cuban 與 African American 同種族不同族裔）</li></ul>
+    <div class="note">Atkinson 說這三個是英語裡最被誤解誤用的詞。廣義文化定義：所有「有意義的自我認同方式」，含性別、年齡、宗教、身心障礙、性傾向。</div>
+  </div>
+
+  <h2>Ch 1 · 多元文化主義的基本假設</h2>
+  <div class="card">
+    <b>Tolerance → Respect → Inclusion → Sensitivity → Equity</b>
+    <ul><li><b>tolerance</b> 只是最低標準、起點，不是目標</li><li><b>equity</b> 公平：需要的人多給（看球賽的箱子，不同高度）</li><li><b>equality</b> 平等：每個人一樣的（一樣的箱子）</li><li><b>social justice</b> ＝ working toward equity</li><li><b>empowerment</b> 賦權：幫被邊緣化的群體為自己的權利站出來</li></ul>
+    <div class="note">⚠️ Quiz 第 8 題陷阱：看到 <b>same / equal / regardless of</b> 就是 Equality。看到 <b>historically denied / more for those who need</b> 就是 Equity。</div>
+  </div>
+
+  <h2>Ch 1 · 哪個案例放在哪一節（Quiz 第 4、13 題錯在這）</h2>
+  <div class="card">
+    <b>Culture and Worldview 那一節裝的是：</b>O.J. Simpson 案、Rodney King 案、Trayvon Martin、Black Lives Matter、George Floyd。<br>那一節開頭那句：<i>Another illustration of differences in worldview is how Whites versus people of color view the police.</i>
+    <br><b>What Is Race 那一節才是歷史：</b>亞里斯多德氣候論、詛咒論、Zurara、Leo Africanus、Blumenbach 五類、Great Chain of Being、Kendi 的自身利益說。
+    <div class="note"><b>判斷法：看到法庭案件、警察案件、兩個社群反應不同 → worldview。看到人名、年代、理論來源 → 種族概念的歷史。</b>裡面的奴隸制與 KKK 是拿來解釋為什麼世界觀不同，不是那一節的主題。</div>
+  </div>
+
+  <h2>Ch 1 · 生物心理社會模式（五層由內到外）</h2>
+  <div class="card">
+    <b>Biological → Cognitive-Affective → Social-Interpersonal → Social Institutional → Cultural</b>
+    <div class="note">社會人際看「跟人的關係」；社會制度看「被醫療體系、被權威人物影響」。David Reimer 案的父母被 Dr. Money 壓過去 ＝ institutional。負向認知三角（Beck）在 cognitive-affective 層。</div>
+  </div>
+
+  <h2>Ch 1 · 領域的定位</h2>
+  <div class="card">
+    <ul><li><b>fourth force</b> 第四勢力（Pedersen）：影響力跟精神分析、行為主義、人本主義一樣大。<b>Evolutionary psychology 不是四大之一。</b>並非所有心理學家都同意。</li><li><b>cultural</b>（一個文化內部的獨特）/ <b>cross-cultural</b>（文化間比較找普世性）/ <b>multicultural</b>（涵蓋兩者的大傘）</li><li>1990 年代從 <b>ethnic minority psychology</b> 改名：跨族群結盟、納入其他身分、minority 一詞統計上不準且有貶意（people of the global majority）</li><li>主要從 <b>clinical and counseling psychology</b> 發展出來；MCT 是 <b>metatheory</b></li></ul>
+  </div>
+
+  <h2>Ch 1 · 窄版年表（只放會考的）</h2>
+  <div class="card">
+    <ul><li><b>1879</b> Wundt 萊比錫，第一個心理學實驗室（structuralism / structural introspection）</li><li><b>1884</b> Galton 倫敦實驗室（達爾文表弟，eugenics，nature versus nurture）</li><li><b>1939</b> Kenneth and Mamie Clark 娃娃研究（Kiri Davis 2005 重做是誘答）</li><li><b>1954</b> Brown v. Board，學校隔離違憲</li><li><b>1968</b> ABPsi 成立，Joseph L. White 黑人心理學之父</li><li><b>1971</b> William Cross 的 nigrescence（Parham 與 Helms 後來量表化，是誘答）</li><li><b>1973</b> Vail Conference：研究所必修多元文化課</li><li><b>1986</b> Division 45 成立，進入主流</li><li><b>2003</b> Guidelines 出版，四十年運動的頂點（2017 改版更名，同一份文件）</li><li><b>2020–21</b> George Floyd 後 APA 三動作：編年、傾聽會議、正式道歉</li></ul>
+    <div class="note">四個最愛互當誘答的年份：<b>1954 Brown / 1968 ABPsi / 1973 Vail / 1986 Division 45</b></div>
+  </div>
+
+  <h2>教授講座 Lecture 1（課本沒有，只有這裡有）</h2>
+  <div class="card">
+    <b>四個 F</b>（被挑戰時的反應）：Fight 戰・Flight 逃・Fright 驚・Freeze 僵
+    <br><b>五個 D</b>（面對差異）：Distancing 疏離・Denial 否認・Defensiveness 防衛・Devaluing 貶低・<b>Discovery 發現</b>（前四個關門，第五個開門）
+    <br><b>三個 S</b>（為何被相似者吸引）：Simple 簡單・Safe 安全・Sane 正常
+    <br><b>Multicultural competence 三要素，必須同時成立</b>：覺察自己的文化態度・理解案主的世界觀・發展文化上適切的介入策略
+    <div class="note">Devaluing 教授特別強調：不是惡意，是為了保護自尊。期中考題會來自講座內容，這一塊課本查不到。</div>
+  </div>
+
+  <h2>考前提醒</h2>
+  <div class="card">
+    <ul>
+      <li>期中考 <b>10/22（四）23:59</b>，100 分，<b>不補考</b>。syllabus 寫 short answer/essay，題目來自每週 CTQ 討論題＋讀物＋講座。</li>
+      <li>範圍 <b>Ch 1・4・3・7・6</b> 加第 8 週 Privilege 讀物。<b>不是照課本順序。</b></li>
+      <li>Quiz 一律開書、不限時、<b>只有一次機會</b>、週五到期、漏考不補。</li>
+      <li>引註 <b>APA</b>，課本四位作者一律寫 (Mio et al., 2023)，電子書無固定頁碼所以只轉述不引頁。</li>
+      <li>每週 CTQ 貼文＝期中考考古題，貼出去前先留一份。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== 單字 ========== -->
+<section id="vocab">
+  <div class="chip-row" id="vchips"></div>
+  <div id="vlist"></div>
+  <div class="note">🔊 用瀏覽器內建語音（en-US）唸給你聽；跟著唸一次，pacing 順便練。</div>
+</section>
+
+<!-- ========== 字卡 ========== -->
+<section id="fc">
+  <div class="chip-row" id="fchips"></div>
+  <div class="fc-stage"><div class="fc" id="fcCard">
+    <div class="fface front"><div class="fc-term" id="fcFront"></div><div class="fc-hint">點卡片翻面</div></div>
+    <div class="fface back"><div id="fcBack" style="font-size:16px"></div><div class="fc-hint">再點一下翻回去</div></div>
+  </div></div>
+  <div class="fc-ctl">
+    <button class="btn" id="fcPrev">上一張</button>
+    <button class="btn grn" id="fcSpeak">🔊</button>
+    <button class="btn" id="fcShuffle">洗牌</button>
+    <button class="btn pri" id="fcNext">下一張</button>
+  </div>
+  <div class="fc-count" id="fcCount"></div>
+</section>
+
+<!-- ========== 測驗 ========== -->
+<section id="quiz">
+  <div class="score-line" id="qScore"></div>
+  <div class="chip-row">
+    <button class="btn pri" id="qStart">從頭開始</button>
+    <button class="btn" id="qWrongBtn">只練錯題</button>
+  </div>
+  <div id="qBox"></div>
+</section>
+
+<!-- ========== Jeopardy 答題台 ========== -->
+<section id="jeo">
+  <div class="jscore">分數：<span id="jScore">0</span></div>
+  <div class="jboard" id="jBoard"></div>
+  <div class="chip-row" style="margin-top:12px"><button class="btn" id="jReset">重開一局</button></div>
+  <div class="note">出聲回答完再看答案——這是給 Kahoot 抽考練反應用的，嘴巴要動。</div>
+</section>
+
+<footer>明暺的道場 · psyc21 · 內容基準：Mio 6e《Multicultural Psychology》Ch 1 ＋ Turner-August 錄影講座 Lecture 1</footer>
+</div>
+
+<div class="modal" id="jModal">
+  <div class="mbox">
+    <div class="mcat" id="mCat"></div>
+    <div class="mq" id="mQ"></div>
+    <div class="mans" id="mA"></div>
+    <div class="mctl" id="mCtl">
+      <button class="btn pri" id="mShow">看答案</button>
+      <button class="btn grn" id="mRight" style="display:none">我答對 ＋</button>
+      <button class="btn" id="mWrong" style="display:none">我答錯 −</button>
+      <button class="btn" id="mClose">關閉</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- 資料 ---------- */
+const VOCAB=[
+ {c:1,t:"multicultural psychology",z:"多元文化心理學",d:"系統性研究不同背景的人互動的場合裡，行為、認知與情感如何發生。涵蓋 cultural 與 cross-cultural 的大傘。"},
+ {c:1,t:"culture",z:"文化",d:"一群人的價值、信念、實踐，透過符號分享，代代相傳。廣義定義含所有有意義的自我認同方式。"},
+ {c:1,t:"surface structure of culture",z:"文化的表層結構",d:"看得見的部分：音樂、食物、服裝、語言（Myers）。"},
+ {c:1,t:"deep structure of culture",z:"文化的深層結構",d:"文化底下的哲學假設，反映在價值、實踐、信念上（Nobles 1976）。"},
+ {c:1,t:"worldview",z:"世界觀",d:"人如何看待自己與自然、制度、他人、事物的關係；由過往經驗形塑（S. Sue 1977）。O.J. 案與 George Floyd 都是這一節的例子。"},
+ {c:1,t:"race",z:"種族",d:"生理特徵的分類，但從一開始就是社會文化建構，為了合理化奴隸貿易而被造出來。"},
+ {c:1,t:"biological concept of race",z:"種族的生物學概念",d:"一群共有特定遺傳生理特徵的人。課本立場：證據薄弱，只有一個人類種族。"},
+ {c:1,t:"sociocultural concept of race",z:"種族的社會文化概念",d:"一種社會建構，用來合理化一個群體對另一個群體的支配。之所以留下來是因為對使用者有用。"},
+ {c:1,t:"ethnicity",z:"族裔",d:"種族加文化。同種族不同文化就是不同族裔（Afro-Cuban 對 African American）。"},
+ {c:1,t:"intersectionality",z:"交織性",d:"多重身分之間的交互作用（Crenshaw 1989）。把身分拆開各看各的，理解不了那個人。"},
+ {c:1,t:"diversity",z:"多元",d:"超越種族、族裔、國籍的各種差異。"},
+ {c:1,t:"cultural psychology",z:"文化心理學",d:"研究一個文化「內部」獨有的東西。"},
+ {c:1,t:"cross-cultural psychology",z:"跨文化心理學",d:"做文化「之間」的比較，尋找心理歷程的普世性。"},
+ {c:1,t:"ethnic minority psychology",z:"少數族裔心理學",d:"研究歷史上被壓抑、代表性不足的種族與族裔群體。1990 年代改名為 multicultural psychology。"},
+ {c:1,t:"ethnical psychology",z:"族群心理學（早期用語）",d:"Haddon 1910，研究「其他種族與民族的心智」，帶種族優越預設。"},
+ {c:1,t:"culture contact",z:"文化接觸",d:"不同文化背景的人發生社會接觸的關鍵事件（Bochner 1999）。兩型：(a) 多元社會日常共處 (b) 為商務留學進入另一國。"},
+ {c:1,t:"fourth force",z:"第四勢力",d:"多元文化主義是心理學的第四勢力（Pedersen），前三個是精神分析、行為主義、人本主義。演化心理學不在裡面。"},
+ {c:1,t:"paradigm shift",z:"典範轉移",d:"人們思考人類行為的方式發生重大改變。"},
+ {c:1,t:"biopsychosocial model",z:"生物心理社會模式",d:"解釋文化如何影響行為。五層由內到外：Biological → Cognitive-Affective → Social-Interpersonal → Social Institutional → Cultural。"},
+ {c:1,t:"negative cognitive triad",z:"負向認知三角",d:"Beck：憂鬱者對自我、世界、未來的負向看法。屬於 cognitive-affective 層。"},
+ {c:1,t:"nature versus nurture",z:"先天與後天",d:"Galton 創的詞，描述環境影響與基因影響之爭。"},
+ {c:1,t:"eugenics",z:"優生學",d:"只有好基因該傳下去，不良群體應被勸阻生育。Galton 相關，美國延續到 1940 年代。"},
+ {c:1,t:"scientific racism",z:"科學種族主義",d:"用科學概念與資料去建構並合理化一個持久的、以生物學為基礎的階層（Winston 2020）。"},
+ {c:1,t:"structuralism",z:"結構主義",d:"Wundt 與同事研究心理生理歷程的取向，1879 萊比錫。"},
+ {c:1,t:"structural introspection",z:"結構性內省",d:"Wundt 實驗室的方法，受試者自己報告心智經驗。"},
+ {c:1,t:"tolerance",z:"容忍",d:"改善群際關係的最低標準、起點，不是目標。"},
+ {c:1,t:"equity",z:"公平",d:"給歷史上被剝奪平等機會的群體資源與機會的管道；需要的人多給。看球賽：不同高度的箱子。"},
+ {c:1,t:"equality",z:"平等",d:"每個人拿一樣的。看球賽：一樣的箱子。看到 same / regardless of 就是它。"},
+ {c:1,t:"social justice",z:"社會正義",d:"朝向 equity 努力。"},
+ {c:1,t:"inclusion",z:"納入",d:"認知某些群體歷史上被排除，主動扭轉。ADA 是例子。"},
+ {c:1,t:"empowerment",z:"賦權",d:"幫助被邊緣化與被虧待的群體成員為自己的權利站出來。"},
+ {c:1,t:"metatheory",z:"後設理論",d:"一個通用理論，提供理解所有其他治療取向的框架。MCT 是諮商的後設理論。"},
+ {c:1,t:"Great Chain of Being",z:"存在之鏈",d:"中世紀基督教西歐的階層觀念，越靠近頂端越接近神；後來滲進種族分類。"},
+ {c:1,t:"prejudice",z:"偏見",d:"心裡怎麼想。是態度。跟 discrimination 成對考。"},
+ {c:1,t:"discrimination",z:"歧視",d:"實際怎麼做。是行為。跟 prejudice 成對考。"},
+ {c:1,t:"acculturation",z:"涵化",d:"進入新文化後調整，但保留原本的。跟 assimilation 成對考。"},
+ {c:1,t:"assimilation",z:"同化",d:"放掉原本的，融進主流。跟 acculturation 成對考。"},
+ {c:1,t:"privilege",z:"特權",d:"某些障礙你從來不必遇到。不是「你很好命」。"},
+ {c:1,t:"socially constructed",z:"社會建構的",d:"人造出來的，不是自然事實。課本核心主張：race is socially constructed。"},
+ {c:1,t:"resurgence",z:"再度興起",d:"原本消退的東西又起來了。a resurgence of White supremacist groups。"},
+ {c:1,t:"four F reactions",z:"四個 F 反應（講座）",d:"被挑戰時：Fight 戰、Flight 逃、Fright 驚、Freeze 僵。"},
+ {c:1,t:"five D's of difference",z:"差異的五個 D（講座）",d:"Distancing 疏離、Denial 否認、Defensiveness 防衛、Devaluing 貶低、Discovery 發現。前四關門，第五開門。"},
+ {c:1,t:"three S's of similarity",z:"相似性的三個 S（講座）",d:"Simple 簡單、Safe 安全、Sane 正常。為什麼人被相似的人吸引。"},
+ {c:1,t:"multicultural competence",z:"多元文化能力（講座）",d:"三要素同時成立：覺察自己的文化態度、理解案主的世界觀、發展文化上適切的介入策略。"}
+];
+const QUIZ=[
+ {c:1,q:"The term culture is typically used in everyday language to refer to all of the following EXCEPT",o:["regular or expected behaviors of a particular group.","different types of music, art, and dance.","food, clothing, history, and traditions.","genetic determinants of behavior."],a:3,e:"culture 是學來的、傳下去的，不是基因決定的。這題問 EXCEPT，看到 genetic 就選它。"},
+ {c:1,q:"From its inception, the concept of race was a __________ construct.",o:["sociocultural","biological","scientific","psychological"],a:0,e:"課本核心主張：race 從一開始就是社會文化建構，為了合理化非洲奴隸貿易而被造出來。"},
+ {c:1,q:"Suzanne strongly believes that all people, regardless of their background, deserve to have access to the same resources, such as quality housing, food, education, and health care. Which basic assumption of multiculturalism does this illustrate?",o:["Tolerance","Sensitivity","Equity","Respect"],a:2,e:"Equity 公平：讓每個人都取得到資源。注意這題跟第 8 題是一組反向題。"},
+ {c:1,q:"The dramatically different responses of the African American and European American communities to the O. J. Simpson trial were used in the textbook as an example of",o:["the historical development of racial categories.","important events in the history of multicultural psychology.","differing definitions of culture.","differences in worldview."],a:3,e:"⭐ 上次錯在這。O.J. 那段在 Culture and Worldview 那一節。裡面的奴隸制與 KKK 是用來解釋為什麼兩邊世界觀不同，不是那一節的主題。法庭案件與警察案件一律歸 worldview。"},
+ {c:1,q:"Why does race continue to be such a widely used concept in today's society?",o:["Because the term has become useful in our interpersonal, group, and societal relationships","Because of the known genetic difference between racial groups","Because scientific evidence supports the idea of significant genetic differences between racial groups","Because psychologists agree that race continues to be a useful term"],a:0,e:"Atkinson：race 留下來是因為它對使用它的人有用處。不是因為有科學根據。"},
+ {c:1,q:"One of the most influential taxonomies of human beings, which still influences conceptualizations of race today, was developed by",o:["Johann Friedrich Blumenbach","Charles Darwin","the ancient Egyptians","Sir Francis Galton"],a:0,e:"Blumenbach 依頭骨形狀分五類。Galton 是優生學與 nature versus nurture，不要混。"},
+ {c:1,q:"Race differs from culture in that culture focuses on",o:["biological differences.","the shared attitudes and beliefs of a group.","the degree to which one assimilates to a new surrounding.","the socially constructed meaning of phenotypic differences."],a:1,e:"culture 是價值、信念、實踐。第四個選項講的是 race，是誘答。"},
+ {c:1,q:"__________ says all schools should receive the same funding per student, regardless of the socioeconomic status of the students being served.",o:["Equity","Social justice","Equality","Multiculturalism"],a:2,e:"⭐ 看到 same、equal、regardless of 就是 Equality。Equity 會是相反：社經地位低的學區拿更多。"},
+ {c:1,q:"Worldviews are shaped by",o:["our behaviors.","our past experiences.","our perceptions.","all of the above."],a:3,e:"S. Sue 1977：worldview 由過往經驗形塑，決定我們怎麼想、怎麼做。"},
+ {c:1,q:"Why did the field move away from the term ethnic minority psychology to multicultural psychology?",o:["To strengthen ties and develop allies across different racial/ethnic groups.","To move beyond race and ethnicity and include other identities such as gender, religion, and sexual orientation.","To move away from the term minority which is statistically incorrect and implies that one group is of lesser status than the other.","All of the above"],a:3,e:"1990 年代改名，三個理由全對。全球有色人種其實是多數。"},
+ {c:1,q:"The __________ was a medieval belief in the hierarchical structure of all life in which those nearest the top of the hierarchy were considered closest to perfection, or to God.",o:["Origin of the Species","Survival of the Fittest","Great Chain of Being","Stairway to Heaven"],a:2,e:"Great Chain of Being 存在之鏈，後來滲進種族分類，基督教歐洲人被放在頂端。"},
+ {c:1,q:"The basic assumptions of multiculturalism include tolerance, respect, inclusion, sensitivity, and",o:["equity.","injustice.","socialism.","freedom."],a:0,e:"五個基本假設：tolerance、respect、inclusion、sensitivity、equity。"},
+ {c:1,q:"The case of George Floyd was used in Chapter 1 to illustrate",o:["the browning of America.","definitions of culture.","the history of racism in this country.","differences in worldview."],a:3,e:"⭐ 上次錯在這。George Floyd 跟 Trayvon Martin、Rodney King 一樣都在 Culture and Worldview 那一節。跟第 4 題同一個錯法。"},
+ {c:1,q:"In his coming-out process, TaShaun struggled with the different parts of his identity. As a male, he has many privileges because he's in the dominant group. However, as a gay man, he faces homophobia, and as an African American, he faces racism. TaShaun's struggles around identity illustrate the concept of",o:["tolerance.","multicultural counseling and therapy.","intersectionality.","social institutions."],a:2,e:"Intersectionality 交織性：多重身分交互作用。"},
+ {c:1,q:"According to Kendi (2016) racist ideas initially start from __________.",o:["hatred","self-interest","biological differences","intergroup conflict"],a:1,e:"Kendi：先有利益，再造出觀念去合理化，最後才生出無知與仇恨。"},
+ {c:1,q:"What is the deep structure of culture?",o:["The philosophical assumptions that underlie a culture and are reflected in its values, practices, and beliefs.","The physical manifestations of a group's way of life such as music, food, dress, and language.","A group's heritage and traditions.","The symbols, artifacts, and products of a community."],a:0,e:"第二個選項是 surface structure。這一組永遠成對出題。"},
+ {c:1,q:"What does a broad definition of culture include?",o:["Only race, ethnicity, and country of origin.","All the meaningful ways in which people identify themselves.","Only nationality and language.","Only religion and social class."],a:1,e:"看到 only 就是狹義。廣義含性別、年齡、宗教、身心障礙、性傾向。"},
+ {c:1,q:"What is ethnicity?",o:["The combination of race and culture.","A person's country of birth.","A biological classification.","A person's religious affiliation."],a:0,e:"族裔 ＝ 種族 ＋ 文化。Afro-Cuban 與 African American 同種族不同族裔。"},
+ {c:1,q:"Multicultural psychologists believe that __________ should be the minimum standard, or starting point, when working to improve inter-group relations.",o:["respect","sensitivity","tolerance","culture"],a:2,e:"Tolerance 只是最低標準、起點，不是目標。"},
+ {c:1,q:"The Americans with Disabilities Act (ADA) is an example of",o:["tolerance","equality","empowerment","inclusion"],a:3,e:"ADA 那句話寫在 Inclusion 那一段裡。"},
+ {c:1,q:"__________ means working toward equity.",o:["Social change","Sensitivity","Social justice","Deep culture"],a:2,e:"課文原句：Social justice means working toward equity。"},
+ {c:1,q:"All of the following are considered major forces within the field of psychology, EXCEPT",o:["Evolutionary Psychology","Behavioral Psychology","Humanistic Psychology","Psychoanalysis"],a:0,e:"四大勢力：精神分析、行為主義、人本主義、多元文化。演化心理學不在裡面。這題問 EXCEPT。"},
+ {c:1,q:"Which of the following statements is FALSE regarding multiculturalism as the fourth force?",o:["A force is a theory that has a huge impact on the field.","Multiculturalism can add to and strengthen the other forces in psychology.","All psychologists agree that multiculturalism is the fourth force.","Calling multiculturalism the fourth force challenges us to acknowledge that all behavior occurs in a cultural context."],a:2,e:"看到 all、every、always 這種絕對字眼，通常就是錯的那一個。課文寫 although some might disagree。"},
+ {c:1,q:"David Reimer's parents were young, poor, and uneducated. They may have been intimidated by the complex medical system and unduly influenced by Dr. Money. These examples help explain David's behavior at the __________ level.",o:["biological","cognitive-affective","social interpersonal","social institutional"],a:3,e:"被醫療體系、被權威人物壓過去 ＝ institutional。父母也是人，容易誤選 interpersonal，但題目講的是制度。"},
+ {c:1,q:"One major premise of multicultural psychology is that",o:["all behavior is caused by unconscious conflicts.","all behavior has a genetic component.","all behavior is learned through rewards and punishments.","all behavior occurs in a cultural context."],a:3,e:"整個領域的總前提。其他三個分別是精神分析、遺傳、行為主義。"},
+ {c:1,q:"The field of multicultural psychology evolved primarily from",o:["clinical and counseling psychology.","social psychology.","developmental psychology.","cognitive psychology."],a:0,e:"課文原句：evolved primarily from the areas of clinical and counseling psychology。"},
+ {c:1,q:"Sir Francis Galton's work was highly influenced by his cousin,",o:["Charles Darwin","Wilhelm Wundt","Alfred Binet","Sigmund Freud"],a:0,e:"Galton 是達爾文的表弟，把演化論套到人類身上，發展出優生學。"},
+ {c:1,q:"Who conducted the landmark Doll Study in 1939 which connected the negative self-perceptions of Black children to the effects of racism and discrimination?",o:["Kenneth and Mamie Clark","Kiri Davis","William Cross","Joseph White"],a:0,e:"Kiri Davis 是 2005 年的重做版 A Girl Like Me，是誘答。"},
+ {c:1,q:"Why was the 1973 conference in Vail, Colorado important?",o:["It is when statements about diversity were included in the APA ethics code.","It is when APA made the decision that psychology graduate training programs must include courses on multicultural issues.","It is when the U.S. Supreme Court outlawed school segregation.","It is when APA established the Office of Ethnic Minority Affairs."],a:1,e:"⭐ 常見誤選第三個。那是 1954 Brown v. Board，不是 1973 Vail。Ethics code 是 2002，Office 是 1979。"},
+ {c:1,q:"What event is seen as the culmination of the decades-long multiculturalism movement in psychology?",o:["The Clark and Clark Doll Study in 1939","APA's adoption of the Guidelines on Multicultural Education, Training, Research Practice and Organizational Change in 2003","The Dulles Conference in 1977","The founding of the Association of Women in Psychology in 1969"],a:1,e:"2003 那份。2017 改版更名為 Multicultural Guidelines: An Ecological Approach，同一份文件，考試問頂點答 2003。"}
+];
+const JEO=[
+ {cat:"定義 Ch1",cl:[
+  {v:100,q:"culture / race / ethnicity 各一句話。",a:"culture 價值信念實踐；race 生理特徵且是社會建構；ethnicity ＝ race ＋ culture。"},
+  {v:200,q:"surface structure 對 deep structure？",a:"表層是看得見的（音樂食物服裝語言）；深層是底下的哲學假設與價值（Nobles 1976）。"},
+  {v:300,q:"廣義與狹義的文化定義差在哪？",a:"狹義只含種族、族裔、國籍；廣義含所有有意義的自我認同方式（性別、年齡、宗教、身心障礙、性傾向）。"},
+  {v:400,q:"cultural / cross-cultural / multicultural psychology 三者的關係？",a:"cultural 看一個文化內部；cross-cultural 做文化間比較找普世性；multicultural 是涵蓋兩者的大傘。"},
+  {v:500,q:"multicultural psychology 的完整定義。",a:"The systematic study of behavior, cognition, and affect in settings where people of different backgrounds interact。"}]},
+ {cat:"歷史 Ch1",cl:[
+  {v:100,q:"Kendi 說種族主義觀念從哪裡開始？",a:"自身利益（self-interest），不是仇恨。先有利益，再造觀念合理化，最後才生出無知與仇恨。"},
+  {v:200,q:"1973 Vail 會議決定了什麼？",a:"研究所訓練課程必須包含多元文化課程。不要跟 1954 Brown v. Board 混。"},
+  {v:300,q:"1939 娃娃研究是誰做的？誰是誘答？",a:"Kenneth and Mamie Clark。Kiri Davis 是 2005 年的重做版。"},
+  {v:400,q:"1986 年成立的 Division 45 代表什麼？",a:"種族、族裔、文化進入心理學主流（Comas-Díaz 說的 mainstreaming）。"},
+  {v:500,q:"2003 那份 Guidelines 的完整名稱，以及它 2017 年改成什麼名字？",a:"Guidelines on Multicultural Education, Training, Research, Practice, and Organizational Change → 2017 改為 Multicultural Guidelines: An Ecological Approach to Context, Identity, and Intersectionality。同一份文件。"}]},
+ {cat:"哪一節",cl:[
+  {v:100,q:"O.J. Simpson 案在課本裡是哪個概念的例子？",a:"differences in worldview。不是種族概念的歷史。"},
+  {v:200,q:"George Floyd 在第一章是哪個概念的例子？",a:"differences in worldview。跟 Trayvon Martin、Rodney King 同一節。"},
+  {v:300,q:"Blumenbach 五類、Zurara、詛咒論，屬於哪一節？",a:"What Is Race 那一節，種族概念的歷史。"},
+  {v:400,q:"判斷法：怎麼分辨一個例子是 worldview 還是種族歷史？",a:"法庭案件、警察案件、兩個社群反應不同 → worldview。人名、年代、理論來源 → 種族概念的歷史。"},
+  {v:500,q:"David Reimer 的父母被 Dr. Money 影響，是生物心理社會模式的哪一層？為什麼不是 interpersonal？",a:"social institutional。因為壓過來的是醫療體系與權威地位，不是人跟人的關係。"}]},
+ {cat:"講座 4F 5D 3S",cl:[
+  {v:100,q:"四個 F 是哪四個？",a:"Fight 戰、Flight 逃、Fright 驚、Freeze 僵。"},
+  {v:200,q:"五個 D 是哪五個？哪一個是正向的？",a:"Distancing、Denial、Defensiveness、Devaluing、Discovery。只有 Discovery 是開門的。"},
+  {v:300,q:"三個 S 是哪三個？在講什麼？",a:"Simple、Safe、Sane。為什麼人天生被相似的人吸引。"},
+  {v:400,q:"Devaluing 教授特別強調了什麼？",a:"不是因為惡意，通常是為了保護自己的自尊。"},
+  {v:500,q:"multicultural competence 三要素？教授強調的關鍵字？",a:"覺察自己的文化態度、理解案主的世界觀、發展文化上適切的介入策略。關鍵字：at the same time，三個必須同時成立。"}]}
+];
+
+/* ---------- 共用 ---------- */
+function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=0.82;speechSynthesis.speak(u);}catch(e){}}
+document.querySelectorAll("#nav .tab").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#nav .tab").forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll("section").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");document.getElementById(b.dataset.t).classList.add("on");window.scrollTo(0,0);
+}));
+function chipRow(el,onPick){["全部",1].forEach(c=>{
+  const b=document.createElement("button");b.className="chip"+(c==="全部"?" on":"");
+  b.textContent=c==="全部"?"全部":"Ch "+c;
+  b.addEventListener("click",()=>{el.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));b.classList.add("on");onPick(c==="全部"?null:c);});
+  el.appendChild(b);});}
+/* ---------- 單字 ---------- */
+const vlist=document.getElementById("vlist");
+function renderVocab(ch){vlist.innerHTML="";VOCAB.filter(v=>!ch||v.c===ch).forEach(v=>{
+  const r=document.createElement("div");r.className="vrow";
+  r.innerHTML=`<button class="spk">🔊</button><div><span class="vterm">${v.t}</span> <span class="vch">Ch${v.c} · ${v.z}</span><div class="vdef">${v.d}</div></div>`;
+  r.querySelector(".spk").addEventListener("click",()=>say(v.t));vlist.appendChild(r);});}
+chipRow(document.getElementById("vchips"),renderVocab);renderVocab(null);
+/* ---------- 字卡 ---------- */
+let deck=[...VOCAB],fi=0;
+const fcCard=document.getElementById("fcCard");
+function renderFC(){const v=deck[fi];fcCard.classList.remove("flip");
+  document.getElementById("fcFront").textContent=v.t;
+  document.getElementById("fcBack").innerHTML=`<b>${v.z}</b><br>${v.d}`;
+  document.getElementById("fcCount").textContent=`${fi+1} / ${deck.length}　(Ch ${v.c})`;}
+fcCard.addEventListener("click",()=>fcCard.classList.toggle("flip"));
+document.getElementById("fcNext").addEventListener("click",()=>{fi=(fi+1)%deck.length;renderFC();});
+document.getElementById("fcPrev").addEventListener("click",()=>{fi=(fi-1+deck.length)%deck.length;renderFC();});
+document.getElementById("fcSpeak").addEventListener("click",()=>say(deck[fi].t));
+document.getElementById("fcShuffle").addEventListener("click",()=>{deck.sort(()=>Math.random()-.5);fi=0;renderFC();});
+chipRow(document.getElementById("fchips"),ch=>{deck=VOCAB.filter(v=>!ch||v.c===ch);fi=0;renderFC();});
+renderFC();
+/* ---------- 測驗 ---------- */
+const LS="dojo_psyc21_wrong";
+let qOrder=[],qi=0,qRight=0,wrongSet=new Set(JSON.parse(localStorage.getItem(LS)||"[]"));
+const qBox=document.getElementById("qBox"),qScore=document.getElementById("qScore");
+function saveWrong(){localStorage.setItem(LS,JSON.stringify([...wrongSet]));}
+function startQuiz(ids){qOrder=ids.slice().sort(()=>Math.random()-.5);qi=0;qRight=0;renderQ();}
+function renderQ(){
+  if(qi>=qOrder.length){
+    qBox.innerHTML=`<div class="card"><b>本輪結束：${qRight} / ${qOrder.length}</b><br>${wrongSet.size?`錯題庫目前 ${wrongSet.size} 題——按「只練錯題」把它清空，這就是你的認知漏洞清單。`:"錯題庫是空的，這一章可以放心。"}</div>`;
+    updateScoreLine();return;}
+  const id=qOrder[qi],Q=QUIZ[id];
+  qBox.innerHTML=`<div class="qnum">第 ${qi+1} / ${qOrder.length} 題 · Ch ${Q.c}</div><div class="qtext">${Q.q}</div>`+
+    Q.o.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("")+`<div id="qExp"></div>`;
+  qBox.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+    if(qBox.dataset.done)return;qBox.dataset.done=1;
+    const pick=+b.dataset.i,ok=pick===Q.a;
+    qBox.querySelectorAll(".opt").forEach((x,i)=>{if(i===Q.a)x.classList.add("right");else if(i===pick)x.classList.add("wrong");x.disabled=true;});
+    if(ok){qRight++;wrongSet.delete(id);}else wrongSet.add(id);saveWrong();
+    document.getElementById("qExp").innerHTML=`<div class="exp ${ok?"":"bad"}">${ok?"✔":"✘"} ${Q.e}</div><button class="btn pri">下一題</button>`;
+    document.getElementById("qExp").querySelector("button").addEventListener("click",()=>{delete qBox.dataset.done;qi++;renderQ();});
+    updateScoreLine();
+  }));}
+function updateScoreLine(){qScore.innerHTML=`共 ${QUIZ.length} 題 ｜ 錯題庫 <b>${wrongSet.size}</b> 題`;}
+document.getElementById("qStart").addEventListener("click",()=>startQuiz(QUIZ.map((_,i)=>i)));
+document.getElementById("qWrongBtn").addEventListener("click",()=>{wrongSet.size?startQuiz([...wrongSet]):qBox.innerHTML=`<div class="card">錯題庫是空的。</div>`;});
+updateScoreLine();
+/* ---------- Jeopardy ---------- */
+let jScore=0,jCur=null;
+const jBoard=document.getElementById("jBoard"),jModal=document.getElementById("jModal");
+function buildBoard(){jBoard.innerHTML="";jScore=0;updJ();
+  JEO.forEach(c=>{const h=document.createElement("div");h.className="jhead";h.textContent=c.cat;jBoard.appendChild(h);});
+  for(let r=0;r<5;r++)JEO.forEach((c,ci)=>{
+    const cl=c.cl[r],cell=document.createElement("div");cell.className="jcell";cell.textContent=cl.v;
+    cell.addEventListener("click",()=>{if(cell.classList.contains("used"))return;jCur={cl,cell};
+      document.getElementById("mCat").textContent=c.cat+" · "+cl.v;
+      document.getElementById("mQ").textContent=cl.q;
+      const mA=document.getElementById("mA");mA.textContent=cl.a;mA.classList.remove("on");
+      document.getElementById("mShow").style.display="";document.getElementById("mRight").style.display="none";document.getElementById("mWrong").style.display="none";
+      jModal.classList.add("on");});
+    jBoard.appendChild(cell);});}
+function updJ(){document.getElementById("jScore").textContent=jScore;}
+document.getElementById("mShow").addEventListener("click",()=>{
+  document.getElementById("mA").classList.add("on");
+  document.getElementById("mShow").style.display="none";
+  document.getElementById("mRight").style.display="";document.getElementById("mWrong").style.display="";});
+function closeJ(delta){if(jCur){jScore+=delta;updJ();jCur.cell.classList.add("used");jCur=null;}jModal.classList.remove("on");}
+document.getElementById("mRight").addEventListener("click",()=>closeJ(+parseInt(document.getElementById("mCat").textContent.split("·")[1])));
+document.getElementById("mWrong").addEventListener("click",()=>closeJ(-parseInt(document.getElementById("mCat").textContent.split("·")[1])));
+document.getElementById("mClose").addEventListener("click",()=>{jModal.classList.remove("on");jCur=null;});
+document.getElementById("jReset").addEventListener("click",buildBoard);
+buildBoard();
+</script>
+</body>
+</html>
