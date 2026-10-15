@@ -1,0 +1,410 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>PSYC 4 Ch7 觸覺與痛覺 Dojo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap">
+<style>
+/* Layout: one long reading column with a sticky station bar; brass = the trumpet that starts the story, teal = the fluid inside the cochlea */
+:root{
+  --bg:#F3F6F8; --panel:#FFFFFF; --fg:#17212C; --muted:#4D5B69; --line:#D3DCE3;
+  --brass:#8F5F00; --brass-soft:#F6E9CC; --teal:#16656E; --teal-soft:#DDEFF0;
+  --good:#1D6B3A; --good-soft:#DDF1E3; --bad:#A0302A; --bad-soft:#F8E0DE;
+  --en:"Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  --zh:"Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F151B; --panel:#18212A; --fg:#E7EDF2; --muted:#A9B6C2; --line:#2C3946;
+  --brass:#E5B451; --brass-soft:#3A2F17; --teal:#6CC4CC; --teal-soft:#16343A;
+  --good:#7FD69B; --good-soft:#163323; --bad:#F29B93; --bad-soft:#3B1D1B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F151B; --panel:#18212A; --fg:#E7EDF2; --muted:#A9B6C2; --line:#2C3946;
+  --brass:#E5B451; --brass-soft:#3A2F17; --teal:#6CC4CC; --teal-soft:#16343A;
+  --good:#7FD69B; --good-soft:#163323; --bad:#F29B93; --bad-soft:#3B1D1B; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--en),var(--zh);font-size:19px;line-height:1.65;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:20px 80px}
+h1,h2,h3{text-wrap:balance;line-height:1.3;margin:0}
+h1{font-size:1.75rem}
+h2{font-size:1.4rem;margin-top:8px}
+h3{font-size:1.12rem}
+.zh{font-family:var(--zh),var(--en)}
+.eyebrow{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--brass);font-weight:700}
+header.top{display:grid;gap:8px;padding-block:8px 18px;border-bottom:2px solid var(--line)}
+.meta{color:var(--muted);font-size:.95rem}
+nav.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;flex-wrap:wrap;gap:8px;padding-block:10px;border-bottom:1px solid var(--line)}
+nav.bar a{font-family:var(--zh);text-decoration:none;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.95rem}
+nav.bar a:focus-visible,button:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+section{display:grid;gap:16px;padding-block:28px 8px;scroll-margin-top:70px}
+.station{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:8px}
+.station .tag{font-family:var(--zh);font-weight:700;color:var(--teal)}
+.station p,.station li{margin:0}
+.station ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.hook{background:var(--brass-soft);border-radius:10px;padding:14px 18px;font-family:var(--zh);font-weight:700}
+.pair{display:grid;gap:2px;padding-block:10px;border-bottom:1px solid var(--line)}
+.pair .e{display:flex;gap:10px;align-items:flex-start;font-size:1.05rem}
+.pair .c{font-family:var(--zh);color:var(--muted);padding-left:44px}
+button.say{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--teal-soft);color:var(--teal);cursor:pointer;display:grid;place-items:center;padding:0}
+button.say svg{width:18px;height:18px}
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.word{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center;min-width:0}
+.word b{font-size:1.02rem}
+.word .st{grid-column:2;color:var(--brass);font-weight:700;font-size:.95rem;letter-spacing:.02em}
+.word .zh{grid-column:2;color:var(--muted);font-size:.92rem}
+.pg{display:grid;gap:8px}
+.pg h3{color:var(--brass)}
+.hl{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px;display:grid;gap:2px}
+.hl .where{font-family:var(--zh);font-weight:700}
+.hl .words{font-style:italic}
+.hl .note{font-family:var(--zh);color:var(--muted);font-size:.93rem}
+.star{color:var(--brass);font-weight:700}
+.legend{font-family:var(--zh);color:var(--muted);font-size:.95rem}
+.rg{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px;display:grid;gap:4px}
+.rg .q{font-weight:700}
+.rg .qz{font-family:var(--zh);color:var(--muted)}
+.rg .ref{font-family:var(--zh);color:var(--teal);font-size:.92rem}
+.quizhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.score{font-weight:700;font-variant-numeric:tabular-nums;background:var(--teal-soft);color:var(--teal);border-radius:999px;padding:4px 14px}
+.qcard{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:10px}
+.qcard .num{font-size:.85rem;color:var(--brass);font-weight:700;letter-spacing:.06em}
+.qcard .stem{font-weight:700;font-size:1.05rem}
+.qcard .stemzh{font-family:var(--zh);color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:inherit;font-size:1rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer;display:grid;gap:2px}
+.opt[disabled]{cursor:default}
+.opt .why{font-family:var(--zh);font-size:.93rem;color:var(--muted)}
+.opt.right{background:var(--good-soft);border-color:var(--good)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt.right .lab{color:var(--good);font-weight:700}
+.opt.wrong .lab{color:var(--bad);font-weight:700}
+.verdict{font-family:var(--zh);font-weight:700}
+.ref2{font-family:var(--zh);color:var(--teal);font-size:.92rem}
+.reset{font:inherit;font-family:var(--zh);background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer}
+footer{padding-top:30px;color:var(--muted);font-family:var(--zh);font-size:.9rem}
+.player{background:var(--panel);border:2px solid var(--brass);border-radius:14px;padding:14px 16px;display:grid;gap:10px;margin-block:14px}
+.player .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.big{font:inherit;font-family:var(--zh);font-weight:700;font-size:1.15rem;border:0;border-radius:999px;padding:12px 22px;cursor:pointer;background:var(--brass);color:var(--panel)}
+.big.alt{background:var(--teal-soft);color:var(--teal)}
+.player label{font-family:var(--zh);display:flex;gap:6px;align-items:center;font-size:.98rem}
+.player select{font:inherit;font-size:.95rem;padding:4px 6px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.now{font-family:var(--zh);color:var(--muted);font-size:.95rem;min-height:1.5em}
+.reading{outline:3px solid var(--brass);outline-offset:3px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+.practice{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:10px}
+.practice label{font-weight:700}
+.practice select,.practice textarea{font:inherit;font-size:1rem;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);width:100%;min-width:0}
+.practice .row{display:flex;flex-wrap:wrap;gap:10px}
+.scntext{background:var(--teal-soft);border-radius:8px;padding:10px 12px;margin:0}
+.keys{background:var(--brass-soft);border-radius:8px;padding:12px 14px}
+.keys ul{margin:6px 0;padding-left:1.2em;display:grid;gap:4px;font-family:var(--zh)}
+</style>
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">PSYC 4 · Module 6 · Chapter 7 下半</span>
+  <h1>Touch 和 Pain：兩條送信的路</h1>
+  <div class="meta zh">課本 p.227–239 · Reading Guide 第 4、5、6、7、8、9 項 · 週四 10/15 課堂活動</div>
+</header>
+
+<div class="player" id="player">
+  <div class="row">
+    <button class="big" id="play" type="button">連續播放：今天要演的 13 個角色</button>
+    <button class="big alt" id="stop" type="button" hidden>停止</button>
+  </div>
+  <div class="row">
+    <label for="mode">聽什麼
+      <select id="mode">
+        <option value="roles" selected>今天要演的 13 個角色（中文接英文）</option>
+        <option value="zh">只聽中文故事</option>
+        <option value="zhen">中文故事，接著英文版</option>
+        <option value="en">只聽英文版（英文接中文）</option>
+      </select>
+    </label>
+    <label for="rate">速度
+      <select id="rate">
+        <option value="0.8">慢</option>
+        <option value="0.95" selected>一般</option>
+        <option value="1.1">稍快</option>
+      </select>
+    </label>
+  </div>
+  <div class="now" id="now">按下去以後可以閉上眼睛聽，會一站一站播到最後。螢幕請保持亮著。</div>
+</div>
+
+<nav class="bar" aria-label="段落">
+  <a href="#story">中文故事</a>
+  <a href="#english">English 版</a>
+  <a href="#roles">角色練習</a>
+  <a href="#quiz">練習題</a>
+  <a href="#words">發音</a>
+</nav>
+
+<section id="story">
+  <h2 class="zh">一、中文看圖說故事：右腳踩到圖釘</h2>
+  <div class="hook">情境：你光著右腳踩到一根圖釘，同時朋友輕輕拍了一下你的右手食指。兩封信同時從身體右邊出發，走兩條不同的路，最後都送到左腦。</div>
+
+  <div class="station zh"><span class="tag">第 1 站　皮膚裡的收件員（p.227–228，Table 7.3）</span>
+    <p>摸東西靠 mechanoreceptor 機械受器，皮膚被壓、被拉，它的膜被撐開，鈉離子通道打開，鈉流進去，夠多就發出 action potential。注意：皮膚這裡進去的是鈉，耳朵毛細胞進去的是鉀。</p>
+    <ul>
+      <li><b>Meissner corpuscle</b>：在淺層，接受域小，快速適應，負責振動、質地、輕觸。</li>
+      <li><b>Merkel cell</b>：在淺層，接受域小，慢慢適應，負責壓力和物體的邊緣。</li>
+      <li><b>Pacinian corpuscle</b>：在深層，接受域大，快速適應，負責壓力、振動，還有透過工具傳來的感覺。</li>
+      <li><b>Ruffini ending</b>：在深層，接受域大，慢慢適應，負責皮膚拉伸、手指位置和握力。</li>
+    </ul>
+    <p>痛不一樣，靠的是 <b>nociceptor 痛覺受器</b>，它就是沒有任何包裝的 free nerve ending 游離神經末梢。會叫醒它的有三種：被刺、被壓這類機械傷害，太燙或太冷，還有化學物質，例如受傷細胞流出的鉀、組織胺、ATP，運動後的乳酸，辣椒的 capsaicin。（p.235）</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 2 站　接受域和兩點辨別（p.228–229，Figure 7.16）</span>
+    <p>receptive field 接受域，是一個受器負責的那一小塊皮膚。手指和嘴唇的受器又多、接受域又小，兩根針靠很近也分得出是兩點；背和小腿的接受域大，兩根針要隔很遠才分得出來。這就是 two-point discrimination 兩點辨別測驗。</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 3 站　送信的電線，粗細不同（p.229–230，Figure 7.17）</span>
+    <ul>
+      <li><b>Aβ fibers</b>：有髓鞘、粗、快，負責觸覺，從那四種機械受器送信。</li>
+      <li><b>Aδ fibers</b>：有髓鞘、比較細，送「唉唷」那一下又快又尖的痛，也送溫度。</li>
+      <li><b>C fibers</b>：沒有髓鞘、最細、最慢，送之後那種鈍鈍的、悶悶的痛。</li>
+    </ul>
+    <p>所以踩到圖釘，你會先「唉唷」一下，過一會兒才開始悶痛，就是兩種電線一快一慢。</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 4 站　從背面進脊髓：dermatome（p.229–230，Figure 7.18）</span>
+    <p>感覺神經都從脊髓背側的 dorsal root 背根進去。一條脊神經的背根負責的那一條皮膚，叫 dermatome 皮節。帶狀皰疹 shingles 就是水痘病毒躲在一個背根裡，幾十年後醒過來，所以疹子只沿著一條皮節、一邊身體長。</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 5 站　觸覺的路：一路不停，到延腦才過馬路（p.230–231，Figure 7.19）</span>
+    <p>拍手指的那封信，走 dorsal column-medial lemniscal pathway。它進脊髓以後，沿著<b>同一側</b>的 dorsal column 背柱一路往上，中間不停車，所以很快。</p>
+    <p>到了 medulla 延腦的 dorsal column nuclei 背柱核，才第一次轉車。轉車後的電線叫 medial lemniscus 內側蹄系，<b>在延腦過到對側</b>，往上到 thalamus 視丘的 VP nucleus 腹後核，再送到頂葉的 primary somatosensory cortex。</p>
+    <p>所以右手的觸覺，最後是左腦感覺到的。</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 6 站　痛覺的路：一進脊髓就轉車、馬上過馬路（p.235–236，Figure 7.25）</span>
+    <p>圖釘那封痛的信，Aδ 和 C 纖維從背根進去，<b>馬上</b>在脊髓背角一群叫 substantia gelatinosa 膠狀質的細胞轉車。痛覺纖維在這裡放 glutamate，也放 Substance P，Substance P 讓膠狀質的細胞對 glutamate 更敏感，痛的訊息傳得更快。</p>
+    <p>轉車後的纖維<b>立刻在脊髓過到對側</b>，沿著脊髓前面的 spinothalamic pathway 脊髓視丘徑往上，到視丘的 VP nucleus 和 intralaminar nuclei 板內核。</p>
+    <p>從視丘出來，主要送到 anterior cingulate cortex 前扣帶皮質，負責痛的情緒和「怕痛」的預期；比較少的一部分送到體感皮質，負責知道是哪裡痛。</p>
+    <p>一句話：觸覺在延腦過馬路，痛覺一進脊髓就過馬路。兩條路最後都在對側的腦。</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 7 站　脊髓裡的閘門：gate theory（p.235–237，Figure 7.26）</span>
+    <p>Melzack 和 Wall 說，脊髓背角有一道閘門，決定痛的訊息能不能送上大腦。</p>
+    <ul>
+      <li><b>讓閘門關起來</b>：撞到手肘就用力揉，揉的觸覺訊號會壓住膠狀質裡的痛覺，送上去的痛就變少。緊急狀況下的高度激動也會關門。</li>
+      <li><b>讓閘門打開</b>：長期壓力，所以壓力大的人比較容易覺得痛。</li>
+    </ul>
+    <p>大腦也會從上往下管：中腦的 PAG 導水管周圍灰質有很多鴉片受體，會叫脊髓多放 endorphin 腦內啡這類自己的止痛物質。嗎啡止痛，大部分就是作用在 PAG。</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 8 站　大腦裡的小人：homunculus（p.231–232，Figure 7.21）</span>
+    <p>primary somatosensory cortex 主體感皮質，也叫 S1，在頂葉的 postcentral gyrus 中央後回，就在 central sulcus 中央溝的後面。</p>
+    <p>它裡面有一張身體地圖：頭和臉在下面靠外側，腿和腳翻到頂上、往內側面。地圖照「需要多精細的感覺」分配，所以手和臉佔了一大片，畫出來就是手大、嘴唇大的變形小人，叫 homunculus。</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 9 站　地圖會改：可塑性和幻肢（p.231–233，Figure 7.22）</span>
+    <p>體感皮質有 plasticity 可塑性。猴子切掉一根手指，原本負責那根手指的皮質，改去回應旁邊的手指；訓練某幾根指尖，那幾根的地盤就變大。彈琴的人、學點字的盲人，負責手指的區域也比較大。</p>
+    <p>人截肢以後，會有 phantom pain 幻肢痛，痛覺好像從已經不在的手臂傳來；也有 referred sensation 轉移感覺，摸臉卻覺得是在摸那隻不在的手，因為臉的地盤就在手臂旁邊，佔用了手臂空出來的地盤。</p>
+    <p>治療：mirror box 鏡箱。把好的那隻手放在鏡子這邊，鏡子裡看起來像是兩隻手都在。病人「看到」幻肢鬆開，緊握抽痛的幻肢就鬆了。這就是教授說的：視覺會蓋過其他感覺，跟橡膠手錯覺同一個道理。</p>
+  </div>
+
+  <div class="hook">一句話記住：觸覺走背柱、延腦過馬路；痛覺在膠狀質轉車、一進脊髓就過馬路；揉一揉可以關閘門；地圖會被鄰居佔用。</div>
+</section>
+
+<section id="english">
+  <h2 class="zh">二、English 版：教授會用的句子</h2>
+  <p class="legend">按圓形按鈕聽英文，跟著念一次，再看中文。</p>
+  <div id="pairs"></div>
+</section>
+
+<section id="roles">
+  <h2 class="zh">三、角色練習：寫出「我這個角色實際發生了什麼」</h2>
+  <p class="legend">先選情境，再選角色。用你自己的話，第一人稱，一步一步寫：我在哪裡、什麼東西叫醒我、我做了什麼、我把訊息交給誰、在身體的哪一側。寫完再按「對照要點」，只會顯示要寫到的重點，不會給你一段可以照抄的答案。</p>
+  <div class="practice">
+    <label for="scn" class="zh">情境</label>
+    <select id="scn"></select>
+    <p class="scntext zh" id="scntext"></p>
+    <label for="role" class="zh">我的角色</label>
+    <select id="role"></select>
+    <label for="ans" class="zh">我的答案（用英文寫，像在課堂上交的那樣）</label>
+    <textarea id="ans" rows="6" placeholder="I am ... When ..., I ... Then I ..."></textarea>
+    <div class="row">
+      <button class="big" id="check" type="button">對照要點</button>
+      <button class="big alt" id="rand" type="button">隨機換一題</button>
+    </div>
+    <div class="keys" id="keys" hidden></div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="quizhead">
+    <h2 class="zh">四、練習題（同一個觀念換角度考）</h2>
+    <span class="score" id="score">0 / 0</span>
+  </div>
+  <button class="reset" id="reset" type="button">全部重做</button>
+  <div id="qs" style="display:grid;gap:14px"></div>
+</section>
+
+<section id="words">
+  <h2 class="zh">五、名詞發音（大寫是重音）</h2>
+  <div class="vocab" id="vocab"></div>
+</section>
+
+<footer>PSYC 4 · Freberg 第七章 p.227–239 · 教授 Module 6 的 Major Differences Between Touch and Pain。前庭覺、嗅覺、味覺另外做。</footer>
+</div>
+<script>
+const SPK='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+function say(t){try{const s=window.speechSynthesis;if(!s)return;s.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;const v=s.getVoices().find(x=>/^en-US/.test(x.lang));if(v)u.voice=v;s.speak(u);}catch(e){}}
+function sayBtn(t){const b=document.createElement('button');b.className='say';b.type='button';b.innerHTML=SPK;b.setAttribute('aria-label','Play: '+t);b.addEventListener('click',()=>say(t));return b;}
+
+
+const PAIRS=[
+["Mechanoreceptors respond to physical displacement, such as bending or stretching.","機械受器對物理變形起反應，例如彎曲或拉伸。"],
+["When the membrane is stretched, sodium channels open, sodium enters, and the receptor can fire an action potential.","膜被拉開時，鈉通道打開，鈉流進去，受器就能發出動作電位。"],
+["Meissner corpuscles and Merkel cells have small receptive fields, so they detect fine details and edges.","Meissner 小體和 Merkel 細胞的接受域小，所以能偵測細節和邊緣。"],
+["Pacinian corpuscles and Ruffini endings have large receptive fields and give only general information.","Pacinian 小體和 Ruffini 末梢的接受域大，只給大概的訊息。"],
+["Fingers and lips have small receptive fields and many receptors, so they do best on the two-point discrimination test.","手指和嘴唇的接受域小、受器多，所以兩點辨別測驗做得最好。"],
+["Nociceptors are free nerve endings that respond to painful stimuli.","痛覺受器是游離神經末梢，對痛的刺激起反應。"],
+["Thermoreceptors respond to temperature.","溫度受器對溫度起反應。"],
+["Fast, myelinated A delta fibers carry the quick, sharp pain. Slow, unmyelinated C fibers carry the dull, aching pain.","快的、有髓鞘的 A delta 纖維送又快又尖的痛；慢的、沒有髓鞘的 C 纖維送鈍鈍的悶痛。"],
+["A dermatome is the area of skin served by the dorsal root of one spinal nerve.","皮節是一條脊神經的背根負責的那一塊皮膚。"],
+["Touch travels up the same side in the dorsal column, makes its first synapse in the medulla, and then crosses the midline.","觸覺在同一側的背柱往上，到延腦才第一次轉車，然後過到對側。"],
+["From the medulla, the medial lemniscus goes to the ventral posterior nucleus of the thalamus, and then to the primary somatosensory cortex in the parietal lobe.","從延腦開始，內側蹄系到視丘的腹後核，再到頂葉的主體感皮質。"],
+["Pain fibers synapse in the substantia gelatinosa of the dorsal horn and release glutamate and Substance P.","痛覺纖維在背角的膠狀質轉車，放出麩胺酸和 P 物質。"],
+["Pain information crosses the midline right away in the spinal cord and travels up the spinothalamic pathway to the thalamus.","痛覺訊息一進脊髓就馬上過到對側，沿著脊髓視丘徑到視丘。"],
+["From the thalamus, pain goes to the anterior cingulate cortex for the emotional part, and to the somatosensory cortex to locate it.","痛從視丘送到前扣帶皮質處理情緒，送到體感皮質判斷位置。"],
+["Touch crosses in the medulla. Pain crosses in the spinal cord. Both end up on the opposite side of the brain.","觸覺在延腦過到對側，痛覺在脊髓過到對側，兩者最後都在對側的腦。"],
+["According to the gate theory of pain, rubbing a sore spot sends touch signals that close the gate in the dorsal horn.","依照痛覺閘門理論，揉痛的地方會送出觸覺訊號，把背角的閘門關起來。"],
+["High arousal closes the gate. Chronic stress opens it.","高度激動會關閘門，長期壓力會開閘門。"],
+["The periaqueductal gray in the midbrain has many opioid receptors and can reduce pain from the top down.","中腦的導水管周圍灰質有很多鴉片受體，可以從上往下減輕疼痛。"],
+["The primary somatosensory cortex is in the postcentral gyrus of the parietal lobe.","主體感皮質在頂葉的中央後回。"],
+["The homunculus is a map of the body in the cortex. The hands and face take up the most space.","小人圖是皮質裡的身體地圖，手和臉佔的地方最大。"],
+["The somatosensory cortex shows plasticity. When a limb is lost, the neighboring area takes over its space.","體感皮質有可塑性。失去一個肢體後，旁邊的區域會佔用它的地盤。"],
+["Phantom pain is pain felt in a missing limb. A mirror box can relieve it because vision overrides the other senses.","幻肢痛是覺得已經不在的肢體在痛。鏡箱可以減輕它，因為視覺會蓋過其他感覺。"]
+];
+
+const SCN=[
+{id:"tack",t:"You step on a tack with your RIGHT foot. First you feel a sharp “ouch,” then a dull ache.",z:"你的右腳踩到圖釘，先是一陣尖痛，接著變成悶痛。",roles:{
+"Nociceptor in the right sole":["我是右腳腳底的游離神經末梢（free nerve ending）","被圖釘刺到，機械傷害打開我的通道，我發出動作電位","受傷細胞流出的化學物質（鉀、組織胺、ATP）也一直刺激我","我把訊息交給 Aδ 和 C 纖維，從背根進脊髓","還在身體右側"],
+"A delta fiber":["我有髓鞘，比較快","我送的是第一下又快又尖的痛","我從背根進脊髓，在背角的膠狀質（substantia gelatinosa）轉車","我放出 glutamate（也可以放 Substance P）","我在右側，還沒過中線"],
+"C fiber":["我沒有髓鞘，最慢","我送的是之後鈍鈍的悶痛，所以比 Aδ 晚到","我也從背根進脊髓，在膠狀質轉車","我放 glutamate 和 Substance P","我在右側"],
+"Substance P":["我是痛覺纖維在脊髓背角放出來的神經胜肽","我讓膠狀質的細胞對 glutamate 更敏感","所以痛的訊息傳得更快、更強","我在右側的背角"],
+"Substantia gelatinosa cell":["我在脊髓背角的外層灰質","我收到 Aδ、C 纖維送來的 glutamate 和 Substance P","這裡是閘門所在：我決定訊息能不能往上送","我的軸突馬上過中線到左側，加入脊髓視丘徑"],
+"Spinothalamic fiber":["我從膠狀質出發，一進脊髓就過到對側（左側）","我沿著脊髓前面（ventral）往上，經過腦幹","我在視丘的 VP 核和板內核（intralaminar nuclei）轉車","我現在在左側"],
+"Thalamus":["我是左側視丘，痛的訊息到我的 VP 核和板內核","VP 核也收觸覺，但痛和觸覺在這裡分開處理","我把痛送到前扣帶皮質（主要）和體感皮質（比較少）"],
+"Anterior cingulate cortex":["我在左腦，收到視丘送來的痛","我負責痛的情緒，還有「怕痛」的預期","預期越痛，我越活躍"],
+"Somatosensory cortex":["我在左腦頂葉的中央後回","我收到少一部分的痛覺訊息","我負責判斷是哪裡痛：右腳腳底","腳的地圖在我的頂端、往內側面"]}},
+{id:"tap",t:"Your friend lightly taps your RIGHT index finger.",z:"朋友輕輕拍你的右手食指。",roles:{
+"Meissner corpuscle":["我在指尖皮膚淺層，有包膜（encapsulated）","我的接受域很小，所以知道是哪一小點被拍","皮膚被壓，我的膜被拉開，鈉通道打開，鈉流進來，發出動作電位","我是快速適應的：剛拍的那一下反應最大","我把訊息交給 Aβ 纖維"],
+"A beta fiber":["我有髓鞘、粗、快，專門送觸覺","我的細胞體在背根神經節","我從背根進脊髓，不轉車，沿同一側（右側）的背柱往上","我到延腦的背柱核才第一次轉車"],
+"Dorsal column nuclei":["我在延腦","我是觸覺第一次轉車的地方","轉車後的軸突組成內側蹄系，在延腦過中線到左側"],
+"Medial lemniscus":["我從延腦的背柱核出發，過中線到左側","我往上經過橋腦、中腦","我在視丘的 VP 核轉車"],
+"Thalamus":["我是左側視丘的 VP 核（腹後核）","我收到內側蹄系送來的觸覺","我把它送到頂葉的主體感皮質"],
+"Somatosensory cortex":["我是左腦頂葉中央後回的 S1","手在我的地圖上佔很大一塊（homunculus）","我判斷：右手食指被輕拍了一下"]}},
+{id:"rub",t:"You bump your RIGHT elbow, then rub it hard. The pain gets better.",z:"你撞到右手肘，然後用力揉，痛就減輕了。",roles:{
+"A beta fiber":["我是送觸覺的粗纖維，揉的時候我被大量啟動","我從背根進脊髓","我在背角送出訊號，壓住膠狀質裡的痛覺傳遞"],
+"Gate (substantia gelatinosa)":["我是背角的閘門","觸覺纖維的訊號讓我關門","痛覺纖維的訊息被擋下一部分，送上大腦的痛變少","這就是 gate theory of pain"],
+"Nociceptor":["我還在發痛的訊號","但我的訊息在背角被觸覺訊號壓住","大腦收到的痛比我送的少"]}},
+{id:"soldier",t:"A soldier is badly injured in battle but does not feel much pain until it is over.",z:"士兵在戰場上受重傷，打完才開始覺得很痛。",roles:{
+"Periaqueductal gray (PAG)":["我在中腦","高壓力時，大腦上層結構叫醒我","我有很多鴉片受體","我往下傳訊，讓脊髓多放自己的止痛物質，減少往上送的痛"],
+"Gate":["我在脊髓背角","戰場上的高度激動讓我關門","痛的訊息送不太上去","所以士兵不知道自己傷多重"],
+"Endorphins":["我是身體自己的鴉片類物質","壓力讓我被大量釋放","我減輕疼痛（stress analgesia）"]}},
+{id:"phantom",t:"A man lost his LEFT arm. When someone touches his left cheek, he feels his missing hand being touched.",z:"一個男人失去左手臂。有人摸他的左臉頰，他卻覺得那隻不在的手被摸。",roles:{
+"Somatosensory cortex (old hand area)":["我在右腦（左邊身體的感覺送到右腦）","我原本負責左手，手臂不在了，沒有訊號進來","臉的區域就在我旁邊，佔用了我的地盤（plasticity）","所以摸臉時我也被啟動，大腦以為是手被摸（referred sensation）"],
+"Mirror box":["病人把好的右手放在鏡子這邊","鏡子裡看起來左手又回來了","看到「左手」鬆開，緊握抽痛的幻肢也跟著鬆開","視覺蓋過其他感覺，跟橡膠手錯覺同一個道理"]}}
+];
+
+const Q=[
+{s:"You touch a hot pan and pull your hand away before you even feel the dull ache. Which fibers carried the first, sharp pain?",z:"你碰到熱鍋，手還沒感覺到悶痛就縮回來了。第一下的尖痛是哪一種纖維送的？",o:[["A delta fibers","對：有髓鞘，比較快，送又快又尖的痛和溫度。"],["C fibers","錯：沒有髓鞘，比較慢，送後來的悶痛。"],["A beta fibers","錯：送觸覺，不送痛。"],["The medial lemniscus","錯：那是觸覺路線在延腦之後的那一段。"]],a:0,r:"p.235，Figure 7.17 在 p.229"},
+{s:"Where does touch information first cross to the other side?",z:"觸覺訊息第一次過到對側是在哪裡？",o:[["In the spinal cord, right after entering","錯：那是痛覺。"],["In the medulla","對：背柱核轉車後，內側蹄系在延腦過中線。"],["In the thalamus","錯：到視丘時已經在對側了。"],["It never crosses","錯：觸覺最後由對側的腦處理。"]],a:1,r:"p.230 右欄，Figure 7.19 在 p.231"},
+{s:"Where does pain information cross to the other side?",z:"痛覺訊息在哪裡過到對側？",o:[["In the medulla","錯：那是觸覺。"],["In the spinal cord, right away","對：在膠狀質轉車後立刻過中線，加入脊髓視丘徑。"],["In the anterior cingulate cortex","錯：皮質已經是終點了。"],["In the dorsal root ganglion","錯：還沒進脊髓。"]],a:1,r:"p.235 右欄，Figure 7.25 在 p.236"},
+{s:"A patient's spinal cord is damaged on the RIGHT side only. Which is most likely?",z:"病人只有脊髓右側受損，最可能出現哪種狀況？",o:[["Loss of touch on the right side of the body, and loss of pain on the left side","對：觸覺在同側往上，所以右邊觸覺受影響；痛覺已經過到對側，所以右側脊髓裡走的是左邊身體的痛。"],["Loss of touch and pain on the right side only","錯：痛覺在脊髓就交叉了。"],["Loss of touch and pain on the left side only","錯：觸覺在脊髓裡還沒交叉。"],["No change, because both cross in the brain","錯：痛覺在脊髓就交叉。"]],a:0,r:"p.230–235 兩條路線對照"},
+{s:"You bump your elbow and rub it. Why does the pain feel smaller?",z:"撞到手肘後揉一揉，為什麼痛好像變小了？",o:[["Touch signals close the pain gate in the dorsal horn.","對：gate theory，觸覺纖維的活動壓住膠狀質裡的痛覺。"],["Rubbing kills the nociceptors.","錯：受器沒有被破壞。"],["Rubbing releases Substance P.","錯：Substance P 會讓痛更強。"],["Rubbing sends the pain to the other side of the brain.","錯：跟交叉無關。"]],a:0,r:"p.236 Managing Pain，Figure 7.26 在 p.237"},
+{s:"Which neurochemical, released by pain fibers in the dorsal horn, makes cells more sensitive to glutamate?",z:"痛覺纖維在背角放的哪一種神經化學物質，會讓細胞對 glutamate 更敏感？",o:[["Substance P","對。"],["Endorphin","錯：它減輕疼痛。"],["Dopamine","錯。"],["GABA","錯。"]],a:0,r:"p.235 左欄最後到右欄第 1–3 行"},
+{s:"Which part of the brain is most involved in the emotional part of pain, such as dreading a shot?",z:"大腦哪一部分最負責痛的情緒，例如很怕打針？",o:[["Anterior cingulate cortex","對：負責痛的預期和情緒。"],["Primary auditory cortex","錯。"],["Medulla","錯：延腦是觸覺的轉車站。"],["Occipital lobe","錯：那是視覺。"]],a:0,r:"p.235 右欄"},
+{s:"On a two-point discrimination test, which body part can tell two points apart at the smallest distance?",z:"兩點辨別測驗中，哪個部位在最小的距離就能分辨出兩點？",o:[["Back","錯：接受域大，要隔很遠。"],["Calf","錯：最不敏感的之一。"],["Index finger","對：受器多、接受域小。"],["Forearm","錯。"]],a:2,r:"p.228–229，Figure 7.16"},
+{s:"Which receptor has a small receptive field, adapts slowly, and senses pressure and object edges?",z:"哪一種受器接受域小、慢慢適應，負責壓力和物體邊緣？",o:[["Merkel cell","對。"],["Pacinian corpuscle","錯：接受域大、快速適應。"],["Ruffini ending","錯：接受域大，負責拉伸和握力。"],["Meissner corpuscle","錯：接受域小但快速適應，負責振動和質地。"]],a:0,r:"p.228，Table 7.3"},
+{s:"Shingles causes a painful rash in a band on one side of the body. What does the band show?",z:"帶狀皰疹讓身體一側出現一條帶狀的疹子。這條帶子顯示了什麼？",o:[["A dermatome","對：一個背根負責的那一塊皮膚。"],["A receptive field of one Merkel cell","錯：那太小了。"],["The homunculus","錯：那是皮質裡的地圖。"],["The spinothalamic pathway","錯：那是脊髓裡的路線。"]],a:0,r:"p.230，Figure 7.18"},
+{s:"Where is the primary somatosensory cortex?",z:"主體感皮質在哪裡？",o:[["Postcentral gyrus of the parietal lobe","對：就在中央溝後面。"],["Precentral gyrus of the frontal lobe","錯：那是運動皮質，第八章會講。"],["Temporal lobe below the lateral sulcus","錯：那是 A1。"],["Occipital lobe","錯。"]],a:0,r:"p.231 右欄"},
+{s:"In the homunculus, why are the hands and lips so large?",z:"小人圖上，為什麼手和嘴唇那麼大？",o:[["They need precise sensory feedback, so they get more cortex.","對。"],["They are the biggest body parts.","錯：皮質面積看的是需要多精細，不是身體大小。"],["They have the most fat under the skin.","錯。"],["They are closest to the brain.","錯。"]],a:0,r:"p.231 右欄，Figure 7.21"},
+{s:"A monkey loses a finger. Later, the cortex area for that finger responds to touch on the neighboring fingers. What does this show?",z:"猴子失去一根手指，後來那根手指的皮質區，改成對旁邊手指的觸碰起反應。這說明什麼？",o:[["Plasticity of the somatosensory cortex","對。"],["The gate theory of pain","錯。"],["Lateral inhibition in the retina","錯。"],["Sensory adaptation","錯：那是刺激不變就感覺不到。"]],a:0,r:"p.231–232"},
+{s:"Why can a mirror box relieve phantom pain?",z:"為什麼鏡箱可以減輕幻肢痛？",o:[["Seeing the reflected hand relax lets the brain release the painful phantom clench; vision overrides the other senses.","對：跟橡膠手錯覺、McGurk 效應同一個道理。"],["The mirror heals the nerve endings.","錯。"],["The mirror blocks Substance P.","錯。"],["The mirror makes the limb grow back.","錯。"]],a:0,r:"p.233，Figure 7.22；Module 6 頁面"},
+{s:"Which is true about pain receptors?",z:"關於痛覺受器，哪個說法對？",o:[["They are free nerve endings that respond to mechanical, temperature, and chemical damage.","對。"],["They are encapsulated like Pacinian corpuscles.","錯：它們沒有包膜。"],["They respond only to heat.","錯：還有機械傷害和化學物質。"],["They are found only in the brain.","錯。"]],a:0,r:"p.235 左欄"},
+{s:"Under chronic stress, what happens to the pain gate?",z:"長期壓力下，痛覺閘門會怎樣？",o:[["It opens more, so people feel more pain.","對。"],["It closes completely.","錯：短暫的高度激動才會關門。"],["Nothing changes.","錯。"],["It moves to the medulla.","錯。"]],a:0,r:"p.235 右欄，p.237 左欄"}
+];
+
+const VOC=[
+["mechanoreceptor","MEK-uh-noh-ree-SEP-ter","機械受器"],["thermoreceptor","THER-moh-ree-SEP-ter","溫度受器"],["nociceptor","NOH-sih-SEP-ter","痛覺受器"],["free nerve ending","FREE NERV EN-ding","游離神經末梢"],["Meissner corpuscle","MICE-ner KOR-pus-ul","Meissner 小體"],["Merkel cell","MER-kul SEL","Merkel 細胞"],["Pacinian corpuscle","puh-SIN-ee-un KOR-pus-ul","Pacinian 小體"],["Ruffini ending","roo-FEE-nee EN-ding","Ruffini 末梢"],["receptive field","ree-SEP-tiv FEELD","接受域"],["two-point discrimination","TOO POINT dis-krim-ih-NAY-shun","兩點辨別"],["dermatome","DER-muh-tome","皮節"],["dorsal root","DOR-sul ROOT","背根"],["dorsal column","DOR-sul KOL-um","背柱"],["medial lemniscus","MEE-dee-ul lem-NIS-kus","內側蹄系"],["ventral posterior nucleus","VEN-trul pos-TEER-ee-er NOO-klee-us","腹後核"],["A delta fiber","AY DEL-tuh FY-ber","Aδ 纖維"],["C fiber","SEE FY-ber","C 纖維"],["substantia gelatinosa","sub-STAN-shuh jeh-lat-ih-NOH-suh","膠狀質"],["Substance P","SUB-stuns PEE","P 物質"],["spinothalamic pathway","SPY-noh-thuh-LAM-ik PATH-way","脊髓視丘徑"],["intralaminar nuclei","in-truh-LAM-ih-ner NOO-klee-eye","板內核"],["anterior cingulate cortex","an-TEER-ee-er SING-gyuh-lit KOR-tex","前扣帶皮質"],["gate theory of pain","GATE THEE-uh-ree uv PAIN","痛覺閘門理論"],["periaqueductal gray","pair-ee-ak-weh-DUK-tul GRAY","導水管周圍灰質 PAG"],["postcentral gyrus","post-SEN-trul JY-rus","中央後回"],["somatosensory cortex","soh-MAT-oh-SEN-suh-ree KOR-tex","體感皮質"],["homunculus","hoh-MUNK-yuh-lus","小人圖"],["plasticity","plas-TIS-ih-tee","可塑性"],["phantom limb","FAN-tum LIM","幻肢"],["referred sensation","rih-FERD sen-SAY-shun","轉移感覺"],["mirror box","MIR-er BOX","鏡箱"]
+];
+const pw=document.getElementById('pairs');
+PAIRS.forEach(([e,c])=>{const d=document.createElement('div');d.className='pair';const r=document.createElement('div');r.className='e';r.append(sayBtn(e));const s=document.createElement('span');s.textContent=e;r.append(s);const z=document.createElement('div');z.className='c';z.textContent=c;d.append(r,z);pw.append(d);});
+const vw=document.getElementById('vocab');
+VOC.forEach(([w,st,z])=>{const d=document.createElement('div');d.className='word';d.append(sayBtn(w));const b=document.createElement('b');b.textContent=w;d.append(b);const s=document.createElement('span');s.className='st';s.textContent=st;const zz=document.createElement('span');zz.className='zh';zz.textContent=z;d.append(s,zz);vw.append(d);});
+/* 角色練習 */
+const scnSel=document.getElementById('scn'),roleSel=document.getElementById('role'),txt=document.getElementById('scntext'),keys=document.getElementById('keys'),ans=document.getElementById('ans');
+SCN.forEach((s,i)=>{const o=document.createElement('option');o.value=i;o.textContent=s.z;scnSel.append(o);});
+function fillRoles(){const s=SCN[scnSel.value];roleSel.innerHTML='';Object.keys(s.roles).forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;roleSel.append(o);});txt.textContent=s.t+'　'+s.z;keys.hidden=true;}
+function key(){return 'tp:'+scnSel.value+':'+roleSel.value;}
+function loadAns(){try{ans.value=localStorage.getItem(key())||'';}catch(e){ans.value='';}keys.hidden=true;}
+ans.addEventListener('input',()=>{try{localStorage.setItem(key(),ans.value);}catch(e){}});
+scnSel.addEventListener('change',()=>{fillRoles();loadAns();});
+roleSel.addEventListener('change',loadAns);
+document.getElementById('check').addEventListener('click',()=>{const pts=SCN[scnSel.value].roles[roleSel.value];keys.innerHTML='<b class="zh">你的答案要寫到這幾點（用你自己的話，第一人稱）：</b>';const ul=document.createElement('ul');pts.forEach(p=>{const li=document.createElement('li');li.textContent=p;ul.append(li);});keys.append(ul);const tip=document.createElement('p');tip.className='zh';tip.textContent='少一點就補一點，不要整段重寫。寫不出來的那一點，回去聽故事的那一站。';keys.append(tip);keys.hidden=false;});
+document.getElementById('rand').addEventListener('click',()=>{scnSel.value=Math.floor(Math.random()*SCN.length);fillRoles();const rs=Object.keys(SCN[scnSel.value].roles);roleSel.value=rs[Math.floor(Math.random()*rs.length)];loadAns();});
+fillRoles();loadAns();
+/* 練習題 */
+let answered={},right=0;
+const qw=document.getElementById('qs'),sc=document.getElementById('score');
+function upd(){sc.textContent=right+' / '+Object.keys(answered).length+'（共 '+Q.length+' 題）';}
+function render(){qw.innerHTML='';answered={};right=0;Q.forEach((q,i)=>{const c=document.createElement('div');c.className='qcard';
+ c.innerHTML='<span class="num">QUESTION '+(i+1)+'</span>';const st=document.createElement('div');st.className='stem';st.textContent=q.s;const sz=document.createElement('div');sz.className='stemzh';sz.textContent=q.z;c.append(st,sz);
+ const os=document.createElement('div');os.className='opts';const v=document.createElement('div');v.className='verdict';v.hidden=true;const rf=document.createElement('div');rf.className='ref2';rf.hidden=true;rf.textContent='翻：'+q.r;
+ q.o.forEach(([t,why],k)=>{const b=document.createElement('button');b.type='button';b.className='opt';const l=document.createElement('span');l.className='lab';l.textContent=String.fromCharCode(65+k)+'. '+t;const w=document.createElement('span');w.className='why';w.textContent=why;w.hidden=true;b.append(l,w);
+  b.addEventListener('click',()=>{if(answered[i]!==undefined)return;answered[i]=k;if(k===q.a)right++;[...os.children].forEach((x,j)=>{x.disabled=true;x.querySelector('.why').hidden=false;if(j===q.a)x.classList.add('right');else if(j===k)x.classList.add('wrong');});v.hidden=false;v.textContent=k===q.a?'答對了。':'這題要再看一次。';v.style.color=k===q.a?'var(--good)':'var(--bad)';rf.hidden=false;upd();});os.append(b);});
+ c.append(os,v,rf);qw.append(c);});upd();}
+document.getElementById('reset').addEventListener('click',render);
+render();
+/* 連續播放 */
+const ROLES_AUDIO=[{"n": "Nociceptor 痛覺受器", "b": [["I am a free nerve ending in the skin of the right foot.", "我是右腳皮膚裡的游離神經末梢。"], ["I respond to things that damage the body: a sharp object, extreme heat or cold, and chemicals from hurt cells.", "我對傷害身體的東西起反應：尖東西、太燙太冷、受傷細胞流出的化學物質。"], ["The tack pressed on me, my channels opened, and I fired. I sent the signal into A delta and C fibers, toward the dorsal root.", "圖釘壓到我，通道打開，我發出訊號，交給 Aδ 和 C 纖維，往背根送。"]]}, {"n": "A delta fiber Aδ 纖維", "b": [["I am a thin, myelinated pain fiber.", "我是細的、有髓鞘的痛覺纖維。"], ["I carry the fast, sharp “ouch” and temperature.", "我送又快又尖的痛和溫度。"], ["I got the signal first, entered the spinal cord through the dorsal root, and released glutamate in the substantia gelatinosa.", "我最先收到訊號，從背根進脊髓，在膠狀質放出 glutamate。"]]}, {"n": "C fiber C 纖維", "b": [["I am the thinnest pain fiber, with no myelin.", "我是最細的痛覺纖維，沒有髓鞘。"], ["I carry the slow, dull, aching pain.", "我送慢慢來的鈍痛、悶痛。"], ["I arrived later than A delta, so the dull ache came after the sharp pain. I released glutamate and Substance P in the dorsal horn.", "我比 Aδ 晚到，所以悶痛在尖痛之後。我在背角放 glutamate 和 P 物質。"]]}, {"n": "Substance P P 物質", "b": [["I am a neuropeptide released by pain fibers in the dorsal horn.", "我是痛覺纖維在背角放出的神經胜肽。"], ["I make the cells in the substantia gelatinosa more sensitive to glutamate.", "我讓膠狀質的細胞對 glutamate 更敏感。"], ["Because of me, the pain message was passed on faster and stronger.", "因為我，痛的訊息傳得更快、更強。"]]}, {"n": "Substantia gelatinosa 膠狀質（閘門）", "b": [["I am a group of cells in the dorsal horn of the spinal cord.", "我是脊髓背角的一群細胞。"], ["I receive pain fibers, and I am where the pain gate is.", "我接收痛覺纖維，痛覺閘門就在我這裡。"], ["I passed the pain signal on. My fibers crossed to the left side right away and joined the spinothalamic pathway.", "我把痛的訊號傳下去，我的纖維馬上過到左側，加入脊髓視丘徑。"]]}, {"n": "Spinothalamic fiber 脊髓視丘徑", "b": [["I am a pain pathway on the front side of the spinal cord.", "我是脊髓前側的痛覺路線。"], ["I carry pain up to the thalamus.", "我把痛往上送到視丘。"], ["I started on the left side after crossing in the spinal cord, went up through the brainstem, and synapsed in the thalamus.", "我在脊髓交叉後從左側出發，經過腦幹往上，在視丘轉車。"]]}, {"n": "Thalamus 視丘（痛）", "b": [["I am the left thalamus, the relay station.", "我是左側的視丘，轉運站。"], ["I receive pain in the VP nucleus and the intralaminar nuclei.", "我在 VP 核和板內核接收痛覺。"], ["I kept pain separate from touch and sent it mostly to the anterior cingulate cortex, and less to the somatosensory cortex.", "我把痛和觸覺分開處理，主要送到前扣帶皮質，少部分送到體感皮質。"]]}, {"n": "Anterior cingulate cortex 前扣帶皮質", "b": [["I am in the left side of the brain.", "我在左腦。"], ["I handle the emotional part of pain and how much the person dreads it.", "我負責痛的情緒，還有有多害怕痛。"], ["When the pain signal reached me, the person felt how bad it was and did not want it to happen again.", "痛的訊號到我這裡，人才感覺到有多難受，不想再踩到。"]]}, {"n": "Mechanoreceptor 機械受器（Meissner / Merkel）", "b": [["I am a touch receptor in the skin of the right fingertip.", "我是右手指尖皮膚裡的觸覺受器。"], ["I respond when the skin is pressed or stretched. Meissner senses light touch and vibration; Merkel senses pressure and edges.", "皮膚被壓或被拉時我起反應。Meissner 管輕觸和振動，Merkel 管壓力和邊緣。"], ["The tap stretched my membrane, sodium channels opened, sodium came in, and I fired. I passed the signal to an A beta fiber.", "輕拍拉開我的膜，鈉通道打開，鈉流進來，我發出訊號，交給 Aβ 纖維。"]]}, {"n": "A beta fiber Aβ 纖維", "b": [["I am a thick, myelinated touch fiber.", "我是粗的、有髓鞘的觸覺纖維。"], ["I carry touch fast.", "我很快地送觸覺。"], ["I entered the spinal cord through the dorsal root and went straight up the same side in the dorsal column, with no stop, to the medulla. When someone rubs a sore spot, my signal helps close the pain gate.", "我從背根進脊髓，在同一側的背柱一路往上，中間不停，到延腦。有人揉痛處時，我的訊號幫忙關上痛覺閘門。"]]}, {"n": "Dorsal column nuclei + medial lemniscus 背柱核與內側蹄系", "b": [["I am in the medulla.", "我在延腦。"], ["I am the first stop for touch.", "我是觸覺第一次轉車的地方。"], ["After the synapse, my fibers formed the medial lemniscus, crossed to the left side, and went up to the VP nucleus of the thalamus.", "轉車後，我的纖維組成內側蹄系，過到左側，往上到視丘的 VP 核。"]]}, {"n": "Somatosensory cortex 體感皮質 S1", "b": [["I am in the postcentral gyrus of the left parietal lobe.", "我在左腦頂葉的中央後回。"], ["I hold a map of the body, the homunculus. The hands and face take the most space.", "我有一張身體地圖，就是小人圖，手和臉佔最大。"], ["The signal reached the finger area of my map, and the person felt a tap on the right index finger.", "訊號到了我地圖上手指的位置，人就感覺到右手食指被輕拍。"]]}, {"n": "Periaqueductal gray (PAG) 導水管周圍灰質", "b": [["I am in the midbrain.", "我在中腦。"], ["I have many opioid receptors. I turn pain down from the top.", "我有很多鴉片受體，從上往下把痛調小。"], ["In an emergency, the brain woke me up. I sent signals down to the spinal cord to release the body's own opioids, so less pain went up.", "緊急時大腦叫醒我，我往下傳訊，讓脊髓放出身體自己的止痛物質，送上去的痛就變少。"]]}];
+const ROLES_TOP=[["zh", "觸覺的路：受器，交給 A beta 纖維，從背根進脊髓，在同一側的背柱往上，到延腦才交叉，再到視丘的 VP 核，最後到頂葉的體感皮質。"], ["en", "Touch: receptor, A beta fiber, dorsal root, dorsal column on the same side, crosses in the medulla, VP thalamus, somatosensory cortex."], ["zh", "痛覺的路：痛覺受器，交給 A delta 和 C 纖維，從背根進脊髓，在膠狀質放出 glutamate 和 P 物質，一進脊髓就交叉，走脊髓視丘徑，到視丘，最後到前扣帶皮質和體感皮質。"], ["en", "Pain: nociceptor, A delta and C fibers, dorsal root, substantia gelatinosa with glutamate and Substance P, crosses right away in the spinal cord, spinothalamic tract, thalamus, anterior cingulate cortex and somatosensory cortex."], ["zh", "閘門：揉痛的地方、或是很緊急的時候，閘門會關；長期壓力會讓閘門打開。"], ["en", "Gate control: rubbing and high arousal close the gate. Chronic stress opens it."]];
+const ROLE_NAMES=[["痛覺受器", "Nociceptor"], ["A delta 纖維", "A delta fiber"], ["C 纖維", "C fiber"], ["P 物質", "Substance P"], ["膠狀質，也就是閘門", "Substantia gelatinosa"], ["脊髓視丘徑", "Spinothalamic tract"], ["視丘，痛的部分", "Thalamus"], ["前扣帶皮質", "Anterior cingulate cortex"], ["機械受器，Meissner 和 Merkel", "Mechanoreceptor"], ["A beta 纖維", "A beta fiber"], ["背柱核和內側蹄系", "Dorsal column nuclei and medial lemniscus"], ["體感皮質", "Somatosensory cortex"], ["導水管周圍灰質", "Periaqueductal gray"]];
+(function(){
+ const synth=window.speechSynthesis; const now=document.getElementById('now');
+ const playB=document.getElementById('play'), stopB=document.getElementById('stop');
+ let queue=[], idx=0, running=false, wake=null, lastEl=null;
+ function voiceFor(lang){const vs=synth?synth.getVoices():[];if(lang==='zh'){return vs.find(v=>/zh[-_]TW/i.test(v.lang))||vs.find(v=>/zh[-_]HK/i.test(v.lang))||vs.find(v=>/^zh/i.test(v.lang))||null;}return vs.find(v=>/^en[-_]US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;}
+ function split(t){return t.replace(/\s+/g,' ').split(/(?<=[。；！？])/).map(x=>x.trim()).filter(x=>x.length>1);}
+ function build(mode){const q=[];
+  if(mode==='roles'){const sec=document.getElementById('roles');
+   q.push({t:'第七章下半，觸覺和痛覺。十月十五號上課要演的十三個角色。每個角色三句：我是誰、我的工作、我發生了什麼事。先中文，再英文。',l:'zh',el:null});
+   q.push({t:'先記兩條路的總圖。',l:'zh',el:null});
+   ROLES_TOP.forEach(([l,t])=>{q.push({t,l,el:sec});q.push({pause:500});});
+   const lab=['我是誰','我的工作','我發生了什麼事'];const fx=t=>t.replace(/Aδ/g,'A delta ').replace(/Aβ/g,'A beta ');
+   ROLES_AUDIO.forEach((r,i)=>{q.push({t:'第'+(i+1)+'個角色，'+ROLE_NAMES[i][0]+'。',l:'zh',el:sec});q.push({t:ROLE_NAMES[i][1],l:'en',el:sec});
+    r.b.forEach((b,k)=>{q.push({t:lab[k]+'：'+fx(b[1]),l:'zh',el:sec});q.push({t:b[0],l:'en',el:sec});q.push({pause:400});});q.push({pause:1000});});
+   q.push({t:'十三個角色聽完了。晚安。',l:'zh',el:null});return q;}
+  if(mode!=='en'){q.push({t:'第七章下半，觸覺和痛覺。右腳踩到圖釘，兩條送信的路。',l:'zh',el:null});
+   document.querySelectorAll('#story .hook, #story .station').forEach(box=>{
+    const parts=box.classList.contains('hook')?[box]:[...box.querySelectorAll('.tag, p, li')];
+    parts.forEach(el=>split(el.textContent).forEach(t=>q.push({t,l:'zh',el:box})));
+    q.push({pause:900});});}
+  if(mode!=='zh'){q.push({t:'接下來是英文版。',l:'zh',el:null});
+   document.querySelectorAll('#pairs .pair').forEach(pr=>{q.push({t:pr.querySelector('.e span').textContent,l:'en',el:pr});q.push({t:pr.querySelector('.c').textContent,l:'zh',el:pr});q.push({pause:600});});}
+  q.push({t:'這一段聽完了。晚安。',l:'zh',el:null});return q;}
+ function mark(el){if(lastEl&&lastEl!==el)lastEl.classList.remove('reading');if(el){el.classList.add('reading');lastEl=el;}}
+ function next(){if(!running)return;if(idx>=queue.length){finish();return;}
+  const it=queue[idx++];
+  if(it.pause){setTimeout(next,it.pause);return;}
+  mark(it.el);now.textContent='正在播：'+it.t;
+  const u=new SpeechSynthesisUtterance(it.t);u.lang=it.l==='zh'?'zh-TW':'en-US';const v=voiceFor(it.l);if(v)u.voice=v;
+  const r=parseFloat(document.getElementById('rate').value)||0.95;u.rate=it.l==='en'?Math.min(r,0.9):r;
+  u.onend=()=>setTimeout(next,250);u.onerror=()=>setTimeout(next,250);synth.speak(u);}
+ async function start(){if(!synth){now.textContent='這個瀏覽器不能朗讀，請改用 Chrome 打開。';return;}
+  synth.cancel();queue=build(document.getElementById('mode').value);idx=0;running=true;playB.hidden=true;stopB.hidden=false;
+  try{if('wakeLock' in navigator)wake=await navigator.wakeLock.request('screen');}catch(e){}
+  if(!voiceFor('zh')&&document.getElementById('mode').value!=='en'){now.textContent='手機沒有找到中文語音，會用預設的聲音念。';}
+  next();}
+ function finish(){running=false;try{synth.cancel();}catch(e){}mark(null);if(lastEl)lastEl.classList.remove('reading');playB.hidden=false;stopB.hidden=true;playB.textContent='睡前模式：從頭連續播放';now.textContent='播完了。';try{wake&&wake.release();}catch(e){}wake=null;}
+ playB.addEventListener('click',start);
+ stopB.addEventListener('click',()=>{finish();now.textContent='已停止。';});
+ if(synth&&synth.onvoiceschanged!==undefined)synth.onvoiceschanged=()=>{};
+ document.addEventListener('visibilitychange',async()=>{if(running&&document.visibilityState==='visible'&&!wake){try{wake=await navigator.wakeLock.request('screen');}catch(e){}}});
+})();
+</script>
+
+</body></html>
