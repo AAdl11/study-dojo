@@ -127,7 +127,7 @@ html{scroll-behavior:smooth}
       </select>
     </label>
   </div>
-  <div class="now" id="now">按下去以後可以閉上眼睛聽，會一站一站播到最後。螢幕請保持亮著。</div>
+  <div class="now" id="now">按下去以後可以閉上眼睛聽，會一站一站播到最後。螢幕請保持亮著。iPhone 請先把左側靜音鍵打開、音量調大。</div>
 </div>
 
 <nav class="bar" aria-label="段落">
@@ -366,7 +366,7 @@ const ROLE_NAMES=[["痛覺受器", "Nociceptor"], ["A delta 纖維", "A delta fi
 (function(){
  const synth=window.speechSynthesis; const now=document.getElementById('now');
  const playB=document.getElementById('play'), stopB=document.getElementById('stop');
- let queue=[], idx=0, running=false, wake=null, lastEl=null;
+ let errs=0, queue=[], idx=0, running=false, wake=null, lastEl=null;
  function voiceFor(lang){const vs=synth?synth.getVoices():[];if(lang==='zh'){return vs.find(v=>/zh[-_]TW/i.test(v.lang))||vs.find(v=>/zh[-_]HK/i.test(v.lang))||vs.find(v=>/^zh/i.test(v.lang))||null;}return vs.find(v=>/^en[-_]US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;}
  function split(t){return t.replace(/\s+/g,' ').split(/(?<=[。；！？])/).map(x=>x.trim()).filter(x=>x.length>1);}
  function build(mode){const q=[];
@@ -393,12 +393,11 @@ const ROLE_NAMES=[["痛覺受器", "Nociceptor"], ["A delta 纖維", "A delta fi
   mark(it.el);now.textContent='正在播：'+it.t;
   const u=new SpeechSynthesisUtterance(it.t);u.lang=it.l==='zh'?'zh-TW':'en-US';const v=voiceFor(it.l);if(v)u.voice=v;
   const r=parseFloat(document.getElementById('rate').value)||0.95;u.rate=it.l==='en'?Math.min(r,0.9):r;
-  u.onend=()=>setTimeout(next,250);u.onerror=()=>setTimeout(next,250);synth.speak(u);}
+  u.onend=()=>{errs=0;setTimeout(next,250);};u.onerror=(e)=>{errs++;if(errs>=3||(e&&e.error==='not-allowed')){finish();now.textContent='手機沒有發出聲音。請檢查：iPhone 左側的靜音鍵要打開（不要看到橘色），音量調大，然後再按一次播放。';return;}setTimeout(next,250);};synth.speak(u);if(synth.paused)synth.resume();}
  async function start(){if(!synth){now.textContent='這個瀏覽器不能朗讀，請改用 Chrome 打開。';return;}
   synth.cancel();queue=build(document.getElementById('mode').value);idx=0;running=true;playB.hidden=true;stopB.hidden=false;
-  try{if('wakeLock' in navigator)wake=await navigator.wakeLock.request('screen');}catch(e){}
-  if(!voiceFor('zh')&&document.getElementById('mode').value!=='en'){now.textContent='手機沒有找到中文語音，會用預設的聲音念。';}
-  next();}
+  errs=0;next();
+  try{if('wakeLock' in navigator)wake=await navigator.wakeLock.request('screen');}catch(e){}}
  function finish(){running=false;try{synth.cancel();}catch(e){}mark(null);if(lastEl)lastEl.classList.remove('reading');playB.hidden=false;stopB.hidden=true;playB.textContent='睡前模式：從頭連續播放';now.textContent='播完了。';try{wake&&wake.release();}catch(e){}wake=null;}
  playB.addEventListener('click',start);
  stopB.addEventListener('click',()=>{finish();now.textContent='已停止。';});
