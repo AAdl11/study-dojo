@@ -1,0 +1,594 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ch6 視覺 Dojo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one column study page, sticky section tabs, retina diagram travels with the scenario stepper */
+:root{
+  --bg:#f4f2f7; --surface:#ffffff; --ink:#1d1a2b; --muted:#5d5873; --line:#d9d4e6;
+  --rhodo:#b0345c;      /* visual purple / photopigment rose: vampires */
+  --light:#1f6fd1;      /* light path */
+  --signal:#c7461f;     /* signal path */
+  --amber:#b77a12;      /* villagers */
+  --violet:#6a49b8;     /* kids */
+  --teal:#1d8a7e;
+  --soft:#ece8f5;
+  --ok:#2c7a3f;
+  --f-display:"Noto Serif TC","Songti TC",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-en:"Atkinson Hyperlegible","Segoe UI",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#15131d; --surface:#1f1c2a; --ink:#f1eef8; --muted:#b4aec8; --line:#3a3550;
+  --rhodo:#ee7a9c; --light:#6aa8ff; --signal:#ff8a62; --amber:#f0b54a; --violet:#b39bff; --teal:#5fd0c2; --soft:#2a2638; --ok:#7fd18f;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#15131d; --surface:#1f1c2a; --ink:#f1eef8; --muted:#b4aec8; --line:#3a3550;
+  --rhodo:#ee7a9c; --light:#6aa8ff; --signal:#ff8a62; --amber:#f0b54a; --violet:#b39bff; --teal:#5fd0c2; --soft:#2a2638; --ok:#7fd18f;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:19px;line-height:1.7;margin:0}
+.wrap{max-width:820px;margin:0 auto;padding-inline:16px;padding-block:20px 80px}
+h1{font-family:var(--f-display);font-size:1.75rem;line-height:1.3;margin:0 0 4px;text-wrap:balance}
+h2{font-family:var(--f-display);font-size:1.35rem;margin:28px 0 10px;text-wrap:balance}
+h3{font-size:1.1rem;margin:0 0 6px}
+p{margin:0 0 10px}
+.en{font-family:var(--f-en);font-size:1.02rem}
+.sub{color:var(--muted);font-size:1rem}
+.core{background:var(--surface);border:2px solid var(--ink);border-radius:14px;padding:14px 16px;margin:14px 0}
+.core b{font-size:1.15rem}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;flex-wrap:wrap;padding-block:10px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-size:1rem;font-weight:700;padding:10px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;min-height:48px}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button:focus-visible{outline:3px solid var(--light);outline-offset:2px}
+.panel{padding-top:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+.mine{border-left:6px solid var(--light)}
+.zh{color:var(--muted);font-size:1rem;margin-top:6px}
+.btn{font:inherit;font-weight:700;font-size:1rem;padding:10px 16px;border-radius:10px;border:1.5px solid var(--ink);background:var(--surface);color:var(--ink);cursor:pointer;min-height:48px}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:disabled{opacity:.35;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.stepnav .btn{white-space:nowrap;flex:none}
+.stepnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:10px 0}
+.dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.dots span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots span.on{background:var(--ink)}
+.steptitle{font-family:var(--f-display);font-size:1.3rem;margin:0 0 4px}
+.role{display:inline-block;font-size:.95rem;font-weight:700;padding:2px 10px;border-radius:999px;background:var(--soft);margin-bottom:8px}
+.broken{margin-top:14px;border:2px dashed var(--signal);border-radius:12px;padding:12px 14px}
+.broken .q{font-weight:700}
+.ans{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--soft)}
+.term{font-family:var(--f-en);font-weight:700;white-space:nowrap}
+.say{font:inherit;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;flex:none;vertical-align:middle}
+.say svg{width:22px;height:22px}
+.vocab{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.vocab:last-child{border-bottom:0}
+.vocab .txt{min-width:0}
+.stress{font-family:var(--f-en);color:var(--rhodo);font-weight:700;letter-spacing:.03em}
+.diagram{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;overflow-x:auto}
+.diagram svg{display:block;width:100%;height:auto;max-width:640px;margin:0 auto}
+.info{margin-top:10px;min-height:120px}
+.layer{cursor:pointer}
+.layer rect.band{transition:opacity .25s}
+.dim .layer rect.band{opacity:.25}
+.dim .layer.hl rect.band{opacity:1}
+.part{cursor:pointer}
+.hint{font-size:.95rem;color:var(--muted)}
+.tag{font-size:.85rem;color:var(--muted)}
+.todo{color:var(--signal);font-weight:700}
+.audiobar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:4px 0 6px}
+.btn.listen{border-color:var(--light);color:var(--light)}
+.btn.listen.on{background:var(--light);color:var(--surface)}
+.eyes{display:flex;gap:8px;align-items:center;font-weight:700;font-size:1rem;min-height:48px}
+.eyes input{width:24px;height:24px}
+.top10 .vocab{padding:8px 0}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <h1>第六章 視覺 Dojo</h1>
+  <p class="sub">PSYC 4｜Midterm 2 是 11/5｜範圍只照 Reading Guide 和教授上課講的</p>
+
+  <div class="core">
+    <b>一句話：光往裡走，訊號往外走。</b>
+    <p class="en" style="margin-top:6px">Light travels inward. The signal travels back out.</p>
+    <p class="zh">練法：先看「情境重演」一遍，每一步先自己想「壞了會怎樣」，再按解答。然後做「自測」。</p>
+  </div>
+
+  <div class="card top10">
+    <h3>先念順這 10 個字</h3>
+    <p class="hint">考試開書，不考拼字。看到知道意思、念得出來就夠了。</p>
+    <div id="top10"></div>
+    <button class="btn" id="playTop10">依序念一次</button>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-scene" aria-selected="true" data-tab="scene">情境重演</button>
+    <button role="tab" id="tab-pic" aria-selected="false" data-tab="pic">配圖</button>
+    <button role="tab" id="tab-quiz" aria-selected="false" data-tab="quiz">自測</button>
+    <button role="tab" id="tab-say" aria-selected="false" data-tab="say">發音</button>
+  </div>
+
+  <!-- 情境重演 -->
+  <section class="panel" id="p-scene">
+    <h2>吸血鬼村莊：從光進來到大腦看見</h2>
+    <div class="diagram dim" id="sceneDiagram"></div>
+    <div class="stepnav">
+      <button class="btn" id="prev">上一步</button>
+      <div class="dots" id="dots"></div>
+      <button class="btn primary" id="next">下一步</button>
+    </div>
+    <div class="audiobar">
+      <button class="btn primary" id="playAll">▶ 從頭自動播放全部</button>
+      <button class="btn listen" id="listen">播放這一步</button>
+      <label class="eyes"><input type="checkbox" id="eyesMode" checked> 閉眼模式：念完自動到下一步</label>
+      <label class="eyes"><input type="checkbox" id="sceneLoop" checked> 播完重頭再來</label>
+    </div>
+    <p class="hint">念到「壞了會怎樣」會停 6 秒讓你自己先想，再念解答。</p>
+    <div class="card" id="stepCard"></div>
+  </section>
+
+  <!-- 配圖 -->
+  <section class="panel" id="p-pic" hidden>
+    <h2>眼睛：光走的路</h2>
+    <p class="hint">點圖上的名字，下面會出現說明。</p>
+    <div class="diagram" id="eyeDiagram"></div>
+    <div class="card info" id="eyeInfo"><p class="hint">還沒選。先點「角膜」試試。</p></div>
+
+    <h2>視網膜放大：六層，光從上面進來</h2>
+    <p class="hint">點任何一層。藍色箭頭是光，紅色箭頭是訊號。</p>
+    <div class="diagram" id="retinaDiagram"></div>
+    <div class="card info" id="retinaInfo"><p class="hint">還沒選。先點最下面的吸血鬼。</p></div>
+  </section>
+
+  <!-- 自測 -->
+  <section class="panel" id="p-quiz" hidden>
+    <h2>自測：這裡壞了會怎樣？</h2>
+    <p class="hint">先自己講出答案（講出聲最好），再按「看解答」。答不出來的，就是要回去看的地方。</p>
+    <div class="audiobar">
+      <button class="btn primary" id="quizPlay">▶ 自動播放全部自測</button>
+      <label class="eyes"><input type="checkbox" id="quizLoop" checked> 播完重頭再來</label>
+    </div>
+    <p class="hint">每題念完題目會停 6 秒讓你自己先答，再念中文解答和英文。螢幕要保持亮著，聲音才不會停。</p>
+    <div id="quizList"></div>
+  </section>
+
+  <!-- 發音 -->
+  <section class="panel" id="p-say" hidden>
+    <h2>術語發音</h2>
+    <p class="hint">按喇叭聽一次，跟著念一次。紅色大寫的音節要念重。</p>
+    <p class="hint" id="ttsNote" hidden>這個瀏覽器不支援朗讀。換成手機的 Chrome 或 Safari 打開就可以聽。</p>
+    <div id="vocabList"></div>
+  </section>
+</div>
+
+<script>
+/* ---------- 朗讀 ---------- */
+const canSpeak = typeof window !== "undefined" && "speechSynthesis" in window;
+let enVoice = null;
+function pickVoice(){
+  try{
+    const vs = speechSynthesis.getVoices();
+    enVoice = vs.find(v=>/en-US/i.test(v.lang) && /Samantha|Google US|Aria|Jenny/i.test(v.name)) || vs.find(v=>/en-US/i.test(v.lang)) || vs.find(v=>/^en/i.test(v.lang)) || null;
+  }catch(e){}
+}
+if(canSpeak){ pickVoice(); try{ speechSynthesis.onvoiceschanged = pickVoice; }catch(e){} }
+function say(text){
+  if(!canSpeak){ const n=document.getElementById("ttsNote"); if(n) n.hidden=false; return; }
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang="en-US"; u.rate=0.85; if(enVoice) u.voice=enVoice;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+const speakerIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M18.5 6.5a8 8 0 0 1 0 11"/></svg>';
+function sayBtn(word){ return `<button class="say" data-say="${word.replace(/"/g,'&quot;')}" aria-label="念 ${word}">${speakerIcon}</button>`; }
+function T(en, zh){ return `<span class="term">${en}</span> ${sayBtn(en)} ${zh?`（${zh}）`:''}`; }
+document.addEventListener("click", e=>{ const b=e.target.closest("[data-say]"); if(b) say(b.dataset.say); });
+
+/* ---------- 分頁 ---------- */
+const tabs=[...document.querySelectorAll(".tabs button")];
+function showTab(id){
+  tabs.forEach(t=>t.setAttribute("aria-selected", t.dataset.tab===id ? "true":"false"));
+  ["scene","pic","quiz","say"].forEach(k=>document.getElementById("p-"+k).hidden = k!==id);
+  try{ localStorage.setItem("ch6dojo-tab", id); }catch(e){}
+}
+tabs.forEach(t=>t.addEventListener("click", ()=>showTab(t.dataset.tab)));
+
+/* ---------- 視網膜圖 ---------- */
+const LAYERS = [
+  {id:"ganglion",   y:20,  h:70, color:"var(--violet)", en:"Ganglion cells", zh:"神經節細胞", role:"小孩"},
+  {id:"amacrine",   y:90,  h:44, color:"var(--teal)",   en:"Amacrine cells", zh:"無軸突細胞", role:"村民和小孩之間傳話的人"},
+  {id:"bipolar",    y:134, h:70, color:"var(--amber)",  en:"Bipolar cells",  zh:"雙極細胞",   role:"村民"},
+  {id:"horizontal", y:204, h:44, color:"var(--teal)",   en:"Horizontal cells", zh:"水平細胞", role:"吸血鬼之間傳話的人"},
+  {id:"photoreceptor", y:248, h:96, color:"var(--rhodo)", en:"Photoreceptors (rods and cones)", zh:"感光細胞（桿細胞和錐細胞）", role:"吸血鬼"},
+  {id:"epithelium", y:344, h:44, color:"var(--muted)",  en:"Pigmented epithelium", zh:"色素上皮", role:"城堡"}
+];
+function retinaSVG(prefix){
+  let s = `<svg viewBox="0 0 600 430" role="img" aria-label="視網膜六層，光從上方進入">`;
+  s += `<text x="300" y="14" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="var(--f-body)">↓ 光從眼球中間進來（上方）</text>`;
+  LAYERS.forEach(L=>{
+    s += `<g class="layer" data-layer="${L.id}" tabindex="0" role="button" aria-label="${L.zh}">`;
+    s += `<rect class="band" x="10" y="${L.y}" width="580" height="${L.h}" rx="6" fill="${L.color}" fill-opacity=".16" stroke="${L.color}" stroke-width="1.5"/>`;
+    s += `<text x="22" y="${L.y+L.h/2-4}" font-size="16" font-weight="700" fill="var(--ink)" font-family="var(--f-body)">${L.zh}</text>`;
+    s += `<text x="22" y="${L.y+L.h/2+16}" font-size="13" fill="var(--muted)" font-family="var(--f-en)">${L.en.replace(" (rods and cones)","")}</text>`;
+    s += `<text x="578" y="${L.y+L.h/2+5}" text-anchor="end" font-size="14" font-weight="700" fill="${L.color}" font-family="var(--f-body)">${L.role.length>6?'':L.role}</text>`;
+    // simple cell glyphs
+    const cx=[260,330,400];
+    if(L.id==="ganglion") cx.forEach(x=>{ s+=`<circle cx="${x}" cy="${L.y+35}" r="15" fill="${L.color}" fill-opacity=".55" stroke="${L.color}"/>`; });
+    if(L.id==="bipolar") cx.forEach(x=>{ s+=`<path d="M${x} ${L.y+12} L${x+11} ${L.y+35} L${x} ${L.y+58} L${x-11} ${L.y+35} Z" fill="${L.color}" fill-opacity=".55" stroke="${L.color}"/>`; });
+    if(L.id==="amacrine"||L.id==="horizontal"){ s+=`<line x1="240" y1="${L.y+22}" x2="420" y2="${L.y+22}" stroke="${L.color}" stroke-width="3"/><ellipse cx="330" cy="${L.y+22}" rx="13" ry="8" fill="${L.color}" fill-opacity=".6"/>`; }
+    if(L.id==="photoreceptor"){ [245,285,325,365,405].forEach((x,i)=>{ if(i%2===0) s+=`<rect x="${x-6}" y="${L.y+12}" width="12" height="70" rx="5" fill="${L.color}" fill-opacity=".55" stroke="${L.color}"/>`; else s+=`<path d="M${x} ${L.y+30} L${x+12} ${L.y+82} L${x-12} ${L.y+82} Z" fill="${L.color}" fill-opacity=".55" stroke="${L.color}"/>`; }); }
+    if(L.id==="epithelium"){ for(let x=240;x<=420;x+=30) s+=`<circle cx="${x}" cy="${L.y+22}" r="6" fill="${L.color}" fill-opacity=".6"/>`; }
+    s += `</g>`;
+  });
+  // arrows
+  s += `<defs><marker id="${prefix}aL" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--light)"/></marker><marker id="${prefix}aS" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--signal)"/></marker></defs>`;
+  s += `<line id="${prefix}lightArrow" x1="440" y1="22" x2="440" y2="262" stroke="var(--light)" stroke-width="5" marker-end="url(#${prefix}aL)"/>`;
+  s += `<text x="448" y="120" font-size="13" fill="var(--light)" font-family="var(--f-body)" font-weight="700">光</text>`;
+  s += `<line id="${prefix}signalArrow" x1="490" y1="300" x2="490" y2="34" stroke="var(--signal)" stroke-width="5" marker-end="url(#${prefix}aS)"/>`;
+  s += `<text x="498" y="240" font-size="13" fill="var(--signal)" font-family="var(--f-body)" font-weight="700">訊號</text>`;
+  s += `<text x="300" y="422" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="var(--f-body)">眼球後壁（最深處）</text>`;
+  s += `</svg>`;
+  return s;
+}
+
+const LAYER_INFO = {
+  ganglion:{t:"Ganglion cells 神經節細胞｜小孩", b:`位置在視網膜最前面（最靠近眼球中間），光先經過它們，但它們不理光。<br>雙極細胞把訊號傳來之後，它們是<b>第一個發出 action potential（動作電位）</b>的細胞。永遠不會完全靜止，只是改變發射頻率。<br>長長的軸突全部集合起來，從視神經盤出去，就是<b>視神經</b>。<br>三種：M（parasol，動作與對比）、P（midget，細節與紅綠）、K（small bistratified，藍黃）。`, en:"Ganglion cells fire the first action potentials, and their axons form the optic nerve."},
+  amacrine:{t:"Amacrine cells 無軸突細胞", b:"夾在雙極細胞和神經節細胞中間，橫向連接，幫忙抑制。教授說它們幫雙極細胞彼此溝通，也和動作有關。", en:"Amacrine cells connect bipolar cells and ganglion cells sideways and help with inhibition."},
+  bipolar:{t:"Bipolar cells 雙極細胞｜村民", b:`中間層。光經過它們，它們也不理光。<br>黑暗中被感光細胞的 glutamate 壓住，不能出門。光一來，感光細胞關掉，村民<b>被放開（disinhibited）</b>，把訊號傳給神經節細胞。<br>教授說：讓你「看見」的是它們被放開，吸血鬼的工作是在沒光時不讓你看見。<br>中央小窩：一個錐細胞接一個雙極細胞，看得最清楚。周邊：大約 50 個 rods 接一個（教授投影片），暗處敏感但模糊。`, en:"In the dark, bipolar cells are inhibited. When light shuts down the photoreceptors, the bipolar cells are released and pass the signal to the ganglion cells."},
+  horizontal:{t:"Horizontal cells 水平細胞", b:"夾在雙極細胞和感光細胞中間，橫向連接相鄰的感光細胞。教授的比喻：吸血鬼之間互相通報「你的村民放出去了沒」。<br>產生<b>側抑制（lateral inhibition）</b>，讓邊緣和對比更清楚。", en:"Horizontal cells connect neighboring photoreceptors and create lateral inhibition, which sharpens edges."},
+  photoreceptor:{t:"Photoreceptors 感光細胞（rods 桿細胞、cones 錐細胞）｜吸血鬼", b:`位置在<b>最後一層</b>，但功能上是<b>第一個對光起反應</b>的。<br>黑暗中很活躍：鈉通道打開（dark current），去極化，放出大量 glutamate，壓住雙極細胞。<br>光照到時：感光色素吸收光，鈉通道關閉，<b>過極化</b>，glutamate 變少。用的是 graded potential（分級電位），不是動作電位。<br>教授的數字：rods 約 1 億，cones 約 300 萬（課本寫 1.2 億和 600 萬，考試照教授）。<br>Rods：暗光、沒有顏色、在周邊。Cones：亮光、有顏色、集中在中央小窩。`, en:"In the dark, photoreceptors are active and release glutamate. Light hyperpolarizes them, so they release less glutamate."},
+  epithelium:{t:"Pigmented epithelium 色素上皮｜城堡", b:"在感光細胞後面，貼著眼球後壁。供應感光細胞需要的能量、血液、維生素和化學物質，也把用不到的光吸掉。<br>這就是感光細胞要住在最深處的原因：靠近城堡。", en:"The pigmented epithelium supplies energy to the photoreceptors and absorbs extra light."}
+};
+function renderInfo(el, key){
+  const d=LAYER_INFO[key]; if(!d) return;
+  el.innerHTML = `<h3>${d.t}</h3><p>${d.b}</p><p class="en"><b>考試句：</b>${d.en}</p>`;
+}
+document.getElementById("retinaDiagram").innerHTML = retinaSVG("r");
+document.getElementById("retinaDiagram").addEventListener("click", e=>{
+  const g=e.target.closest(".layer"); if(!g) return; renderInfo(document.getElementById("retinaInfo"), g.dataset.layer);
+});
+document.getElementById("retinaDiagram").addEventListener("keydown", e=>{
+  if(e.key!=="Enter"&&e.key!==" ") return; const g=e.target.closest(".layer"); if(!g) return; e.preventDefault(); renderInfo(document.getElementById("retinaInfo"), g.dataset.layer);
+});
+
+/* ---------- 眼睛圖 ---------- */
+const EYE_PARTS = {
+  cornea:{t:"Cornea 角膜", b:"眼球最前面透明的一層，光從這裡進來，也在這裡開始折射。", en:"The cornea is the clear front of the eye where light enters."},
+  iris:{t:"Iris 虹膜／Pupil 瞳孔", b:"虹膜是有顏色的那一圈肌肉，控制瞳孔大小。瞳孔是讓光進去的開口。亮的時候瞳孔變小，暗的時候變大。", en:"The iris controls the size of the pupil, the opening that lets light in."},
+  lens:{t:"Lens 水晶體", b:"把光聚焦到視網膜上。看近看遠時改變形狀，叫 <b>accommodation（調節）</b>。光在這裡折射，上下左右交叉，所以視網膜上的影像是<b>倒過來</b>的，大腦再幫你翻正。", en:"The lens focuses light on the retina. The light rays cross, so the image on the retina is upside down."},
+  vitreous:{t:"Vitreous 玻璃體", b:"眼球中間透明的膠狀物，光穿過它到達視網膜。", en:"Light passes through the vitreous to reach the retina."},
+  retina:{t:"Retina 視網膜", b:"眼球最後面那一層薄薄的神經組織（教授投影片上的黃色層），就是吸血鬼村莊。到「配圖」下面看六層放大。", en:"The retina is the layer of neurons at the back of the eye that records light information."},
+  fovea:{t:"Fovea 中央小窩", b:"視網膜正中央，幾乎全是錐細胞，一個錐細胞接一個雙極細胞，所以你正面看東西最清楚。", en:"The fovea is full of cones and gives the sharpest vision."},
+  disk:{t:"Optic disk 視神經盤＝盲點", b:"所有神經節細胞的軸突從這裡離開眼睛。這裡<b>沒有感光細胞</b>，所以是盲點。平常感覺不到，因為另一隻眼睛補位，大腦也會自動填滿。", en:"The optic disk has no photoreceptors, so it is the blind spot."},
+  nerve:{t:"Optic nerve 視神經", b:"由神經節細胞的軸突組成。之後在 optic chiasm（視交叉）靠鼻子那半交叉到對側，大約 90% 到視丘的 LGN，再到枕葉的 V1；大約 10% 到 superior colliculus（上丘），控制眼睛轉向。", en:"The optic nerve carries the signal to the LGN in the thalamus and then to the visual cortex in the occipital lobe."}
+};
+function eyeSVG(){
+  return `<svg viewBox="0 0 640 330" role="img" aria-label="眼睛側面剖面">
+  <defs><marker id="eA" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--light)"/></marker></defs>
+  <circle cx="330" cy="160" r="130" fill="var(--soft)" stroke="var(--line)" stroke-width="2"/>
+  <path class="part" data-part="retina" d="M330 30 A130 130 0 0 1 330 290" fill="none" stroke="var(--amber)" stroke-width="12"/>
+  <path class="part" data-part="cornea" d="M215 95 Q175 160 215 225" fill="none" stroke="var(--light)" stroke-width="6"/>
+  <rect class="part" data-part="iris" x="226" y="96" width="10" height="40" fill="var(--teal)"/>
+  <rect class="part" data-part="iris" x="226" y="184" width="10" height="40" fill="var(--teal)"/>
+  <ellipse class="part" data-part="lens" cx="258" cy="160" rx="18" ry="48" fill="var(--violet)" fill-opacity=".35" stroke="var(--violet)" stroke-width="2"/>
+  <rect class="part" data-part="vitreous" x="300" y="130" width="90" height="60" fill="transparent"/>
+  <text x="345" y="165" text-anchor="middle" font-size="14" fill="var(--muted)" font-family="var(--f-body)" pointer-events="none">玻璃體</text>
+  <circle class="part" data-part="fovea" cx="459" cy="168" r="9" fill="var(--rhodo)"/>
+  <circle class="part" data-part="disk" cx="452" cy="222" r="10" fill="var(--ink)"/>
+  <path class="part" data-part="nerve" d="M458 226 C500 240 530 250 600 262" fill="none" stroke="var(--ink)" stroke-width="16" stroke-linecap="round"/>
+  <line x1="40" y1="110" x2="455" y2="200" stroke="var(--light)" stroke-width="2.5" marker-end="url(#eA)"/>
+  <line x1="40" y1="210" x2="455" y2="120" stroke="var(--light)" stroke-width="2.5" marker-end="url(#eA)"/>
+  <text x="40" y="100" font-size="13" fill="var(--light)" font-family="var(--f-body)">光線在水晶體交叉 → 影像倒過來</text>
+  <g font-family="var(--f-body)" font-size="15" font-weight="700" fill="var(--ink)">
+    <text class="part" data-part="cornea" x="150" y="60">角膜</text>
+    <text class="part" data-part="iris" x="205" y="252">虹膜／瞳孔</text>
+    <text class="part" data-part="lens" x="230" y="292">水晶體</text>
+    <text class="part" data-part="retina" x="470" y="62">視網膜</text>
+    <text class="part" data-part="fovea" x="478" y="172">中央小窩</text>
+    <text class="part" data-part="disk" x="380" y="262">視神經盤（盲點）</text>
+    <text class="part" data-part="nerve" x="540" y="296">視神經</text>
+  </g></svg>`;
+}
+document.getElementById("eyeDiagram").innerHTML = eyeSVG();
+document.getElementById("eyeDiagram").addEventListener("click", e=>{
+  const p=e.target.closest(".part"); if(!p) return; const d=EYE_PARTS[p.dataset.part];
+  document.getElementById("eyeInfo").innerHTML = `<h3>${d.t}</h3><p>${d.b}</p><p class="en"><b>考試句：</b>${d.en}</p>`;
+});
+
+/* ---------- 情境重演 ---------- */
+const STEPS = [
+  {title:"0　你的角色：1 號光子", role:"你自己交出去的版本（Canvas Attempt 2，以這個為準）", hl:[], light:false, signal:false,
+   body:`<div class="card mine">
+<p class="en">In class we acted out how the retina works in the dark and in the light. I was photon #1. Our group started at the window at the front of the classroom. I went across the front, past the green dots for photons #2 and #3, bounced off the projector corner, and moved diagonally through the rows of classmates to the opposite back corner. This crossing is why the image on the retina is upside down.</p>
+<p class="zh">課堂上我們演出視網膜在暗和亮的時候怎麼運作。我是 1 號光子。我們這組從教室最前面的窗戶邊出發。我橫過前面，經過留給 2 號、3 號光子的綠點，在投影機角落彈出去，再斜線穿過一排排同學，到對角最後面的角落。這個交叉，就是視網膜上的影像會上下顛倒的原因。</p>
+<p class="en">When the eye was closed, no light could enter. In the dark, the photoreceptors continued releasing glutamate, which kept the ON bipolar cells inhibited. As a result, the ON bipolar cells were less active, and there was no light-driven signal through this pathway.</p>
+<p class="zh">眼睛閉著時光進不來。暗的時候，感光細胞一直放 glutamate，把 ON 雙極細胞壓住。所以 ON 雙極細胞比較不活躍，這條路徑上沒有由光引發的訊號。</p>
+<p class="en">When the eye opened, I passed through the ganglion cell and bipolar cell layers until I reached a photoreceptor at the back of the retina. The photoreceptor absorbed the light and released less glutamate, allowing the ON bipolar cell to become active and send a signal to a ganglion cell. The ganglion cell then sent the signal through its axon into the optic nerve toward the brain.</p>
+<p class="zh">眼睛打開時，我穿過神經節細胞層和雙極細胞層，一直到視網膜最後面的感光細胞。感光細胞吸收光，glutamate 變少，ON 雙極細胞活躍起來，把訊號傳給神經節細胞。神經節細胞再把訊號沿著軸突送進視神經，往大腦去。</p></div>
+<p>下面一步一步重演，每一步的位置會在上面的圖上亮起來。</p>`,
+   broken:null},
+  {title:"1　光進眼睛：角膜 → 瞳孔 → 水晶體 → 玻璃體 → 視網膜", role:"光（你）", hl:[], light:false, signal:false,
+   body:`<p>光先碰到 ${T("cornea","角膜")}，穿過 ${T("pupil","瞳孔")}（由 ${T("iris","虹膜")} 控制大小），經過 ${T("lens","水晶體")} 聚焦，再穿過玻璃體，到達 ${T("retina","視網膜")}。</p>
+<p>光線在水晶體 ${T("refraction","折射")} 交叉，所以<b>視網膜上的影像是倒過來的</b>，大腦再幫你翻正。教授說戴倒影眼鏡兩週，有些人的大腦會自己再翻回來。這就是你演的斜線交叉。</p>
+<p class="en"><b>考試句：</b>The light rays cross in the eye, so the image on the retina is upside down, and the brain flips it.</p>`,
+   broken:{q:"如果水晶體變硬，不能改變形狀調焦，會怎樣？", a:"不能做 accommodation（調節），看近的東西對不準焦點，變模糊。這就是年紀大了的老花（presbyopia，課本 p.202）。"}},
+  {title:"2　光穿過小孩和村民：什麼都沒發生", role:"神經節細胞、雙極細胞", hl:["ganglion","bipolar"], light:true, signal:false,
+   body:`<p>光先經過 ${T("ganglion cells","神經節細胞")}，再經過 ${T("bipolar cells","雙極細胞")}。它們<b>沒有接收光的受體，不理光</b>。</p>
+<p>教授的<b>第一個 trick</b>：感光細胞在位置上是最後一層，在功能上卻是第一個對光起反應的。</p>
+<p>為什麼這樣設計？兩個理由：一、光子最後被眼球後壁吸收，不會亂彈去干擾別的神經元，往前傳的只有「資訊」；二、感光細胞很貴，需要大量能量、血液、維生素，要貼著後面的城堡。</p>
+<p class="en"><b>考試句：</b>Photoreceptors are the last layer by location but the first layer to react to light.</p>`,
+   broken:{q:"如果感光細胞放在最前面（第一層），會有什麼問題？", a:"一、離後面的色素上皮太遠，拿不到足夠的能量和支援。二、沒被吸收的光子會在眼睛裡亂彈，干擾其他神經元。教授說這兩個是目前的理論，nature 為什麼這樣設計，沒有人百分之百知道。"}},
+  {title:"3　黑暗：吸血鬼掌權", role:"感光細胞＝吸血鬼", hl:["photoreceptor","bipolar"], light:false, signal:false,
+   body:`<p>教授的<b>第二個 trick</b>：${T("photoreceptors","感光細胞")} 在<b>黑暗中是活躍的</b>。</p>
+<p>黑暗中，鈉通道一直打開（課本叫 ${T("dark current","暗電流")}，p.183），細胞去極化，放出大量 ${T("glutamate","麩胺酸")}，把雙極細胞壓住。村民不能出門，小孩也不出門，大腦收不到光的訊號，你看到黑。</p>
+<p>為什麼？<b>省能量</b>。我們待在亮處的時間比暗處長，讓感光細胞在亮處休息最省。</p>
+<p class="en"><b>考試句：</b>In the dark, photoreceptors are active and release glutamate, which inhibits the bipolar cells.</p>`,
+   broken:{q:"如果感光細胞的鈉通道卡住，光來了也關不起來，會怎樣？", a:"感光細胞就一直像在黑暗中一樣，不停放 glutamate，雙極細胞一直被壓住。訊號傳不出去，<b>在亮處也看不見</b>。這就是教授的出題方式：某一步壞掉，往後推。"}},
+  {title:"4　光一來：吸血鬼躲起來", role:"感光細胞＝吸血鬼", hl:["photoreceptor"], light:true, signal:false,
+   body:`<p>光照到感光細胞，感光色素吸收光，鈉通道關閉，細胞 ${T("hyperpolarize","過極化")}，glutamate 變少。</p>
+<p>這是 ${T("graded potential","分級電位")}，不是動作電位：光越多，感光細胞越安靜。</p>
+<p>教授特別警告：很多 YouTube 說「光<b>啟動</b>感光細胞」，那是相反的，有學生因此考試全錯。光是<b>關掉</b>感光細胞。</p>
+<p class="en"><b>考試句：</b>Light turns photoreceptors off. They hyperpolarize and release less glutamate.</p>`,
+   broken:{q:"如果感光細胞一個一個死掉（retinitis pigmentosa 色素性視網膜炎，課本 p.205），會怎樣？", a:"光照進來，最深處沒有人把「有光」轉成訊號。村民和小孩其實都還活著，只是沒有人通知它們，所以看不見。這也是第 10 步光遺傳學要解決的問題。"}},
+  {title:"5　村民被放開：開派對", role:"雙極細胞＝村民", hl:["bipolar","horizontal"], light:false, signal:true,
+   body:`<p>吸血鬼一安靜，${T("bipolar cells","雙極細胞")} 就<b>不再被抑制（disinhibited）</b>，活躍起來，把訊號傳給神經節細胞。</p>
+<p>重點：光不是直接啟動村民，是<b>把壓住村民的吸血鬼關掉</b>。</p>
+<p>有些村民很強，要好幾個吸血鬼才壓得住，這叫 ${T("convergence","匯聚")}。中央小窩一對一，看得最清楚；周邊大約 50 個 rods 接一個雙極細胞（教授投影片），暗處敏感但模糊。</p>
+<p>${T("horizontal cells","水平細胞")} 橫向連接吸血鬼，產生 ${T("lateral inhibition","側抑制")}：中心活躍時把周圍壓下去（${T("center-surround","中心周邊拮抗")}），讓邊緣更清楚。</p>
+<p class="en"><b>考試句：</b>Light releases the bipolar cells by turning the photoreceptors off. It does not activate them directly.</p>`,
+   broken:{q:"如果水平細胞不作用，側抑制消失，會怎樣？", a:"中心和周圍不再互相拮抗，邊緣和對比變得不清楚。赫曼方格（Hermann grid）的灰點就是側抑制造成的：用周邊看，感受野大，灰點出現；用中央小窩直視，感受野小，灰點消失。"}},
+  {title:"6　小孩出門：第一個發動作電位", role:"神經節細胞＝小孩", hl:["ganglion"], light:false, signal:true,
+   body:`<p>村民把訊號傳給 ${T("ganglion cells","神經節細胞")}，小孩發出 ${T("action potential","動作電位")}。<b>它們是視網膜裡第一個發動作電位的細胞。</b>它們永遠不會完全靜止，只是改變發射頻率。</p>
+<p>三種小孩：M（${T("parasol","陽傘細胞")}）管動作和對比；P（${T("midget","侏儒細胞")}）管細節和紅綠；K（${T("small bistratified","小雙層細胞")}）管藍黃。</p>
+<p>顏色兩個理論都對：${T("trichromatic theory","三色說")} 在錐細胞那一層（紅綠藍三種）；${T("opponent process theory","拮抗說")} 在神經節細胞這一層（紅對綠、藍對黃）。</p>
+<p class="en"><b>考試句：</b>Both color theories are correct. Trichromatic works at the cones. Opponent process works at the ganglion cells.</p>`,
+   broken:{q:"盯著綠色的國旗看 30 秒，再看白牆，為什麼會看到紅色？", a:"綠色一直被看見時，同一個神經節細胞的紅色那一邊被長時間壓住。突然拿掉，紅色那一邊反彈、過度反應，你就在沒有紅色的地方看到紅色。教授用拮抗說解釋，不是 Crash Course 講的「錐細胞累了」。"}},
+  {title:"7　小孩手牽手出村：視神經", role:"視神經", hl:["ganglion"], light:false, signal:true,
+   body:`<p>每個小孩都有一條很長的軸突。所有軸突集合起來，從 ${T("optic disk","視神經盤")} 離開眼睛，這一隊就是 ${T("optic nerve","視神經")}。</p>
+<p>視神經盤沒有感光細胞，所以是 ${T("blind spot","盲點")}。上課用一個點和一張鈔票的紙測過：閉一隻眼慢慢移動，鈔票會消失。</p>
+<p class="en"><b>考試句：</b>The axons of the ganglion cells leave the eye at the optic disk and form the optic nerve. The optic disk has no photoreceptors, so it is the blind spot.</p>`,
+   broken:{q:"每個人都有盲點，為什麼平常看不到一個黑洞？", a:"一、另一隻眼睛看得到那一塊，會補位。二、就算閉一隻眼，大腦也會依照周圍的樣子自動填滿。這又是「你是用大腦看，不是用眼睛看」的證據。"}},
+  {title:"8　到大腦：視交叉 → LGN → V1", role:"大腦", hl:[], light:false, signal:false,
+   body:`<p>視神經到 ${T("optic chiasm","視交叉")}，靠鼻子那半邊的纖維交叉到對側，外側那半留在同側。</p>
+<p>大約 90% 送到視丘的 ${T("lateral geniculate nucleus","外側膝狀核")}（LGN，p.189），再送到枕葉的 ${T("primary visual cortex","初級視覺皮質")}（V1，又叫 ${T("striate cortex","紋狀皮質")}，p.190）。大約 10% 送到 ${T("superior colliculus","上丘")}，讓眼睛和頭轉向新出現的東西。</p>
+<p class="en"><b>考試句：</b>About 90 percent of the optic tract goes to the LGN in the thalamus and then to V1 in the occipital lobe.</p>`,
+   broken:{q:"如果眼睛完全正常，但枕葉的 V1 受損，會怎樣？", a:"還是看不見，因為大腦沒有幫你「看見」。教授說：壞在眼睛還有機會用仿生眼修，壞在視覺皮質，眼睛再好也看不到。有些人會出現 <b>blindsight（盲視）</b>：說自己看不見，卻能指出光在哪裡（p.205），可能是靠上丘和 LGN 這些別的路。"}},
+  {title:"9　大腦看見：V1 之後分兩條路", role:"大腦", hl:[], light:false, signal:false,
+   body:`<p>V1 裡：${T("simple cortical cell","簡單細胞")} 認特定角度、特定位置的線；${T("complex cortical cell","複雜細胞")} 認角度但不管位置，很多也對動作有反應（Hubel 和 Wiesel 發現）。</p>
+<p>V1 的柱狀組織：${T("ocular dominance column","眼優勢柱")} 管左眼或右眼；${T("orientation column","方向柱")} 管線的角度；${T("cytochrome oxidase blob","細胞色素氧化酶斑")} 管顏色（p.192）。</p>
+<p>之後兩條路（p.194）：腹側 ${T("ventral stream","腹側路徑")} 到顳葉，是 what 路徑，認東西，裡面的 ${T("fusiform face area","梭狀臉孔區")} 認臉；背側 ${T("dorsal stream","背側路徑")} 到頂葉，是 where 路徑，管位置和動作。</p>
+<p class="en"><b>考試句：</b>The ventral stream is the "what" pathway for object recognition. The dorsal stream is the "where" pathway for location and movement.</p>`,
+   broken:{q:"如果梭狀臉孔區（FFA）受損，會怎樣？如果顳葉的 MT 區受損呢？", a:"FFA 受損：prosopagnosia（臉孔失認症），看得到眼睛鼻子嘴巴，卻認不出熟悉的臉（p.206）。教授說這是「bottom 有、top 沒有」。MT 受損：akinetopsia（動作盲），看到的世界像一張一張靜止的照片（p.194）。"}},
+  {title:"10　番外：2026 諾貝爾獎，光遺傳學", role:"新聞連結", hl:["ganglion"], light:true, signal:true,
+   body:`<p>2026 年 10 月 5 日，諾貝爾生理學或醫學獎頒給 Karl Deisseroth、Peter Hegemann、Georg Nagel，表彰 ${T("optogenetics","光遺傳學")}。</p>
+<p>藻類裡有一種蛋白質 ${T("channelrhodopsin","通道視紫質")}，照到光就打開離子通道，讓細胞發射。放進神經細胞，就等於裝了一個<b>「照到光就開」的開關</b>。</p>
+<p>用在吸血鬼村莊：吸血鬼死了（第 4 步），村民和小孩還活著。把光開關放進<b>小孩（神經節細胞）</b>，光就直接讓小孩出門，跳過吸血鬼和村民。</p>
+<p>為什麼放小孩？一、小孩的軸突就是視神經，直通大腦；二、小孩住在最前面，最容易被找到；三、這種病通常是吸血鬼先死，小孩撐得比較久。</p>
+<p>正常眼睛：光把吸血鬼<b>關掉</b>。光遺傳學：光把小孩<b>打開</b>。結果一樣，小孩跑出去。代價是跳過村民的邊緣處理，看到的比較粗。</p>
+<p>課本 p.205 的仿生眼是用<b>電</b>刺激雙極細胞和神經節細胞，光遺傳學是同樣的想法，把電換成<b>光</b>。</p>`,
+   broken:{q:"為什麼光遺傳學要放在神經節細胞，而不是放在已經死掉的感光細胞那一層？", a:"感光細胞已經死了，放什麼都沒用。要找還活著、而且能把訊號送到大腦的細胞。神經節細胞還活著，它的軸突就是視神經，光一打開它，訊號直接走視神經到大腦。"}}
+];
+
+let cur = 0;
+try{ const s=parseInt(localStorage.getItem("ch6dojo-step")||"0",10); if(s>=0&&s<STEPS.length) cur=s; }catch(e){}
+document.getElementById("sceneDiagram").innerHTML = retinaSVG("s");
+const dots = document.getElementById("dots");
+dots.innerHTML = STEPS.map(()=>"<span></span>").join("");
+function renderStep(){
+  const st=STEPS[cur];
+  const card=document.getElementById("stepCard");
+  let h = `<p class="steptitle">${st.title}</p><span class="role">${st.role}</span>${st.body}`;
+  if(st.broken){
+    h += `<div class="broken"><p class="q">如果這裡壞了會怎樣？${st.broken.q}</p><p class="hint">先自己講出答案，再按。</p><button class="btn" data-reveal>看解答</button><div class="ans" hidden>${st.broken.a}</div></div>`;
+  }
+  card.innerHTML = h;
+  // highlight
+  const dg=document.getElementById("sceneDiagram");
+  dg.classList.toggle("dim", st.hl.length>0);
+  dg.querySelectorAll(".layer").forEach(g=>g.classList.toggle("hl", st.hl.includes(g.dataset.layer)));
+  const la=document.getElementById("slightArrow"), sa=document.getElementById("ssignalArrow");
+  if(la) la.style.opacity = st.light ? 1 : .15;
+  if(sa) sa.style.opacity = st.signal ? 1 : .15;
+  [...dots.children].forEach((d,i)=>d.classList.toggle("on", i===cur));
+  document.getElementById("prev").disabled = cur===0;
+  document.getElementById("next").disabled = cur===STEPS.length-1;
+  try{ localStorage.setItem("ch6dojo-step", String(cur)); }catch(e){}
+}
+document.getElementById("prev").addEventListener("click", ()=>{ stopNarration(); if(cur>0){cur--; renderStep(); document.getElementById("p-scene").scrollIntoView({block:"start"});} });
+document.getElementById("next").addEventListener("click", ()=>{ stopNarration(); if(cur<STEPS.length-1){cur++; renderStep(); document.getElementById("p-scene").scrollIntoView({block:"start"});} });
+
+/* ---------- 每一步的語音 ---------- */
+let zhVoice=null;
+function pickZh(){ try{ const vs=speechSynthesis.getVoices(); zhVoice = vs.find(v=>/zh[-_]TW|zh[-_]Hant/i.test(v.lang)) || vs.find(v=>/zh[-_]HK/i.test(v.lang)) || vs.find(v=>/^zh/i.test(v.lang)) || null; }catch(e){} }
+if(canSpeak){ pickZh(); try{ speechSynthesis.addEventListener("voiceschanged", pickZh); }catch(e){} }
+let narrating=false, waitTimer=null;
+const listenBtn=document.getElementById("listen");
+function setListenUI(on){ listenBtn.classList.toggle("on",on); listenBtn.textContent = on ? "停止" : "播放這一步"; }
+function stopNarration(){ narrating=false; clearTimeout(waitTimer); try{ speechSynthesis.cancel(); }catch(e){} setListenUI(false); }
+function textOf(html){
+  const d=document.createElement("div"); d.innerHTML=html;
+  d.querySelectorAll(".say,button,.hint").forEach(x=>x.remove());
+  const blocks=[...d.querySelectorAll("p")]; const src = blocks.length? blocks.map(p=>p.textContent) : [d.textContent];
+  return src.join("。").replace(/[（）()]/g," ").replace(/\s+/g," ");
+}
+function toSegments(text){
+  return text.split(/(?<=[。！？；])|(?<=[.!?])\s+/).map(s=>s.trim()).filter(s=>s && s!=="。");
+}
+function speakSegs(segs, done){
+  if(!narrating) return;
+  if(!segs.length){ done&&done(); return; }
+  const s=segs.shift();
+  if(s.startsWith("@WAIT")){ waitTimer=setTimeout(()=>speakSegs(segs,done), 6000); return; }
+  if(s.startsWith("@FOCUS:")){ const cs=document.querySelectorAll("#quizList .card"); cs.forEach(x=>x.style.outline=""); const c=cs[+s.slice(7)]; if(c){ c.style.outline="3px solid var(--light)"; c.scrollIntoView({block:"center"}); } speakSegs(segs,done); return; }
+  if(s.startsWith("@SHOW:")){ const c=document.querySelectorAll("#quizList .card")[+s.slice(6)]; if(c){ const a=c.querySelector(".ans"), b=c.querySelector("[data-reveal]"); if(a){ a.hidden=false; if(b) b.textContent="收起解答"; } } speakSegs(segs,done); return; }
+  if(s.startsWith("@REVEAL")){ const a=document.querySelector("#stepCard .ans"); const b=document.querySelector("#stepCard [data-reveal]"); if(a){a.hidden=false; if(b) b.textContent="收起解答";} speakSegs(segs,done); return; }
+  try{
+    const u=new SpeechSynthesisUtterance(s);
+    const zh=/[一-鿿]/.test(s);
+    u.lang = zh ? "zh-TW" : "en-US";
+    if(zh && zhVoice) u.voice=zhVoice; if(!zh && enVoice) u.voice=enVoice;
+    u.rate = zh ? 0.95 : 0.85;
+    u.onend=()=>speakSegs(segs,done);
+    u.onerror=()=>speakSegs(segs,done);
+    speechSynthesis.speak(u);
+  }catch(e){ speakSegs(segs,done); }
+}
+function narrateStep(){
+  if(!canSpeak){ alertNoTTS(); return; }
+  const st=STEPS[cur];
+  let segs=[ st.title.replace(/^\d+\s*/,"第 "+cur+" 步，")+"。", st.role+"。", ...toSegments(textOf(st.body)) ];
+  if(st.broken){ segs.push("如果這裡壞了會怎樣？", ...toSegments(textOf("<p>"+st.broken.q+"</p>")), "先自己想一想。", "@WAIT", "@REVEAL", "解答。", ...toSegments(textOf("<p>"+st.broken.a+"</p>"))); }
+  narrating=true; setListenUI(true);
+  try{ speechSynthesis.cancel(); }catch(e){}
+  speakSegs(segs, ()=>{
+    if(narrating && document.getElementById("eyesMode").checked && cur<STEPS.length-1){
+      cur++; renderStep(); waitTimer=setTimeout(narrateStep, 1200);
+    } else if(narrating && document.getElementById("eyesMode").checked && document.getElementById("sceneLoop").checked){
+      cur=0; renderStep(); waitTimer=setTimeout(narrateStep, 1500);
+    } else { stopNarration(); }
+  });
+}
+function alertNoTTS(){ const c=document.getElementById("stepCard"); if(!c.querySelector(".tts-msg")) c.insertAdjacentHTML("afterbegin",'<p class="tts-msg todo">這個瀏覽器不支援朗讀。用手機的 Chrome 或 Safari 打開就可以聽。</p>'); }
+listenBtn.addEventListener("click", ()=>{ narrating ? stopNarration() : narrateStep(); });
+function keepAwake(){ try{ if(navigator.wakeLock) navigator.wakeLock.request("screen").catch(()=>{}); }catch(e){} }
+document.getElementById("playAll").addEventListener("click", ()=>{ stopNarration(); keepAwake(); document.getElementById("eyesMode").checked=true; cur=0; renderStep(); document.getElementById("p-scene").scrollIntoView({block:"start"}); narrateStep(); });
+document.addEventListener("click", e=>{
+  const b=e.target.closest("[data-reveal]"); if(!b) return;
+  const a=b.nextElementSibling; a.hidden=!a.hidden; b.textContent = a.hidden ? "看解答" : "收起解答";
+});
+renderStep();
+
+/* ---------- 自測 ---------- */
+const QUIZ = [
+  {q:"感光細胞的鈉通道卡在打開，光來了也關不起來。", a:"感光細胞一直像在黑暗中，不停放 glutamate，雙極細胞一直被壓住，訊號傳不出去，在亮處也看不見。", en:"The photoreceptor acts as if it is always dark. It keeps releasing glutamate, the bipolar cells stay inhibited, and the person cannot see even in the light."},
+  {q:"雙極細胞全部壞了，感光細胞和神經節細胞都正常。", a:"感光細胞照常對光反應，但訊號在中間斷掉，傳不到神經節細胞，看不見。", en:"The photoreceptors still respond to light, but the signal stops in the middle and never reaches the ganglion cells, so the person cannot see."},
+  {q:"感光細胞死光了（色素性視網膜炎），但神經節細胞還活著。", a:"沒有人把光轉成訊號，看不見。這時可以考慮在神經節細胞放光敏蛋白（光遺傳學），或用仿生眼電刺激雙極和神經節細胞（p.205）。", en:"No cells convert light into neural signals, so the person cannot see. Possible treatments are optogenetics in the ganglion cells or a bionic eye that stimulates bipolar and ganglion cells."},
+  {q:"色素上皮（城堡）壞了。", a:"感光細胞拿不到需要的能量和支援，多餘的光也沒有被吸收，會亂彈。感光細胞撐不住，視力受損。", en:"The photoreceptors lose energy and support, and extra light is not absorbed. The photoreceptors cannot survive, and vision is damaged."},
+  {q:"水平細胞不作用，側抑制消失。", a:"中心周邊拮抗變弱，邊緣和對比不清楚。", en:"Center-surround antagonism becomes weak, so edges and contrast are not clear."},
+  {q:"中央小窩受損（例如黃斑部退化，p.205）。", a:"失去中央最清楚的視力和對比敏感度，周邊還看得到，但正面看東西變模糊。", en:"The person loses sharp central vision and contrast, but peripheral vision remains. Looking straight at things becomes blurry."},
+  {q:"神經節細胞慢慢流失（青光眼會加速，p.203）。", a:"視神經的軸突變少，送到大腦的訊號變少，視力和視野變差。", en:"Fewer axons in the optic nerve send signals to the brain, so vision and the visual field get worse."},
+  {q:"枕葉的 V1 受損，眼睛完全正常。", a:"看不見。可能出現盲視：說自己看不見，卻能指出光在哪裡。V1 是有意識地看見所必需的。", en:"The person cannot see. Some show blindsight: they say they see nothing but can point to a light. V1 is necessary for conscious vision."},
+  {q:"梭狀臉孔區（FFA）受損。", a:"臉孔失認症（prosopagnosia）：看得到五官，卻認不出熟悉的人，連鏡子裡的自己都認不出（p.206）。", en:"Prosopagnosia: the person sees the eyes, nose and mouth but cannot recognize familiar faces, even their own face in a mirror."},
+  {q:"如果光是「啟動」感光細胞（YouTube 的說法），故事哪裡會錯？", a:"真實情況是相反的：感光細胞在黑暗中活躍，光讓它們安靜下來，雙極細胞因此被放開。考試要寫「光把感光細胞關掉」。", en:"It is the opposite. Photoreceptors are active in the dark, and light turns them off, which releases the bipolar cells. On the exam, write that light turns photoreceptors off."},
+  {q:"藍黑洋裝：為什麼有人看成白金？", a:"照片太近，看不到背景，大腦只好猜光線。猜是藍光的房間，就把藍色扣掉，看成白金；猜是黃色燈光，就看成藍黑。這是 color constancy（顏色恆常性）加上 top-down processing（p.201、p.203）。", en:"The brain guesses the lighting. If it assumes blue light, it removes the blue and sees white and gold. If it assumes yellow light, it sees blue and black. This is color constancy and top-down processing."},
+  {q:"英文剛學的人一個字母一個字母拼，母語的人看開頭就猜整句。各是哪一種處理？", a:"一個字母拼起來是 bottom-up；用經驗和預期去猜是 top-down。top-down 很快，但也會造成刻板印象。", en:"Building a word letter by letter is bottom-up processing. Guessing from experience and expectations is top-down processing."},
+  {q:"念「white」十次，再問「牛喝什麼」，脫口說 milk。這叫什麼？", a:"Priming（促發）：一個概念被放到「最上層」，大腦快速判斷時就先用它。", en:"Priming: a concept is placed at the top of the mind, so the brain uses it first when it decides quickly."},
+  {q:"兩隻眼睛看到的畫面略有不同，有什麼用？", a:"Retinal disparity（視網膜像差），大腦用這個差異判斷深度（p.197）。上課手指中間那條香腸就是這個。", en:"Retinal disparity: the brain uses the difference between the two images to judge depth."}
+];
+document.getElementById("quizList").innerHTML = QUIZ.map((x,i)=>`<div class="card"><p class="q"><b>${i+1}．如果……</b>${x.q}<br><b>會怎樣？</b></p><button class="btn" data-reveal>看解答</button><div class="ans" hidden>${x.a}<p style="margin-top:.5em;color:var(--light);font-family:var(--f-en);font-weight:600">${x.en}</p><button class="btn" data-say="${x.en.replace(/"/g,'&quot;')}">▶ 聽英文</button></div></div>`).join("");
+
+const quizBtn=document.getElementById("quizPlay");
+function quizSegs(){ const s=[]; QUIZ.forEach((x,i)=>{ s.push("@FOCUS:"+i, "第 "+(i+1)+" 題。如果，"+x.q.replace(/<[^>]+>/g,"")+" 會怎樣？", "先自己想一想。", "@WAIT", "@SHOW:"+i, "解答。", ...toSegments(textOf("<p>"+x.a+"</p>")), x.en); }); return s; }
+function quizIdle(){ quizBtn.textContent="▶ 自動播放全部自測"; quizBtn.dataset.on=""; }
+function playQuiz(){
+  if(!canSpeak){ document.getElementById("ttsNote").hidden=false; return; }
+  stopNarration(); keepAwake(); narrating=true; quizBtn.textContent="⏹ 停止"; quizBtn.dataset.on="1";
+  try{ speechSynthesis.cancel(); }catch(e){}
+  speakSegs(quizSegs(), ()=>{ if(narrating && document.getElementById("quizLoop").checked){ playQuiz(); } else { narrating=false; quizIdle(); } });
+}
+quizBtn.addEventListener("click", ()=>{ if(quizBtn.dataset.on){ stopNarration(); quizIdle(); } else playQuiz(); });
+
+/* ---------- 發音 ---------- */
+const VOCAB = [
+  ["感覺與知覺", [
+    ["sensation","sen-SAY-shun","感覺：眼睛收光、轉成訊號"],
+    ["perception","per-SEP-shun","知覺：大腦解讀、拼成畫面"],
+    ["bottom-up processing","BOT-um UP PROS-es-ing","由下而上：從細節拼起來"],
+    ["top-down processing","TOP DOWN PROS-es-ing","由上而下：用經驗和預期去猜"],
+    ["priming","PRY-ming","促發"],
+    ["color constancy","KUL-er KON-stun-see","顏色恆常性"]]],
+  ["光", [
+    ["photon","FOH-ton","光子"],
+    ["wavelength","WAYV-length","波長：決定顏色"],
+    ["amplitude","AM-plih-tood","振幅：決定亮度"],
+    ["refraction","rih-FRAK-shun","折射"]]],
+  ["眼睛構造", [
+    ["cornea","KOR-nee-uh","角膜"],
+    ["pupil","PYOO-pul","瞳孔"],
+    ["iris","EYE-ris","虹膜"],
+    ["lens","LENZ","水晶體"],
+    ["accommodation","uh-KOM-uh-DAY-shun","調節：水晶體改變形狀對焦"],
+    ["retina","RET-ih-nuh","視網膜"],
+    ["fovea","FOH-vee-uh","中央小窩"],
+    ["optic disk","OP-tik DISK","視神經盤"],
+    ["blind spot","BLYND SPOT","盲點"]]],
+  ["視網膜各層", [
+    ["photoreceptor","FOH-toh-rih-SEP-ter","感光細胞（吸血鬼）"],
+    ["rod","ROD","桿細胞"],
+    ["cone","KOHN","錐細胞"],
+    ["pigmented epithelium","PIG-men-tid ep-ih-THEE-lee-um","色素上皮（城堡）"],
+    ["bipolar cell","by-POH-ler SEL","雙極細胞（村民）"],
+    ["horizontal cell","hor-ih-ZON-tul SEL","水平細胞"],
+    ["amacrine cell","AM-uh-krin SEL","無軸突細胞"],
+    ["ganglion cell","GANG-glee-un SEL","神經節細胞（小孩）"]]],
+  ["機制", [
+    ["dark current","DARK KUR-ent","暗電流"],
+    ["glutamate","GLOO-tuh-mayt","麩胺酸"],
+    ["hyperpolarize","HY-per-POH-luh-ryz","過極化"],
+    ["graded potential","GRAY-did puh-TEN-shul","分級電位"],
+    ["action potential","AK-shun puh-TEN-shul","動作電位"],
+    ["receptive field","rih-SEP-tiv FEELD","感受野"],
+    ["convergence","kun-VER-jens","匯聚"],
+    ["lateral inhibition","LAT-er-ul in-hih-BISH-un","側抑制"],
+    ["center-surround","SEN-ter suh-ROUND","中心周邊拮抗"]]],
+  ["到大腦", [
+    ["optic nerve","OP-tik NERV","視神經"],
+    ["optic chiasm","OP-tik KY-az-um","視交叉"],
+    ["lateral geniculate nucleus","LAT-er-ul jeh-NIK-yuh-lit NOO-klee-us","外側膝狀核"],
+    ["superior colliculus","soo-PEER-ee-er kuh-LIK-yuh-lus","上丘"],
+    ["primary visual cortex","PRY-mair-ee VIZH-oo-ul KOR-teks","初級視覺皮質"],
+    ["striate cortex","STRY-ayt KOR-teks","紋狀皮質"],
+    ["simple cortical cell","SIM-pul KOR-tih-kul SEL","簡單細胞"],
+    ["complex cortical cell","KOM-pleks KOR-tih-kul SEL","複雜細胞"],
+    ["ocular dominance column","OK-yuh-ler DOM-ih-nens KOL-um","眼優勢柱"],
+    ["orientation column","or-ee-en-TAY-shun KOL-um","方向柱"],
+    ["ventral stream","VEN-trul STREEM","腹側路徑（what）"],
+    ["dorsal stream","DOR-sul STREEM","背側路徑（where）"],
+    ["fusiform face area","FYOO-zih-form FAYS AIR-ee-uh","梭狀臉孔區"]]],
+  ["顏色", [
+    ["trichromatic theory","try-kroh-MAT-ik THEER-ee","三色說"],
+    ["opponent process theory","uh-POH-nent PROS-es THEER-ee","拮抗說"],
+    ["parasol","PAIR-uh-sol","陽傘細胞（M）"],
+    ["midget","MIJ-it","侏儒細胞（P）"],
+    ["small bistratified","SMAWL by-STRAT-ih-fyd","小雙層細胞（K）"]]],
+  ["障礙與新聞", [
+    ["blindsight","BLYND-syte","盲視"],
+    ["prosopagnosia","pros-uh-pag-NOH-zhuh","臉孔失認症"],
+    ["akinetopsia","ay-kin-eh-TOP-see-uh","動作盲"],
+    ["retinitis pigmentosa","ret-ih-NY-tis pig-men-TOH-suh","色素性視網膜炎"],
+    ["optogenetics","op-toh-jeh-NET-iks","光遺傳學"],
+    ["channelrhodopsin","CHAN-ul-roh-DOP-sin","通道視紫質"]]]
+];
+document.getElementById("vocabList").innerHTML = VOCAB.map(([g,items])=>`<div class="card"><h3>${g}</h3>${items.map(([en,st,zh])=>`<div class="vocab">${sayBtn(en)}<div class="txt"><div class="term">${en}</div><div class="stress">${st}</div><div class="zh" style="margin-top:2px">${zh}</div></div></div>`).join("")}</div>`).join("");
+if(!canSpeak){ document.getElementById("ttsNote").hidden=false; }
+
+/* ---------- 常用 10 字 ---------- */
+const TOP10=[
+  ["photoreceptor","FOH-toh-rih-SEP-ter","感光細胞（吸血鬼）"],
+  ["bipolar cell","by-POH-ler SEL","雙極細胞（村民）"],
+  ["ganglion cell","GANG-glee-un SEL","神經節細胞（小孩）"],
+  ["glutamate","GLOO-tuh-mayt","麩胺酸：黑暗中吸血鬼一直放的東西"],
+  ["hyperpolarize","HY-per-POH-luh-ryz","過極化：光讓感光細胞安靜下來"],
+  ["fovea","FOH-vee-uh","中央小窩：看得最清楚"],
+  ["optic disk","OP-tik DISK","視神經盤：盲點"],
+  ["optic chiasm","OP-tik KY-az-um","視交叉"],
+  ["lateral geniculate nucleus","LAT-er-ul jeh-NIK-yuh-lit NOO-klee-us","外側膝狀核（視丘）"],
+  ["opponent process","uh-POH-nent PROS-es","拮抗說：紅對綠、藍對黃"]
+];
+document.getElementById("top10").innerHTML = TOP10.map(([en,st,zh],i)=>`<div class="vocab">${sayBtn(en)}<div class="txt"><div class="term">${i+1}．${en}</div><div class="stress">${st}</div><div class="zh" style="margin-top:2px">${zh}</div></div></div>`).join("");
+document.getElementById("playTop10").addEventListener("click", ()=>{
+  if(!canSpeak){ document.getElementById("ttsNote").hidden=false; return; }
+  stopNarration(); narrating=true;
+  const segs=[]; TOP10.forEach(([en,,zh])=>{ segs.push(en); segs.push(zh.split("：")[0].replace(/（.*）/,"")+"。"); segs.push(en); });
+  speakSegs(segs, ()=>{ narrating=false; });
+});
+
+try{ const t=localStorage.getItem("ch6dojo-tab"); if(t && ["scene","pic","quiz","say"].includes(t)) showTab(t); }catch(e){}
+</script>
+
+</body></html>

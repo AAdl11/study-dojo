@@ -1,0 +1,157 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ch8 動作系統 聽讀版</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap">
+<style>
+/* 版面：一條直欄，上方固定播放器，下面一段一段，正在念的那段亮起來 */
+:root{
+  --bg:#eef1f4; --card:#ffffff; --fg:#1b2430; --muted:#5a6675;
+  --accent:#c2551f; --accent-soft:#f6e3d8; --line:#d6dce3; --en:#24527a;
+  --zh:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --latin:"Atkinson Hyperlegible","Noto Sans TC",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121821; --card:#1b2330; --fg:#e8edf3; --muted:#9aa7b6;
+  --accent:#f08a50; --accent-soft:#3a2a20; --line:#2c3644; --en:#8ec1ef; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121821; --card:#1b2330; --fg:#e8edf3; --muted:#9aa7b6;
+  --accent:#f08a50; --accent-soft:#3a2a20; --line:#2c3644; --en:#8ec1ef; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--latin),var(--zh);font-size:19px;line-height:1.7}
+.wrap{max-width:720px;margin:0 auto;padding-block:0 120px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 12px;border-bottom:1px solid var(--line)}
+h1{font-family:var(--zh);font-size:1.35rem;margin:0 0 2px;text-wrap:balance}
+.sub{color:var(--muted);font-size:.9rem;margin:0 0 10px}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-size:1rem;border:1px solid var(--line);background:var(--card);color:var(--fg);
+  border-radius:10px;padding:10px 14px;min-height:48px;cursor:pointer}
+button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;min-width:150px}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.status{color:var(--muted);font-size:.9rem;width:100%}
+main{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+h2{font-family:var(--zh);font-size:1.05rem;color:var(--accent);margin:14px 0 0;letter-spacing:.02em}
+.seg{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer}
+.seg.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.seg .tag{font-size:.78rem;color:var(--muted);letter-spacing:.06em;margin-bottom:4px}
+.zh{font-family:var(--zh);margin:0}
+.en{color:var(--en);margin:8px 0 0}
+.note{color:var(--muted);font-size:.9rem}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<div class="wrap">
+<header class="bar">
+  <h1>PSYC 4 第八章 動作系統</h1>
+  <p class="sub">開車、躺著都能聽。中文講一遍，接著念考試英文。</p>
+  <div class="ctrl">
+    <button class="main" id="play">▶ 從頭播放</button>
+    <button id="prev" aria-label="上一段">⏮</button>
+    <button id="next" aria-label="下一段">⏭</button>
+    <button id="speed">速度 1.25x</button>
+    <button id="mode" aria-pressed="false">只聽英文</button>
+    <p class="status" id="status">點任何一段，就從那裡開始念。</p>
+  </div>
+</header>
+<main id="list"></main>
+<p class="note"><a href="ch9-listen.html" target="_blank" rel="noopener">聽完了？接著打開第九章預習聽讀版</a></p>
+<p class="note">沒有聲音的話：Android 請用 Chrome 打開，把「媒體」音量調大；或改用 iPhone。</p>
+</div>
+
+<script>
+const D=[
+{h:"開場：整章的骨架"},
+{t:"總覽",zh:"第八章講的是動作。把它想成一條來回的路：往上，是肌肉回報大腦「我現在在哪裡、拉得多緊」；往下，是大腦下命令，經過運動神經元和乙醯膽鹼，讓肌肉收縮；還有一條捷徑，是脊髓自己處理的反射，不用等大腦。",en:"Movement is a loop. Sensory feedback goes up to the brain, motor commands come down to the muscles, and some reflexes are handled by the spinal cord alone."},
+{h:"RG1　本體感受器往上"},
+{t:"肌梭與肌腱器",zh:"本體感受器在肌肉和肌腱裡。肌梭偵測肌肉被拉長多少，也就是長度。高爾基肌腱器偵測肌肉用力多大，也就是張力。記法：肌梭管拉多長，肌腱器管用多大力。閉上眼睛還摸得到鼻子，就是靠它們。",en:"Muscle spindles detect muscle stretch, or length. Golgi tendon organs detect muscle tension, or force."},
+{h:"RG2　運動皮質往下"},
+{t:"三步驟",zh:"第一步，前運動區先計畫動作，像導演喊預備。第二步，初級運動皮質 M1 的大型錐體細胞啟動，像導演喊開始。M1 在中央前回。第三步，訊號往下送到脊髓的 alpha 運動神經元。",en:"Movement is planned in the premotor area and started by large pyramidal cells in the primary motor cortex, in the precentral gyrus. The signal travels down to alpha motor neurons in the spinal cord."},
+{t:"兩條路",zh:"課本說往下有兩條路。lateral pathway 管手、腳、手指的自主精細動作。ventromedial pathway 管姿勢和自動的動作。",en:"The lateral pathway controls voluntary fine movements of the hands and feet. The ventromedial pathway controls posture and automatic movements."},
+{t:"在哪裡交叉",zh:"皮質脊髓徑在延腦和脊髓的交界交叉，紅核脊髓徑在中腦就交叉。結果一樣：左腦管右邊身體，右腦管左邊身體。",en:"The corticospinal tract crosses at the junction of the medulla and the spinal cord, so the left motor cortex controls the right side of the body."},
+{h:"RG3　運動神經元"},
+{t:"alpha 運動神經元",zh:"alpha 運動神經元的細胞體在脊髓的腹側，軸突一路伸到肌肉。感覺從背側進來，命令從腹側出去，記法是背進腹出。它自己不會啟動動作，只聽命令。",en:"Alpha motor neurons are in the ventral horn of the spinal cord. Sensory information enters dorsally, and motor commands leave ventrally."},
+{t:"運動單位",zh:"一個 alpha 運動神經元，加上它接的所有肌纖維，叫做一個運動單位。手指要精細，一個神經元只接十到一百條肌纖維；背和大腿要出力，一個神經元接一千條以上。",en:"A motor unit is one alpha motor neuron and all the muscle fibers it innervates. Fine movements use motor units with few muscle fibers."},
+{h:"RG4　乙醯膽鹼"},
+{t:"神經肌肉接合處",zh:"運動神經元和肌纖維接觸的地方，叫神經肌肉接合處。動作電位到達軸突末端，釋放乙醯膽鹼，乙醯膽鹼和肌纖維上的受體結合，鈉衝進去，肌纖維產生動作電位，肌肉收縮。如果乙醯膽鹼的受體被擋住，大腦命令再強，肌肉也動不了。",en:"The motor neuron releases acetylcholine at the neuromuscular junction. Acetylcholine binds to receptors on the muscle fiber, sodium rushes in, and the muscle contracts."},
+{h:"RG5　反射"},
+{t:"反射在脊髓完成",zh:"反射在脊髓就完成，不需要大腦。所以反射也用不到視覺，因為看見要等訊息進到大腦，反射在那之前就發生了。",en:"A reflex is completed at the level of the spinal cord, without the brain."},
+{t:"膝跳反射",zh:"醫生敲膝蓋下方，大腿肌肉被拉長，肌梭偵測到，感覺神經元進脊髓，直接接到 alpha 運動神經元，大腿收縮，小腿踢出去。只有一個突觸，叫單突觸反射，所以最快。",en:"The knee-jerk reflex is a monosynaptic stretch reflex. Only one synapse connects the sensory neuron and the motor neuron."},
+{t:"東西太重手會鬆開",zh:"肌肉用力太大，高爾基肌腱器偵測到，透過抑制性中間神經元，叫那條肌肉放鬆，免得肌肉或肌腱拉傷。肌梭保護不被拉長，肌腱器保護不被扯斷。",en:"When tension is too high, the Golgi tendon organ excites an inhibitory interneuron, and the muscle relaxes."},
+{t:"手碰到燙鍋子",zh:"手碰到燙的東西縮回來，是屈肌反射，有中間神經元，所以是多突觸反射。屈肌收縮，同一個關節的伸肌被抑制，這叫交互抑制，讓兩條肌肉不會同時用力打架。",en:"The flexor reflex is polysynaptic. Reciprocal inhibition keeps the flexor and extensor at the same joint from contracting at the same time."},
+{t:"陷阱：脊髓受傷",zh:"脊髓受傷的人，傷處以下的膝跳反射還在，因為迴路在脊髓裡。但他感覺不到被敲，因為感覺訊號上不去大腦。反射在脊髓，感覺要到大腦，兩題答案相反。",en:"The reflex still works below a spinal cord injury, but the person cannot feel the tap, because the signal cannot reach the brain."},
+{h:"RG6　體位地圖"},
+{t:"運動小人圖",zh:"運動皮質也有一張小人圖，就在體感皮質正前方，兩條緊緊並排。手、臉、嘴唇、舌頭佔最大，因為需要最精細的控制。小人是倒過來排的，腳在最上面。TMS 實驗：用磁場干擾 M1 的手部區，手就不聽話，偏一公分就沒效，磁場一停就恢復，這叫功能定位。",en:"The motor cortex has a somatotopic map. Body parts that need fine control, like the hands and lips, get more cortical space."},
+{h:"RG7　小腦"},
+{t:"小腦是品管員",zh:"小腦不啟動動作。它負責動作的順序和時間，並且一直比對打算做的動作和實際做出的動作，有差就修正。伸手拿杯子快拿過頭時自動減速，就是小腦。小腦壞了，動作會拿過頭或拿不夠。酒精最先影響小腦，所以酒測要走直線、閉眼摸鼻子。",en:"The cerebellum does not start movement. It compares the intended movement with the actual movement and corrects errors."},
+{h:"RG8　巴金森與亨丁頓"},
+{t:"巴金森氏症",zh:"黑質裡製造多巴胺的神經元死亡。症狀是很難啟動動作、僵硬、變慢、靜止時顫抖、臉部表情變少。記法：煞車卡死，踩不動油門。治療是 levodopa，它是製造多巴胺的原料；還有深層腦刺激。影片裡的 Karen 三十四歲就發病，巴金森不只是老人病；她的抽動是長期吃藥的副作用，不是病本身。",en:"Parkinson disease results from the loss of dopamine neurons in the substantia nigra, so the person has trouble starting movements."},
+{t:"亨丁頓舞蹈症",zh:"是遺傳病，HTT 基因在第四號染色體，是顯性基因，父母一方有，孩子就有一半機會。損害基底核的紋狀體，紋狀體負責抑制不要的動作，所以症狀是停不下來的抽動，還有憂鬱、幻覺、妄想。記法：煞車壞掉，停不下來。",en:"Huntington disease is caused by a dominant gene on chromosome 4. It damages the striatum, so the person cannot stop unwanted movements."},
+{t:"深層腦刺激與 FES",zh:"深層腦刺激在腦裡植入電極，治巴金森。優點記法：少症、少傷、少藥、可調。缺點記法：開腦、風險、換電、副作用。FES 功能性電刺激讀取皮質訊號，直接刺激肌肉，繞過脊髓，用在脊髓損傷，但不能逆轉損傷。",en:"FES bypasses the spinal cord by stimulating the muscles directly. Deep brain stimulation treats Parkinson disease with electrodes implanted in the brain."},
+{h:"RG9　鏡像神經元"},
+{t:"做和看都會發",zh:"義大利 Rizzolatti 的實驗室意外發現：猴子自己抓花生，和看研究者抓花生，同一個神經元都會發。鏡像神經元讓我們模仿學習。Iacoboni 認為它把訊息送到邊緣系統，讓我們感受別人的感覺，這可能是同理心的基礎。Keller 說鏡像神經元在初級運動皮質，課本寫的位置可能不同，考試兩個都寫。",en:"Mirror neurons fire both when we perform an action and when we watch someone else perform the same action. They may be the basis of empathy."},
+{t:"陷阱：自閉症",zh:"自閉症和鏡像神經元的關係只是假說，影片自己說還不確定。題目如果寫已經證實，就是錯的。",en:"The link between autism and mirror neurons is a hypothesis, not a proven fact."},
+{h:"Optional 影片"},
+{t:"肌肉萎縮症基因治療",zh:"Duchenne 肌肉萎縮症是一個基因缺陷，做不出 dystrophin 蛋白。用無害的病毒 AAV 把正常基因送到肌肉，病情可以停止惡化，但有些損傷無法逆轉。目前只在老鼠和狗身上成功，人體試驗還在計畫中。",en:"Gene therapy can stop Duchenne muscular dystrophy from getting worse, but some damage cannot be reversed."},
+{h:"10/24 補充：投影片和 10/22 上課"},
+{t:"決定要動的四步驟（投影片第 6 張）",zh:"投影片把下行路徑分成四步。第一步，前額葉和頂葉決定要動。第二步，運動輔助區和運動前區計畫動作，加上視丘和基底核的意見。第三步，初級運動皮質經 lateral pathway 送出命令。第四步，到脊髓腹側的運動神經元，肌肉收縮。",en:"The decision to move starts in the prefrontal cortex and parietal lobe. The movement is planned in the supplementary motor area and premotor cortex, and the primary motor cortex sends the signal down the lateral pathway."},
+{t:"三種肌肉和高效率的接合處（投影片第 2、3 張）",zh:"人體有三種肌肉：腸胃的平滑肌、心肌、骨骼肌也就是橫紋肌。讓你知道肌肉在哪、在做什麼的是本體感受器。神經肌肉接合處很有效率：運動神經元末端一個動作電位，就能讓肌纖維產生動作電位。",en:"A single action potential at the motor neuron terminal can produce an action potential in the muscle fiber."},
+{t:"小腦這條路（投影片第 23、24 張）",zh:"實際動作的回饋經由脊髓小腦徑往上傳到小腦，這也是本體感覺往上到大腦的一條路。延腦的下橄欖核把指令的副本送給小腦。小腦比對指令和實際動作，把修正送回皮質。它用的回饋主要是視覺和本體感覺。戴上會讓影像偏一邊的稜鏡眼鏡，一般人會慢慢調準；小腦受損的人調不過來。",en:"Feedback from the actual movement reaches the cerebellum through the spinocerebellar tract. The inferior olive sends a copy of the instructions. Patients with cerebellar damage cannot adapt to prism glasses."},
+{t:"體位地圖補充（投影片第 7、10 張）",zh:"初級運動皮質在額葉，就在體感皮質前面，主要的細胞是錐體細胞。相鄰的區域有很多重疊，不是一格一格分開。因為 M1 的神經元各自對應特定肌肉和動作，電腦才能把 M1 的活動翻成預測的肌肉動作，這叫腦機介面，FES 就是這樣做的。",en:"Because M1 neurons are tuned to certain muscles and movements, computers can translate M1 activity into predicted muscle movement."},
+{t:"動作障礙的五個層級（10/22 上課，投影片第 15 張）",zh:"教授從最低層往上講。最低層是肌肉退化，很少見，來自嚴重營養不良或罕見的基因病，例如肌肉萎縮症。第二層是運動神經元的髓鞘脫落，就是多發性硬化症，訊號變慢變散。運動神經元出生就有髓鞘，不像學習時才長的。第三層是脊髓損傷，癱瘓的部位看傷到哪一節。第四層是小腦或基底核，基底核是最常見的。最上層是運動皮質，多半是中風、頭部外傷或腫瘤。",en:"Motor disorders occur at different points along the pathway: muscle degeneration, demyelination of motor neurons, spinal cord injury, cerebellum or basal ganglia, and stroke in the motor cortex."},
+{t:"基底核的油門和煞車（10/22 上課，教授說課本沒有，會考）",zh:"教授把身體比成車。運動皮質是方向盤，基底核是油門和煞車。黑質放多巴胺，是油門；紋狀體是煞車，紋狀體就是尾核加殼核。坐著不動的時候，基底核不是休息，是油門和煞車一樣大力，像兩個力氣一樣大的人在拔河，所以坐著不動對大腦很辛苦。要開始動，要同時放開煞車、加油門。",en:"The substantia nigra releases dopamine and works as the gas. The striatum works as the brakes. Sitting still means the gas and the brakes are equally strong."},
+{t:"巴金森是油門不夠",zh:"煞車正常、油門不夠。想保持不動的時候會抖，因為油門平衡不了煞車；想動的時候更難，因為就算放開煞車，油門還是不夠。這是黑質到紋狀體這條路的多巴胺神經元退化。症狀常從身體一邊開始，因為基底核左右各一個，神經元不會兩邊同時死。教授說巴金森常常最先出現的是憂鬱，因為黑質的多巴胺也送到快樂中樞伏隔核，少了就連快樂的油門也沒了。深層腦刺激用電流讓剩下的神經元更努力放電，放出差不多的多巴胺。",en:"In Parkinson disease, dopamine neurons in the nigrostriatal pathway degenerate. There is not enough gas, so the person has tremors at rest and trouble starting movement."},
+{t:"亨丁頓是煞車壞了",zh:"油門正常、煞車壞了，抑制不夠，油門贏，做出自己沒打算做的動作，停不下來。投影片的表：亨丁頓是 htt 基因突變，壞在紋狀體，動太多，叫 hyperkinetic；巴金森原因可能是多個基因加環境，壞在黑質，動太少又慢，叫 hypokinetic。亨丁頓的腦部影像會看到腦室變大，因為基底核萎縮了。",en:"Huntington disease affects the striatum and causes too much movement, called hyperkinetic. Parkinson disease affects the substantia nigra and causes too little movement, called hypokinetic."},
+{t:"接到第九章",zh:"多巴胺有兩個工作。黑質的多巴胺送到紋狀體，管動作，這是第八章。腹側被蓋區 VTA 的多巴胺送到伏隔核，管獎賞，這是第九章最後要講的。聽完第八章，接著打開第九章的聽讀版。",en:"Dopamine from the substantia nigra controls movement. Dopamine from the VTA controls reward."},
+{h:"收尾"},
+{t:"一句話總結",zh:"肌梭和肌腱器往上回報；前運動區計畫，M1 啟動，往下到腹側的 alpha 運動神經元；乙醯膽鹼讓鈉衝進肌肉；反射在脊髓完成；小腦負責修正；黑質壞是巴金森，紋狀體壞是亨丁頓；鏡像神經元做和看都會發。",en:"Spindles and tendon organs report up. M1 commands go down to alpha motor neurons. Acetylcholine contracts the muscle. Reflexes stay in the spinal cord. The cerebellum corrects errors."}
+];
+const list=document.getElementById('list'),st=document.getElementById('status');
+const segs=[];
+D.forEach(d=>{
+  if(d.h){const h=document.createElement('h2');h.textContent=d.h;list.appendChild(h);return}
+  const i=segs.length;const el=document.createElement('div');el.className='seg';el.tabIndex=0;
+  el.innerHTML=`<div class="tag">${d.t}</div><p class="zh"></p><p class="en"></p>`;
+  el.querySelector('.zh').textContent=d.zh;el.querySelector('.en').textContent=d.en;
+  el.addEventListener('click',()=>start(i));
+  el.addEventListener('keydown',e=>{if(e.key==='Enter')start(i)});
+  list.appendChild(el);segs.push({d,el});
+});
+const S=window.speechSynthesis;let voices=[],cur=-1,playing=false,rate=1.25,enOnly=false,lock=null,token=0;
+function loadV(){voices=S?S.getVoices():[]}
+if(S){loadV();S.onvoiceschanged=loadV}
+function pick(lang){
+  const pref=lang==='zh'?['zh-TW','zh_TW','zh-HK','zh-CN','zh']:['en-US','en_US','en-GB','en'];
+  for(const p of pref){const v=voices.find(v=>v.lang&&v.lang.replace('_','-').toLowerCase().startsWith(p.replace('_','-').toLowerCase()));if(v)return v}
+  return null}
+function say(text,lang){return new Promise(res=>{
+  const u=new SpeechSynthesisUtterance(text);const v=pick(lang);
+  if(v)u.voice=v;u.lang=lang==='zh'?'zh-TW':'en-US';u.rate=lang==='zh'?rate:Math.max(.8,rate-.1);
+  u.onend=res;u.onerror=res;S.speak(u)})}
+async function wake(){try{if('wakeLock' in navigator&&!lock)lock=await navigator.wakeLock.request('screen')}catch(e){}}
+function mark(i){segs.forEach((s,k)=>s.el.classList.toggle('on',k===i));
+  if(segs[i])segs[i].el.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
+async function start(i){
+  if(!S){st.textContent='這個瀏覽器不支援朗讀，請改用 Chrome 或 Safari。';return}
+  S.cancel();const my=++token;playing=true;wake();
+  document.getElementById('play').textContent='⏸ 暫停';
+  for(cur=i;cur<segs.length;cur++){
+    if(my!==token)return;mark(cur);const d=segs[cur].d;
+    st.textContent=`第 ${cur+1} / ${segs.length} 段：${d.t}`;
+    if(!enOnly){await say(d.zh,'zh');if(my!==token)return}
+    await say(d.en,'en');if(my!==token)return;
+    await new Promise(r=>setTimeout(r,500));
+  }
+  playing=false;document.getElementById('play').textContent='▶ 從頭播放';st.textContent='第八章播完了。往下捲，點連結接著聽第九章。';
+}
+function stop(){token++;S&&S.cancel();playing=false;document.getElementById('play').textContent='▶ 繼續播放';st.textContent=`暫停在第 ${cur+1} 段`}
+document.getElementById('play').onclick=()=>{if(playing)stop();else start(cur<0||cur>=segs.length?0:cur)};
+document.getElementById('next').onclick=()=>start(Math.min(segs.length-1,cur+1));
+document.getElementById('prev').onclick=()=>start(Math.max(0,cur-1));
+const rates=[1,1.25,1.5];
+document.getElementById('speed').onclick=e=>{rate=rates[(rates.indexOf(rate)+1)%rates.length];e.target.textContent=`速度 ${rate}x`;if(playing)start(cur)};
+document.getElementById('mode').onclick=e=>{enOnly=!enOnly;e.target.setAttribute('aria-pressed',enOnly);if(playing)start(cur)};
+</script>
+
+</body></html>

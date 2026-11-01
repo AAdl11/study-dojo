@@ -7,7 +7,7 @@ Built for fast review before class Kahoots and Canvas quizzes.
 
 | Room | Course | Status |
 |---|---|---|
-| **[psyc4](https://aadl11.github.io/study-dojo/dojo/psyc4/)** | PSYC 4 · Brain, Mind & Behavior | ✅ Module 0 · 47 terms · 20 questions ｜ [Ch 2](https://aadl11.github.io/study-dojo/psyc4-ch2.html) · [Ch 3](https://aadl11.github.io/study-dojo/psyc4-ch3.html) · [Ch 3 Kahoot 40](https://aadl11.github.io/study-dojo/PSYC4_Ch3_Kahoot_40.html) |
+| **[psyc4](https://aadl11.github.io/study-dojo/dojo/psyc4/)** | PSYC 4 · Brain, Mind & Behavior | ✅ Module 0 · 47 terms · 20 questions ｜ [Ch 2](https://aadl11.github.io/study-dojo/psyc4-ch2.html) · [Ch 3](https://aadl11.github.io/study-dojo/psyc4-ch3.html) · [Ch 3 Kahoot 40](https://aadl11.github.io/study-dojo/PSYC4_Ch3_Kahoot_40.html) · [Midterm 2 · Ch 6–10](https://aadl11.github.io/study-dojo/dojo/psyc4/midterm2.html) |
 | **[psyc21](https://aadl11.github.io/study-dojo/dojo/psyc21/)** | PSYC 21 · Race & Identity | ✅ Ch 1 · 44 terms · 30 questions |
 | **[comm-l1](https://aadl11.github.io/study-dojo/dojo/comm-l1/)** | COMM L1 · Public Speaking | ✅ Ch 9–11 · 87 questions |
 | **[psyc-c1000](https://aadl11.github.io/study-dojo/)** | PSYC C1000 · Summer foundations | ✅ 15 ch · 329 points · 90 questions（舊複習中心） |

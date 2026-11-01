@@ -1,0 +1,215 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ch9 預習 聽讀版</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap">
+<style>
+/* 版面：一條直欄，上方固定播放器，下面一段一段，正在念的那段亮起來 */
+:root{
+  --bg:#eef1f4; --card:#ffffff; --fg:#1b2430; --muted:#5a6675;
+  --accent:#c2551f; --accent-soft:#f6e3d8; --line:#d6dce3; --en:#24527a;
+  --zh:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --latin:"Atkinson Hyperlegible","Noto Sans TC",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121821; --card:#1b2330; --fg:#e8edf3; --muted:#9aa7b6;
+  --accent:#f08a50; --accent-soft:#3a2a20; --line:#2c3644; --en:#8ec1ef; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121821; --card:#1b2330; --fg:#e8edf3; --muted:#9aa7b6;
+  --accent:#f08a50; --accent-soft:#3a2a20; --line:#2c3644; --en:#8ec1ef; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--latin),var(--zh);font-size:19px;line-height:1.7}
+.wrap{max-width:720px;margin:0 auto;padding-block:0 120px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 12px;border-bottom:1px solid var(--line)}
+h1{font-family:var(--zh);font-size:1.35rem;margin:0 0 2px;text-wrap:balance}
+.sub{color:var(--muted);font-size:.9rem;margin:0 0 10px}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-size:1rem;border:1px solid var(--line);background:var(--card);color:var(--fg);
+  border-radius:10px;padding:10px 14px;min-height:48px;cursor:pointer}
+button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;min-width:150px}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.status{color:var(--muted);font-size:.9rem;width:100%}
+main{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+h2{font-family:var(--zh);font-size:1.05rem;color:var(--accent);margin:14px 0 0;letter-spacing:.02em}
+.seg{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer}
+.seg.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.seg .tag{font-size:.78rem;color:var(--muted);letter-spacing:.06em;margin-bottom:4px}
+.zh{font-family:var(--zh);margin:0}
+.en{color:var(--en);margin:8px 0 0}
+.note{color:var(--muted);font-size:.9rem}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<div class="wrap">
+<header class="bar">
+  <h1>PSYC 4 第九章 預習（投影片 19 到 32）</h1>
+  <p class="sub">躺著、睡前都能聽。中文講一遍，接著念英文。最後一段是教授上課可能問的問題和你可以回答的英文。</p>
+  <div class="ctrl">
+    <button class="main" id="play">▶ 從頭播放</button>
+    <button id="prev" aria-label="上一段">⏮</button>
+    <button id="next" aria-label="下一段">⏭</button>
+    <button id="speed">速度 1.25x</button>
+    <button id="mode" aria-pressed="false">只聽英文</button>
+    <p class="status" id="status">點任何一段，就從那裡開始念。</p>
+  </div>
+</header>
+<main id="list"></main>
+<p class="note">沒有聲音的話：Android 請用 Chrome 打開，把「媒體」音量調大；或改用 iPhone。</p>
+</div>
+
+<script>
+const D=[
+{h:"開場"},
+{t:"上一堂講到哪裡",zh:"第九章講動機、恆定和獎賞。上一堂教授講到第十七張滲透性口渴，和第十八張飢餓。下一堂她會先複習，再從第十九張消化開始，一路講到胰島素、瘦體素、飢餓素、獎賞迴路和古柯鹼。",en:"Chapter 9 covers motivation, homeostasis and reward."},
+{h:"上一堂快速複習"},
+{t:"Push 和 Pull",zh:"推力動機是驅力降低，體內失衡推著你去做，不得不做，例如被熊追就跑。拉力動機是獎賞，期待得到什麼才去做，例如為了獎牌跑馬拉松。吃巧克力蛋糕兩個都有：餓是推力，好吃是拉力。",en:"Push motivation reduces a drive. Pull motivation is driven by an expected reward."},
+{t:"恆定和設定點",zh:"恆定就是身體主動守住穩定的內在平衡，像冷氣的恆溫器。設定點有四個：體溫、體液量、體重、睡眠量。恆定系統有三個要件：精確的設定點、偵測偏離的機制、把它拉回來的內在反應和行為。",en:"Regulatory systems actively defend set points such as temperature, fluid levels, body weight and sleep amount."},
+{t:"體溫",zh:"太冷的時候：發抖、血管收縮、甲狀腺啟動、荷爾蒙提高代謝，嬰兒還會用褐色脂肪產熱。太熱的時候：流汗、舔、喘氣、皮膚表面的血管擴張，所以臉會紅。身體守不住核心體溫，就是體溫過高或體溫過低。安非他命、古柯鹼、搖頭丸，還有抗憂鬱劑的血清素症候群，都可能造成體溫過高。心跳停止的病人，醫生會刻意降溫保護大腦，因為發炎變少、代謝變慢，大腦需要的氧氣就變少。",en:"Hyperthermia and hypothermia happen when the body cannot keep core temperature within normal limits."},
+{t:"下視丘的溫度神經元",zh:"皮膚的溫度受器負責預防，下視丘負責回應。下視丘的視前區有三種神經元：對熱敏感的大約百分之三十，對冷敏感的百分之五到十，對溫度不敏感的大約百分之六十，當作基準線。三種互相比較，決定要散熱還是保熱。",en:"Three types of neurons in the preoptic area of the hypothalamus respond to changes in core temperature."},
+{t:"滲透",zh:"溶液是裝著溶質的液體，溶質是溶在裡面的分子，電解質是溶質解離成的離子。滲透就是水從溶質濃度低的地方，跑到濃度高的地方。記法：水往鹹的地方跑。等張是一樣濃，低張是比較淡，高張是比較濃。",en:"Water moves from an area of lower solute concentration to an area of higher solute concentration."},
+{t:"兩種口渴",zh:"體液變少會啟動兩件事：保住剩下的水，和覺得口渴。細胞脫水是滲透性口渴，血量下降是低血容量口渴，兩個一起造成口渴，叫雙重耗竭假說。滲透性口渴的例子：吃很鹹，血裡的鈉變多，把水從細胞拉出來，下視丘的 OVLT 裡的滲透壓受器偵測到細胞脫水。",en:"Cellular dehydration is detected by osmoreceptors in the OVLT of the hypothalamus."},
+{h:"下一堂要講的 14 張"},
+{t:"第 19 張　消化",zh:"三種食物各自分解：碳水化合物變成葡萄糖，脂肪變成脂肪酸，蛋白質變成胺基酸。三條路最後都變成乙醯輔酶 A，它是產生能量必需的。多的葡萄糖存成肝醣，放在肝臟；多的脂肪存在脂肪組織。",en:"Excess glucose is stored as glycogen in the liver, and excess fat is stored in adipose tissue."},
+{t:"第 20 張　胰島素和升糖素",zh:"葡萄糖受器監測血糖。胰臟放兩個荷爾蒙調節葡萄糖。胰島素把葡萄糖存成肝醣，並把葡萄糖從血液送進身體細胞，距離上一餐越久，胰島素越低。升糖素把存起來的肝醣轉回葡萄糖。記法：胰島素是存錢，升糖素是提款。",en:"Insulin stores glucose as glycogen and moves glucose from the blood into cells. Glucagon converts stored glycogen back into glucose."},
+{t:"第 21 張　胰島素影片",zh:"這張只有一支動畫影片，教授會在課堂播，內容應該就是胰島素讓細胞打開門，讓葡萄糖進去。注意教授有沒有停下來特別講。",en:"Insulin helps glucose enter the cells."},
+{t:"第 22 張　瘦體素",zh:"瘦體素是脂肪細胞放出來的，告訴大腦存貨夠了。把瘦體素基因剔除的老鼠會變得很胖。打瘦體素可以讓老鼠減重，但對人類沒有效。陷阱：打瘦體素能幫人減肥，是錯的。",en:"Leptin is released by fat cells. Leptin knockout rats become obese, but leptin injections help rodents lose weight, not humans."},
+{t:"第 23 張　飢餓的連鎖反應",zh:"胰島素和瘦體素的受器都在下視丘的弓狀核。濃度低的時候，啟動飢餓迴路。一條是飢餓素，帶來進食和獎賞；一條是下視丘的食慾素，管複雜的進食行為和睡眠。注意：投影片寫飢餓素來自胰臟，課本寫胃，上課聽教授怎麼說。",en:"When insulin and leptin are low, receptors in the arcuate nucleus start the hunger circuit, leading to ghrelin and orexins."},
+{t:"第 24 張　飢餓素影片",zh:"對應 Seeing Hungry 的研究：打了飢餓素的人，看食物圖片時，視覺區和獎賞區的活動變大，而且只有食物圖片才這樣，他們也比較記得食物的細節。飢餓素讓食物線索變得更吸引人。",en:"Ghrelin makes food cues more attractive, but only food pictures."},
+{t:"第 25 張　飢餓和飽足的化學地圖",zh:"這張字很多，抓配對就好。飢餓那一邊：脂肪少、瘦體素低、NPY、AgRP、飢餓素、食慾素啟動，副交感神經讓身體存養分，代謝變慢，AgRP 擋住 MC4 受器，刺激進食。飽足那一邊：脂肪多、瘦體素高、alpha MSH 和 CART 啟動，交感神經讓身體消耗養分，代謝變快，alpha MSH 刺激 MC4 受器，壓下進食。",en:"AgRP blocks MC4 receptors and stimulates eating. Alpha MSH stimulates MC4 receptors and suppresses eating."},
+{t:"第 26 張　胃撐的感覺",zh:"這支影片就是 Optional 的 Overeaters' Brains。手上的水袋在示範胃被撐開。胃的飽脹感也是讓人停止進食的訊號。",en:"Stomach fullness is also related to feeding behavior."},
+{t:"第 27 張　獎賞迴路",zh:"三個構造：腹側被蓋區 VTA，送到伏隔核，再到前額葉。投影片直接問：這條路用的神經傳導物質是什麼？答案是多巴胺。教授幾乎一定會當場問。接第八章：黑質的多巴胺管動作，VTA 的多巴胺管獎賞。",en:"The reward pathway goes from the ventral tegmental area to the nucleus accumbens and prefrontal cortex. It uses dopamine."},
+{t:"第 28 張　VTA 到伏隔核",zh:"VTA 的多巴胺神經元送訊號到伏隔核，也投射到邊緣系統和前額葉。",en:"Dopaminergic neurons in the VTA send signals to the nucleus accumbens."},
+{t:"第 29 張　腦內自我刺激",zh:"老鼠壓桿就會刺激自己腦內的電極。電極放在 VTA 或伏隔核的時候，老鼠壓桿壓得更多。這證明腦裡有獎賞區。",en:"Rats press the lever more if the stimulator is in the VTA or the nucleus accumbens."},
+{t:"第 30 張　怎麼測藥物多有獎賞性",zh:"兩種方法。藥物自我給藥：老鼠壓桿就得到藥，看牠壓多少。條件化地點偏好：一個房間給藥，另一個給生理食鹽水，之後讓老鼠自由選，看牠待在哪一間。結論：伏隔核受損的老鼠，不會自己給藥。",en:"Rats will not self-administer drugs if the nucleus accumbens is damaged."},
+{t:"第 31 張　獎賞預測誤差",zh:"訓練前，沒有預期卻拿到果汁，VTA 在果汁出現時大量放電，這是正的預測誤差。訓練後，燈亮就預期有果汁，果汁也來了，放電移到燈亮的時候，果汁來時沒有額外放電，這是沒有誤差。訓練後果汁卻沒來，原本該來的時候放電掉下去，這是負的預測誤差。記法：多巴胺不是在報有獎賞，是在報跟我想的不一樣。",en:"Dopamine neurons signal the difference between the expected reward and the actual reward."},
+{t:"第 32 張　古柯鹼",zh:"正常的時候，多巴胺放出去以後，會被再回收運輸蛋白收回神經末梢。古柯鹼擋住這個運輸蛋白，多巴胺留在突觸裂隙裡，訊號變強。這是第四章學的再回收抑制。",en:"Cocaine blocks the dopamine reuptake transporter, so more dopamine stays in the synaptic cleft."},
+{h:"教授上課可能問你的問題"},
+{t:"問題 1",zh:"問：上一堂講的兩種口渴是哪兩種？你可以回答：滲透性口渴是細胞脫水，例如吃太鹹；低血容量口渴是血量變少，例如失血。",en:"Osmotic thirst comes from cellular dehydration, like after salty food. Hypovolemic thirst comes from a drop in blood volume, like bleeding."},
+{t:"問題 2",zh:"問：吃很鹹的東西以後，誰偵測到細胞脫水？你可以回答：下視丘 OVLT 裡的滲透壓受器。",en:"Osmoreceptors in the OVLT of the hypothalamus."},
+{t:"問題 3",zh:"問：多的葡萄糖存在哪裡？你可以回答：變成肝醣，存在肝臟。",en:"It is stored as glycogen in the liver."},
+{t:"問題 4",zh:"問：剛吃完飯，哪個荷爾蒙比較高？你可以回答：胰島素，它把葡萄糖送進細胞。",en:"Insulin. It moves glucose into the cells."},
+{t:"問題 5",zh:"問：餓了很久，誰把肝醣轉回葡萄糖？你可以回答：升糖素。",en:"Glucagon converts glycogen back into glucose."},
+{t:"問題 6",zh:"問：瘦體素是誰放的？為什麼打瘦體素不能讓人減肥？你可以回答：脂肪細胞放的。它對老鼠有效，對人沒有效。",en:"Fat cells release leptin. Leptin injections work in rodents, but not in humans."},
+{t:"問題 7",zh:"問：飢餓的訊號在大腦哪裡被接收？你可以回答：下視丘的弓狀核。",en:"The arcuate nucleus of the hypothalamus."},
+{t:"問題 8",zh:"問：這條獎賞路徑用的神經傳導物質是什麼？你可以回答：多巴胺，從 VTA 送到伏隔核。",en:"Dopamine, from the VTA to the nucleus accumbens."},
+{t:"問題 9",zh:"問：伏隔核受損的老鼠會怎樣？你可以回答：牠不會自己給藥。",en:"It will not self-administer drugs."},
+{t:"問題 10",zh:"問：古柯鹼怎麼影響獎賞迴路？你可以回答：它擋住多巴胺的再回收，多巴胺留在突觸裡更久。",en:"Cocaine blocks dopamine reuptake, so more dopamine stays in the synapse."},
+{t:"問題 11",zh:"問：獎賞預測誤差是什麼意思？你可以回答：多巴胺傳遞的是預期的獎賞和實際的獎賞之間的差距。",en:"Dopamine signals the difference between the expected reward and the actual reward."},
+{t:"問題 12",zh:"問：多巴胺在第八章和第九章各管什麼？你可以回答：黑質的多巴胺管動作，VTA 的多巴胺管獎賞。這題答出來，教授會知道你把兩章連起來了。",en:"Dopamine from the substantia nigra controls movement. Dopamine from the VTA controls reward."},
+{h:"週二可能的課堂活動（第八、九章，照可能性排）"},
+{t:"活動做完怎麼寫 discussion",zh:"不管演哪一個，討論題幾乎都問三件事：第一，剛才發生了什麼，按照順序說；第二，每個角色代表大腦或身體的哪個構造、放什麼物質；第三，如果其中一個角色壞掉或不見了，會怎樣，對應到哪個疾病。下課先跟我口述你們演了什麼、教授問了什麼，我們再一起寫，當天期限前交。",en:"First, describe what happened in order. Second, name each structure and the chemical it releases. Third, explain what happens if one part fails."},
+{t:"可能 1　基底核的油門和煞車（第八章）",zh:"教授 10/22 說這部分課本沒有，要大家互相討論，會出幾題，所以最可能變成活動。角色：一邊是黑質，放多巴胺，是油門；一邊是紋狀體，是煞車；中間一個人是運動皮質，被兩邊拉。演法很像拔河：兩邊一樣大力，人站著不動，這是坐著不動；油門那邊放手一半，中間的人會一直晃，這是巴金森的顫抖，而且想往前走也走不動；煞車那邊放手，中間的人一直往前衝停不下來，這是亨丁頓。要動的時候，要同時放開煞車、加油門。",en:"Parkinson disease means not enough gas, so there are tremors and trouble starting movement. Huntington disease means the brakes fail, so there are movements the person did not intend."},
+{t:"可能 2　飢餓和飽足的連鎖反應（第九章）",zh:"週二上半堂會先講第十九到二十六張，接著演很合理。角色：胃、脂肪細胞、胰臟、肝臟、下視丘的弓狀核、飢餓素、食慾素。剛吃完：胰臟放胰島素，把葡萄糖送進細胞，多的交給肝臟存成肝醣；脂肪細胞放瘦體素，告訴弓狀核存貨夠了，停止吃。餓了很久：胰島素和瘦體素都變低，弓狀核啟動飢餓迴路，飢餓素讓你想吃、覺得食物很誘人，食慾素讓你清醒去找食物；胰臟放升糖素，請肝臟把肝醣轉回葡萄糖。可能的討論題：為什麼打瘦體素對人沒用？為什麼過重的人吃飽了還想吃？答案是大腦對飽的訊號反應比較小，就是 Overeaters 那支吞氣球的影片。",en:"After a meal, insulin stores glucose and leptin signals that energy is full. When insulin and leptin are low, the arcuate nucleus starts the hunger circuit with ghrelin and orexins."},
+{t:"可能 3　滲透和兩種口渴（第九章）",zh:"上一堂剛教完，最容易用人演。角色：一群人當水分子，幾個人當鹽，用繩子或桌子圍成細胞膜。規則：水往鹽多的那邊跑。演滲透性口渴：細胞外面放很多鹽，水從細胞裡跑出去，細胞縮小，OVLT 的滲透壓受器發現細胞脫水，大腦叫你口渴，也叫腎臟留水。演低血容量口渴：整群人一起被帶走一部分，鹽和水一樣少，濃度沒變但量變少，血壓下降，身體想喝水也想要鹽。可能的討論題：吃洋芋片口渴是哪一種？失血口渴是哪一種？為什麼運動飲料要加鹽？",en:"Osmotic thirst comes from cellular dehydration after salty food. Hypovolemic thirst comes from a drop in blood volume, so the body wants both water and salt."},
+{t:"可能 4　體溫恆溫器（第九章）",zh:"角色：一個人當設定點，一個人當皮膚的溫度受器，三個人當下視丘視前區的三種神經元，就是對熱敏感、對冷敏感、對溫度不敏感當基準線，其他人當身體的反應。老師喊太冷：發抖、血管收縮、甲狀腺加快代謝、嬰兒用褐色脂肪。喊太熱：流汗、喘氣、皮膚血管擴張臉變紅。可能的討論題：內溫動物和外溫動物差在哪？心跳停止的病人為什麼要刻意降溫？答案是降低大腦發炎、代謝變慢，大腦需要的氧氣變少。",en:"Warm-sensitive, cold-sensitive and temperature-insensitive neurons in the preoptic area keep body temperature at its set point."},
+{t:"可能 5　一個動作從大腦到肌肉（第八章）",zh:"排成一列傳話。前額葉和頂葉決定要動，傳給運動輔助區和運動前區計畫，傳給初級運動皮質，往下到脊髓腹側的 alpha 運動神經元，放乙醯膽鹼，鈉衝進肌肉，肌肉收縮。也可能演反射：膝跳反射只有感覺神經元和運動神經元兩個人，一個突觸；東西太重的肌腱器反射中間多一個抑制性中間神經元，叫肌肉放鬆。兩種反射都沒有大腦參與，所以演大腦的同學在旁邊不能動。",en:"A reflex is completed in the spinal cord without the brain. The knee-jerk reflex has only one synapse."},
+{t:"可能 6　獎賞迴路和古柯鹼（第九章最後）",zh:"如果週二講得到最後幾張。角色：VTA 放多巴胺，伏隔核接收，幾個人當再回收運輸蛋白，把多巴胺收回來。古柯鹼上場：抓住運輸蛋白不讓它收，多巴胺留在突觸裡越來越多，獎賞感變強。可能的討論題：為什麼伏隔核受損的老鼠不會自己給藥？多巴胺在第八章和第九章各管什麼？",en:"Cocaine blocks the dopamine reuptake transporter, so more dopamine stays in the synapse."},
+{t:"可能 7　推力和拉力（第九章開頭）",zh:"教授給情境，大家站到推力或拉力那一邊。被熊追是推力；為了獎牌跑馬拉松是拉力；餓了吃巧克力蛋糕兩個都有。也可能問內在和外在動機：因為想懂而讀書是內在，只為分數讀書是外在，外在獎賞可能削弱內在動機。",en:"Running from a bear is push motivation. Running a marathon for a medal is pull motivation. Eating cake when hungry is both."},
+{h:"收尾"},
+{t:"一句話總結",zh:"食物變成葡萄糖，胰島素存起來，升糖素提出來；脂肪放瘦體素說夠了，弓狀核在瘦體素和胰島素低的時候啟動飢餓，帶出飢餓素和食慾素；獎賞是 VTA 的多巴胺送到伏隔核，古柯鹼擋住回收讓多巴胺變多。",en:"Insulin stores glucose and glucagon releases it. Leptin says energy is full. Ghrelin signals hunger. Dopamine from the VTA to the nucleus accumbens drives reward, and cocaine blocks its reuptake."},
+{h:"課堂上可以直接說的英文（10/26 加）"},
+{t:"滲透性口渴",zh:"吃鹹的東西，會把水從細胞裡拉出來，這是滲透性口渴。",en:"Salty food pulls water out of the cells. That's osmotic thirst."},
+{t:"誰偵測到",zh:"下視丘 OVLT 的滲透壓受器偵測到，腦下垂體放抗利尿激素，叫腎臟留水。",en:"Osmoreceptors in the OVLT detect it, and ADH tells the kidneys to save water."},
+{t:"低血容量口渴",zh:"失血是低血容量口渴，所以水和鹽都想要。",en:"Losing blood is hypovolemic thirst, so we want both water and salt."},
+{t:"水往哪裡跑",zh:"水往溶質比較多的那一邊跑。",en:"Water moves toward the side with more solutes."},
+{t:"太冷的反應",zh:"太冷的時候，我們發抖，血管收縮保住熱。太熱的時候，流汗，血管擴張。",en:"When we're cold, we shiver and our blood vessels constrict. When we're hot, we sweat and they dilate."},
+{t:"視前區",zh:"視前區有對熱敏感、對冷敏感、和對溫度不敏感的三種神經元。",en:"The preoptic area has warm-sensitive, cold-sensitive, and temperature-insensitive neurons."},
+{t:"推力和拉力",zh:"被熊追是推力，是驅力；為了獎牌跑是拉力，是獎賞。",en:"Running from a bear is push, it's a drive. Running for a medal is pull, it's a reward."},
+{t:"飢餓和飽",zh:"脂肪細胞放的瘦體素說夠了；飢餓素讓我們餓。",en:"Leptin from fat cells says we're full. Ghrelin makes us hungry."},
+{t:"胰島素和升糖素",zh:"胰島素把葡萄糖存起來，升糖素把它提出來。",en:"Insulin stores glucose, and glucagon releases it."},
+{t:"演完後說自己演什麼",zh:"我演的是滲透壓受器，細胞變小的時候，我發出口渴的訊號。角色換掉就好。",en:"I played the osmoreceptor. When the cell shrank, I sent the thirst signal."},
+{h:"10/27 課堂小抄：第十章（接在預習後面）"},
+{t:"三個名詞",zh:"生理性別是身體的性別，性別認同是心理上覺得自己是誰，性傾向是你被誰吸引。三個是分開的。",en:"Sex is biological sex. Gender is psychological identity. Sexual orientation is who you are attracted to."},
+{t:"女性是預設值",zh:"哺乳類沒有荷爾蒙的時候，身體就往女性發展。要變成男性，一定要有東西介入，從 Y 染色體開始。所以男性分化出問題的案例比較多。投影片說大約第七週開始分化，課本說 SRY 在第六週表現，考題照誰出就答誰的。",en:"Among mammals, female is the default sex. Without hormones, the body develops as female."},
+{t:"教授最重要的兩個重點",zh:"第一，四個步驟是分開的，發生在不同時間，不一定對得上。第二，結果不是二選一：內部器官可以兩套都有，外部可以模糊，大腦是光譜。",en:"All four processes are separate, happen at different times, and the outcomes are not binary."},
+{t:"第一步　生殖腺",zh:"Y 染色體上的 SRY 基因，做出睪丸決定因子 TDF，讓生殖腺變成睪丸。沒有 SRY，就變成卵巢。睪固酮是睪丸做好以後才有的，所以它不是第一步。",en:"The SRY gene makes TDF, and TDF turns the gonads into testes. No SRY means ovaries."},
+{t:"第二步　內部器官",zh:"睪丸放兩個東西。睪固酮把男生那套 Wolffian 建起來，叫男性化；MIH 把女生那套 Müllerian 拆掉，叫去女性化。MIH 和睪固酮各自獨立，所以可能兩套都有，也可能都沒有。",en:"Testosterone masculinizes and MIH defeminizes. Both come from the testes."},
+{t:"第三步　外部器官",zh:"睪固酮加上 5 alpha 還原酶，變成 DHT，DHT 讓外部生殖器男性化，大約第九到十週。缺這個酶，就算有 Y、有很多睪固酮，外部也不會男性化。",en:"Testosterone and five alpha reductase make DHT. DHT masculinizes the external organs."},
+{t:"第四步　大腦",zh:"芳香酶在腦細胞裡把睪固酮變成雌二醇，是雌二醇讓大腦男性化。這是最常考的陷阱：不是 DHT。而且是光譜，大腦可以多一點或少一點男性化。有男性外部器官，不代表大腦被男性化。",en:"Aromatase turns testosterone into estradiol, and estradiol masculinizes the brain. It is a spectrum."},
+{t:"染色體異常",zh:"Turner 是 45 X，只有一個 X。Trisomy X 是 47 XXX。Klinefelter 是 47 XXY。Jacobs 是 47 XYY。",en:"Turner is one X only. Trisomy X is XXX. Klinefelter is XXY. Jacobs is XYY."},
+{t:"雄性素不敏感 AIS",zh:"XY，也有睪固酮，但雄性素受體壞了，身體看不到雄性素，所以外表是女性，不孕。教授舉的例子是跑者 Castor Semenya 和模特兒 Hanne Gaby Odiele。",en:"In AIS, the person is XY and has testosterone, but the receptors don't work, so the body looks female."},
+{t:"先天腎上腺增生 CAH",zh:"XX 的胎兒，腎上腺放太多雄性素，所以被男性化。有 CAH 的女生，選玩具比較會選男生的玩具。",en:"In CAH, an XX fetus gets too many androgens from the adrenal glands."},
+{t:"5 alpha 還原酶缺乏",zh:"XY，但做不出 DHT，出生時外部看起來像女生，被當女生養大，到青春期睪固酮上升才男性化。課本說大約百分之六十後來過男性的生活。小說 Middlesex 的主角就是這個。",en:"With five alpha reductase deficiency, the child looks female at birth and masculinizes at puberty."},
+{t:"缺 MIH",zh:"持續性 Müllerian 管症候群：沒有 MIH，男生女生兩套內部器官都有。",en:"With no MIH, both male and female internal organs develop."},
+{t:"大腦兩性異形",zh:"SDN POA 在公老鼠比母老鼠大很多。人類的 INAH 2 和 INAH 3，男性大約是女性的兩倍。LeVay 發現 INAH 3 在異性戀男性比同性戀男性大兩到三倍。",en:"LeVay found INAH 3 was two to three times larger in heterosexual men than in homosexual men."},
+{t:"性傾向",zh:"大約百分之二到三是同性戀。完全同性戀的男性比女性多，雙性戀則是女性比較多。最有力的解釋是生物性的：產前荷爾蒙組織了大腦。遺傳率大約百分之二十五。你不會因為接觸就學會，能改變的是態度。恐同研究：恐同的男性看同性影片其實有生理反應，卻說沒有。",en:"The best explanation is biological. Prenatal hormones organize the brain."},
+{t:"荷爾蒙的兩種作用",zh:"組織作用是早期、永久的；活化作用是後來、可逆的。出生後大約半年有第二波荷爾蒙，叫迷你青春期；青春期是第三波。",en:"Organizational effects are permanent. Activational effects are reversible."},
+{t:"性荷爾蒙的調節",zh:"下視丘放 GnRH，腦下垂體前葉放 LH 和 FSH，再作用到性腺。男性進入穩定關係、當了爸爸，睪固酮都會下降。草原田鼠的配對關係靠催產素和血管加壓素，關鍵是伏隔核的催產素受體密度。",en:"The hypothalamus releases GnRH, and the anterior pituitary releases LH and FSH."},
+{t:"性反應",zh:"睪固酮是男女兩性的性喚起荷爾蒙。Masters 和 Johnson 的四階段：興奮、高原、高潮、消退。",en:"Masters and Johnson described four stages: excitement, plateau, orgasm, and resolution."},
+{h:"第十章的課堂活動（如果教授已經開講）"},
+{t:"性分化接力",zh:"排一列傳話：Y 染色體、SRY、TDF、睪丸、睪固酮和 MIH、Wolffian 留下、Müllerian 拆掉、5 alpha 還原酶做 DHT 到外部、芳香酶做雌二醇到大腦。然後拿掉一個角色：沒有 MIH 兩套都有；沒有 5 alpha 還原酶外部不男性化；受體壞了就是 AIS。",en:"If one step fails, the outcome changes. No MIH means both internal sets. Broken receptors means AIS."},
+{h:"教授可能問你的第十章問題"},
+{t:"為什麼女性是預設值",zh:"沒有荷爾蒙時身體就往女性發展。",en:"Because without hormones, the body develops as female."},
+{t:"SRY 做什麼",zh:"SRY 做出 TDF，讓生殖腺變睪丸。",en:"SRY makes TDF, and TDF turns the gonads into testes."},
+{t:"什麼讓大腦男性化",zh:"雌二醇，芳香酶在腦裡把睪固酮轉過去。",en:"Estradiol. Aromatase turns testosterone into estradiol in the brain."},
+{t:"什麼讓外部男性化",zh:"DHT，由 5 alpha 還原酶從睪固酮做出來。",en:"DHT, made from testosterone by five alpha reductase."},
+{t:"會不會兩套內部器官都有",zh:"會，因為 MIH 和睪固酮分開運作，缺 MIH 兩套都留下。",en:"Yes. MIH works separately from testosterone, so if MIH is missing, both can stay."},
+{t:"AIS 是什麼",zh:"XY、有睪固酮，但受體壞了，所以外表是女性。",en:"The person is XY and has testosterone, but the receptors don't work, so the body looks female."},
+{h:"Kahoot 熱身 14 題答案"},
+{t:"第 1 題",zh:"問：滲透性口渴是什麼觸發的。答：細胞外太鹹，細胞縮水。",en:"Cells shrinking because the outside is too salty."},
+{t:"第 2 題",zh:"問：滲透壓受器在哪裡。答：OVLT。弓狀核是管飢餓的。",en:"The OVLT."},
+{t:"第 3 題",zh:"問：流血、腹瀉造成哪種口渴。答：低血容量口渴。",en:"Hypovolemic thirst."},
+{t:"第 4 題",zh:"問：哪個荷爾蒙叫腎臟留水。答：ADH，也叫血管加壓素，後腦下垂體放的。",en:"ADH, also called vasopressin."},
+{t:"第 5 題",zh:"問：視前區三種神經元，哪個不是。答：痛覺敏感。三種是熱、冷、不敏感。",en:"Pain sensitive is not one of them."},
+{t:"第 6 題",zh:"問：飢餓素的訊號。答：開始吃。瘦體素才是停。",en:"Start eating."},
+{t:"第 7 題",zh:"問：哺乳類的預設性別。答：女性。",en:"Female."},
+{t:"第 8 題",zh:"問：什麼讓生殖腺變睪丸。答：SRY 做出 TDF。",en:"SRY makes TDF."},
+{t:"第 9 題",zh:"問：睪固酮和 MIH 各做什麼。答：睪固酮男性化，MIH 去女性化。",en:"Testosterone masculinizes, and MIH defeminizes."},
+{t:"第 10 題",zh:"問：為什麼兩套內部器官都有。答：MIH 和睪固酮各自獨立。",en:"MIH is independent from testosterone."},
+{t:"第 11 題",zh:"問：DHT 讓什麼男性化。答：外部器官。大腦是雌二醇。",en:"The external organs."},
+{t:"第 12 題",zh:"問：芳香酶做出什麼讓大腦男性化。答：雌二醇。",en:"Estradiol."},
+{t:"第 13 題",zh:"問：Castor Semenya 是哪個例子。答：雄性素不敏感 AIS。",en:"Androgen insensitivity syndrome."},
+{t:"第 14 題",zh:"問：Middlesex 小說是哪一種。答：5 alpha 還原酶缺乏，青春期才男性化。",en:"Five alpha reductase deficiency."},
+{h:"睡前最後一句"},
+{t:"一句話記第十章",zh:"SRY 做睪丸；睪固酮建男生那套，MIH 拆女生那套；DHT 管外面，雌二醇管大腦；四步各自獨立，結果是光譜。",en:"SRY makes testes. Testosterone builds, MIH removes. DHT masculinizes the outside, estradiol masculinizes the brain."}
+];
+const list=document.getElementById('list'),st=document.getElementById('status');
+const segs=[];
+D.forEach(d=>{
+  if(d.h){const h=document.createElement('h2');h.textContent=d.h;list.appendChild(h);return}
+  const i=segs.length;const el=document.createElement('div');el.className='seg';el.tabIndex=0;
+  el.innerHTML=`<div class="tag">${d.t}</div><p class="zh"></p><p class="en"></p>`;
+  el.querySelector('.zh').textContent=d.zh;el.querySelector('.en').textContent=d.en;
+  el.addEventListener('click',()=>start(i));
+  el.addEventListener('keydown',e=>{if(e.key==='Enter')start(i)});
+  list.appendChild(el);segs.push({d,el});
+});
+const S=window.speechSynthesis;let voices=[],cur=-1,playing=false,rate=1.25,enOnly=false,lock=null,token=0;
+function loadV(){voices=S?S.getVoices():[]}
+if(S){loadV();S.onvoiceschanged=loadV}
+function pick(lang){
+  const pref=lang==='zh'?['zh-TW','zh_TW','zh-HK','zh-CN','zh']:['en-US','en_US','en-GB','en'];
+  for(const p of pref){const v=voices.find(v=>v.lang&&v.lang.replace('_','-').toLowerCase().startsWith(p.replace('_','-').toLowerCase()));if(v)return v}
+  return null}
+function say(text,lang){return new Promise(res=>{
+  const u=new SpeechSynthesisUtterance(text);const v=pick(lang);
+  if(v)u.voice=v;u.lang=lang==='zh'?'zh-TW':'en-US';u.rate=lang==='zh'?rate:Math.max(.8,rate-.1);
+  u.onend=res;u.onerror=res;S.speak(u)})}
+async function wake(){try{if('wakeLock' in navigator&&!lock)lock=await navigator.wakeLock.request('screen')}catch(e){}}
+function mark(i){segs.forEach((s,k)=>s.el.classList.toggle('on',k===i));
+  if(segs[i])segs[i].el.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
+async function start(i){
+  if(!S){st.textContent='這個瀏覽器不支援朗讀，請改用 Chrome 或 Safari。';return}
+  S.cancel();const my=++token;playing=true;wake();
+  document.getElementById('play').textContent='⏸ 暫停';
+  for(cur=i;cur<segs.length;cur++){
+    if(my!==token)return;mark(cur);const d=segs[cur].d;
+    st.textContent=`第 ${cur+1} / ${segs.length} 段：${d.t}`;
+    if(!enOnly){await say(d.zh,'zh');if(my!==token)return}
+    await say(d.en,'en');if(my!==token)return;
+    await new Promise(r=>setTimeout(r,500));
+  }
+  playing=false;document.getElementById('play').textContent='▶ 從頭播放';st.textContent='第九章預習播完了。';
+}
+function stop(){token++;S&&S.cancel();playing=false;document.getElementById('play').textContent='▶ 繼續播放';st.textContent=`暫停在第 ${cur+1} 段`}
+document.getElementById('play').onclick=()=>{if(playing)stop();else start(cur<0||cur>=segs.length?0:cur)};
+document.getElementById('next').onclick=()=>start(Math.min(segs.length-1,cur+1));
+document.getElementById('prev').onclick=()=>start(Math.max(0,cur-1));
+const rates=[1,1.25,1.5];
+document.getElementById('speed').onclick=e=>{rate=rates[(rates.indexOf(rate)+1)%rates.length];e.target.textContent=`速度 ${rate}x`;if(playing)start(cur)};
+document.getElementById('mode').onclick=e=>{enOnly=!enOnly;e.target.setAttribute('aria-pressed',enOnly);if(playing)start(cur)};
+</script>
+
+</body></html>

@@ -1,0 +1,142 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ch6 視覺 聽讀版</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap">
+<style>
+/* 版面：一條直欄，上方固定播放器，下面一段一段，正在念的那段亮起來 */
+:root{
+  --bg:#eef1f4; --card:#ffffff; --fg:#1b2430; --muted:#5a6675;
+  --accent:#c2551f; --accent-soft:#f6e3d8; --line:#d6dce3; --en:#24527a;
+  --zh:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --latin:"Atkinson Hyperlegible","Noto Sans TC",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121821; --card:#1b2330; --fg:#e8edf3; --muted:#9aa7b6;
+  --accent:#f08a50; --accent-soft:#3a2a20; --line:#2c3644; --en:#8ec1ef; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121821; --card:#1b2330; --fg:#e8edf3; --muted:#9aa7b6;
+  --accent:#f08a50; --accent-soft:#3a2a20; --line:#2c3644; --en:#8ec1ef; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--latin),var(--zh);font-size:19px;line-height:1.7}
+.wrap{max-width:720px;margin:0 auto;padding-block:0 120px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 12px;border-bottom:1px solid var(--line)}
+h1{font-family:var(--zh);font-size:1.35rem;margin:0 0 2px;text-wrap:balance}
+.sub{color:var(--muted);font-size:.9rem;margin:0 0 10px}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-size:1rem;border:1px solid var(--line);background:var(--card);color:var(--fg);
+  border-radius:10px;padding:10px 14px;min-height:48px;cursor:pointer}
+button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;min-width:150px}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.status{color:var(--muted);font-size:.9rem;width:100%}
+main{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+h2{font-family:var(--zh);font-size:1.05rem;color:var(--accent);margin:14px 0 0;letter-spacing:.02em}
+.seg{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer}
+.seg.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.seg .tag{font-size:.78rem;color:var(--muted);letter-spacing:.06em;margin-bottom:4px}
+.zh{font-family:var(--zh);margin:0}
+.en{color:var(--en);margin:8px 0 0}
+.note{color:var(--muted);font-size:.9rem}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<div class="wrap">
+<header class="bar">
+  <h1>PSYC 4 第六章 視覺（完整版）</h1>
+  <p class="sub">開車、躺著都能聽。中文講一遍，接著念考試英文。</p>
+  <div class="ctrl">
+    <button class="main" id="play">▶ 從頭播放</button>
+    <button id="prev" aria-label="上一段">⏮</button>
+    <button id="next" aria-label="下一段">⏭</button>
+    <button id="speed">速度 1.25x</button>
+    <button id="mode" aria-pressed="false">只聽英文</button>
+    <p class="status" id="status">點任何一段，就從那裡開始念。</p>
+  </div>
+</header>
+<main id="list"></main>
+<p class="note"><a href="ch6.html" target="_blank" rel="noopener">眼睛構造圖、視網膜六層和自測，在 Ch6 視覺 Dojo</a></p>
+<p class="note">沒有聲音的話：Android 請用 Chrome 打開，把「媒體」音量調大；或改用 iPhone。</p>
+</div>
+
+<script>
+const D=[
+{h:"開場：整章的骨架"},
+{t:"總覽",zh:"第六章講視覺。一句話：光往裡走，訊號往外走。光穿過角膜、水晶體，到視網膜最後面的感光細胞；感光細胞把光變成神經訊號，經過雙極細胞、神經節細胞，從視神經出去，在視交叉分左右，到視丘的外側膝狀體，再到枕葉的初級視覺皮質，最後分成兩條路：認東西的腹側，和管位置、動作的背側。教授一直強調：你不是用眼睛看，是用大腦看。",en:"Light travels inward and the signal travels back out. We do not see with our eyes. We see with our brain."},
+{h:"Study Guide 1　感覺與知覺"},
+{t:"定義",zh:"感覺 sensation 是接收環境的物理能量，例如光，並把它轉換成神經系統能處理的訊號，這個轉換叫 transduction。知覺 perception 是大腦組織、解讀這些訊號。關鍵字：receive、detect 是感覺；interpret、organize、recognize 是知覺。",en:"Sensation receives information from the environment and transduces it into neural signals. Perception is the brain's interpretation of that information."},
+{t:"洋裝",zh:"兩個人看同一張洋裝照片，進入眼睛的光一模一樣，一個看到藍黑、一個看到白金。輸入一樣，感覺就一樣，差別在大腦的解讀，所以是知覺不同。教授說洋裝其實是藍黑色。看成白金的人，可以瞇著眼、用眼角周邊去看，用的是桿細胞，大腦以為在暗的環境，就會調整看到的顏色。",en:"The light reaching the eyes is the same, so the difference is in perception, not sensation."},
+{h:"Study Guide 2　由下而上與由上而下"},
+{t:"兩種處理",zh:"由下而上 bottom-up，是從原始資料一點一點往上拼。由上而下 top-down，是用你已經有的知識和預期去套。例子：黑白斑點的圖，朋友說裡面有隻大麥町，你就突然看到狗，而且回不去了，這是由上而下。字母順序亂掉你還讀得懂，也是由上而下，用你會的英文補上。",en:"Bottom-up processing builds from raw sensory data. Top-down processing uses knowledge and expectations."},
+{t:"教授的補充",zh:"兩種處理不互斥，大腦同時用，只是某些情況其中一個比較強。看到從沒見過、完全不知道是什麼的東西，沒有預期，由下而上比較強。洋裝錯覺是大腦對光線做了假設，屬於由上而下。視覺是最強的感覺，大約一半的皮質參與，跟其他感覺衝突時，視覺通常會贏。",en:"Bottom-up and top-down processing happen at the same time. One may be stronger depending on the situation."},
+{h:"Study Guide 3　光、顏色、折射、眼睛構造"},
+{t:"光的兩個性質",zh:"波長決定顏色，振幅決定亮度。檯燈調亮，同樣的紅色更亮，變的是振幅。這兩個最常被對調。物體的顏色是它反射的光：綠葉吸收其他顏色，把綠光反射進你的眼睛。全部吸收就是黑色，所以黑車在太陽下最燙。",en:"Wavelength is perceived as color. Amplitude is perceived as brightness."},
+{t:"三色理論和拮抗歷程",zh:"兩個理論都對，因為講不同的層。三色理論講錐細胞：有三種錐細胞，分別對短、中、長波長最敏感。拮抗歷程講後面的神經節細胞和更後面：三組對立管道，紅對綠、藍對黃、黑對白。紅對藍不是一對。很多 P 型神經節細胞是紅綠對立。盯著綠黃黑的國旗三十秒，再看白牆，會看到紅藍白的後像，照教授的講法，是被壓住的那一邊反彈，這是拮抗歷程的證據。另外，光越混越亮，紅光加綠光是黃色，全部加起來是白色；顏料才是越混越暗。",en:"Trichromatic theory describes the three types of cones. Opponent process theory describes red versus green, blue versus yellow, and black versus white channels."},
+{t:"色彩恆常",zh:"兩個顏色完全一樣的方格，一個看起來在陰影裡，大腦就自動把它調亮，看起來就不一樣，這叫色彩恆常。洋裝影片說：大腦以為在偏藍的光下，就把藍色扣掉，看成白金；以為在黃色燈光下，就看成藍黑。",en:"Color constancy means the brain adjusts color based on the lighting it assumes."},
+{t:"折射",zh:"折射是光從一種介質進到另一種介質時轉彎，例如吸管插在水裡看起來斷掉。角膜做第一次折射，水晶體負責對焦。因為光線折射後交叉，視網膜上的影像是上下顛倒的，大腦再把它轉正。",en:"Refraction is the bending of light. The cornea and lens refract light, so the image on the retina is upside down."},
+{t:"眼睛構造",zh:"虹膜是肌肉，控制進光量；瞳孔只是一個開口，什麼都不控制，這題十月八號的 Kahoot 一半的人錯。中央小窩 fovea 集中錐細胞，看得最清楚、看得到顏色，要看細節就正眼看。視神經盤是盲點，沒有感光細胞，因為神經節細胞的軸突從這裡離開眼睛。教授說：高速公路上不能站士兵。",en:"The iris is a muscle that controls how much light enters. The optic disk is the blind spot because axons leave the eye there."},
+{h:"Study Guide 4　視網膜的細胞和步驟"},
+{t:"四個步驟",zh:"光要先穿過神經節細胞和雙極細胞那幾層，才到最後面的感光細胞，可是前面那些細胞不理光。真正第一個對光反應的，是最後面的感光細胞。訊號再往回走：感光細胞，到雙極細胞，到神經節細胞，神經節細胞的軸突變成視神經。所以光走的順序和訊號的順序相反。感光細胞放在最後面，是因為它需要色素上皮提供能量和化學物質，色素上皮也吸收沒被接到的光。教授的 Instructional Content 用三個功能層講：接收層是感光細胞，處理層是雙極、水平、無軸突細胞，傳送層是神經節細胞。",en:"Light passes through the ganglion and bipolar cells first, but the photoreceptors at the back respond first. The signal then travels back to the ganglion cells, whose axons form the optic nerve."},
+{t:"吸血鬼村莊：黑暗和光亮",zh:"感光細胞是吸血鬼，雙極細胞是村民。黑暗中，吸血鬼最活躍：鈉通道開著，去極化，一直放麩胺酸 glutamate，把村民壓住，所以雙極細胞不送訊號。在視網膜裡，麩胺酸對雙極細胞是抑制性的，這是陷阱。光一照：鈉通道關上，超極化，麩胺酸變少，村民被放開，開始送訊號。教授說 hyperpolarization 這個字一定要會。為什麼黑暗時才放？因為醒著有光的時間比較長，只在黑暗時主動放比較省能量，這叫 dark current。",en:"In the dark, photoreceptors release glutamate and inhibit bipolar cells. Light closes sodium channels, hyperpolarizes the photoreceptor and reduces glutamate."},
+{t:"桿細胞和錐細胞",zh:"桿細胞數量多很多，在周邊，對暗光非常敏感，但不分顏色，是弱吸血鬼，一點光就關掉。錐細胞集中在中央小窩，要亮光，負責顏色和細節。晚上看暗星星，眼睛稍微偏一點反而看得到，但沒有顏色，因為用到周邊的桿細胞。",en:"Rods are in the periphery, sensitive to dim light, and do not see color. Cones are concentrated in the fovea and see color and detail."},
+{t:"中間的神經元",zh:"水平細胞在感光細胞那一層，讓相鄰的感光細胞橫向溝通，產生側抑制。無軸突細胞在神經節細胞那一層，讓雙極細胞和神經節細胞橫向溝通，可能跟處理動作有關。前面都是分級電位，到神經節細胞才第一次產生動作電位。周邊很多桿細胞接到同一個雙極細胞，所以比較模糊但暗處敏感；中央一個錐細胞接一個雙極細胞，所以最清楚。",en:"The ganglion cell is the first cell in the visual pathway to fire action potentials."},
+{t:"感受野和側抑制",zh:"神經節細胞的感受野分中心和外圍。on-center 的細胞，光照中心加分，照外圍扣分，光均勻照滿整個感受野就互相抵消，反應不大，所以細胞對邊緣和明暗對比反應最大。兩個一樣灰的方塊，放在深色背景上的看起來比較亮，這是側抑制。Hermann 格子：沒盯著的交叉點出現灰點，正眼看就消失，因為周邊感受野大，側抑制明顯；中央感受野很小。教授說側抑制一直都在發生，平常看到的邊緣都是它的功勞。",en:"Lateral inhibition sharpens edges and contrast. A ganglion cell responds most to contrast, not to uniform light."},
+{t:"從眼睛到皮質",zh:"兩隻眼睛靠鼻子那一半的視網膜，在視交叉交叉；靠外側那一半不交叉。結果：左邊視野全部送到右腦，右邊視野全部送到左腦。所以右側初級視覺皮質中風，病人兩隻眼睛都看不到左邊的視野。大約百分之九十的視徑送到視丘的外側膝狀體 LGN，再到 V1；少部分到上丘管眼球移動，到下視丘管生理時鐘。",en:"At the optic chiasm, fibers from the nasal half of each retina cross, so the left visual field goes to the right hemisphere."},
+{t:"視覺皮質的兩條路",zh:"從 V1 出去分兩條。腹側路徑往顳葉，是 what，認東西和臉，壞掉是臉盲 prosopagnosia：看得清楚眼睛鼻子嘴巴，卻認不出太太的臉。背側路徑往頂葉，是 where 和 how，管位置和動作；其中 MT 區處理動作，壞掉是 akinetopsia，車子像一格一格跳過去。V1 受損的病人說什麼都看不到，卻指得出光在哪裡，這叫盲視 blindsight。",en:"The ventral stream recognizes objects and faces. The dorsal stream processes location and motion."},
+{t:"深度知覺",zh:"筆放在臉前，左右眼輪流眨，筆好像左右跳，越近跳越大，這是 binocular disparity，兩隻眼睛看到的影像不一樣，差距越大代表越近。把筆從遠處慢慢移到臉前，一直盯著它，兩眼越來越往內轉，這是 binocular convergence。兩個都要兩隻眼睛；單眼也有深度線索，叫 monocular cues。記法：convergence 是兩眼聚在一起，disparity 是兩眼看到的不一樣。",en:"Binocular disparity is the difference between the two retinal images. Convergence is the inward turning of the eyes."},
+{h:"Instructional Content 和 Optional 影片"},
+{t:"臉孔辨識：Ron",zh:"醫生用電刺激 Ron 大腦裡專門認臉的兩群神經元，他看到醫生的臉變形，鼻子垂下來，但房間裡其他東西都一樣。這說明有專門認臉的神經元，在腹側路徑。研究這種案例，可能幫助了解閱讀障礙、思覺失調和記憶。",en:"Specific clusters of neurons are specialized for recognizing faces."},
+{t:"Ben Underwood",zh:"Ben 大約三歲時因為視網膜母細胞瘤，一種幼兒眼癌，兩眼被摘除，因為癌細胞可能沿著視神經擴散到大腦。他用舌頭發出喀聲，聽回音判斷牆壁、車子、建築物在哪裡，這叫回音定位 echolocation，不用導盲犬、不用手杖，還能騎腳踏車。原理跟光一樣：光從物體反射進眼睛，聲音從物體反射進耳朵。媽媽說他比明眼的朋友更早聽到轉彎的車，因為他更注意。重點：知覺是大腦建構的，眼睛不在，大腦還能用聲音建出畫面。",en:"Ben Underwood used echolocation. His brain built a picture of the world from sound."},
+{t:"Optional：不注意視盲和類黃酮",zh:"研究發現，沒注意的時候，連眼前很明顯的東西都可能看不到，這叫 inattentional blindness，視覺不像錄影機什麼都錄。Food for Your Eyes 影片：蔬菜裡的類黃酮可能保護水晶體不受紫外線傷害，幫助預防白內障。",en:"Inattentional blindness means we may not see an obvious object when we are not paying attention."},
+{h:"收尾"},
+{t:"一句話總結",zh:"波長是顏色，振幅是亮度；角膜和水晶體折射光；感光細胞在最後面卻最先反應，黑暗放麩胺酸壓住雙極細胞；神經節細胞第一個產生動作電位；鼻側在視交叉交叉；九成到 LGN 再到 V1；腹側認東西，背側管位置和動作。",en:"Photoreceptors respond first, ganglion cells fire the first action potentials, and the ventral stream recognizes objects while the dorsal stream tracks motion."}
+];
+const list=document.getElementById('list'),st=document.getElementById('status');
+const segs=[];
+D.forEach(d=>{
+  if(d.h){const h=document.createElement('h2');h.textContent=d.h;list.appendChild(h);return}
+  const i=segs.length;const el=document.createElement('div');el.className='seg';el.tabIndex=0;
+  el.innerHTML=`<div class="tag">${d.t}</div><p class="zh"></p><p class="en"></p>`;
+  el.querySelector('.zh').textContent=d.zh;el.querySelector('.en').textContent=d.en;
+  el.addEventListener('click',()=>start(i));
+  el.addEventListener('keydown',e=>{if(e.key==='Enter')start(i)});
+  list.appendChild(el);segs.push({d,el});
+});
+const S=window.speechSynthesis;let voices=[],cur=-1,playing=false,rate=1.25,enOnly=false,lock=null,token=0;
+function loadV(){voices=S?S.getVoices():[]}
+if(S){loadV();S.onvoiceschanged=loadV}
+function pick(lang){
+  const pref=lang==='zh'?['zh-TW','zh_TW','zh-HK','zh-CN','zh']:['en-US','en_US','en-GB','en'];
+  for(const p of pref){const v=voices.find(v=>v.lang&&v.lang.replace('_','-').toLowerCase().startsWith(p.replace('_','-').toLowerCase()));if(v)return v}
+  return null}
+function say(text,lang){return new Promise(res=>{
+  const u=new SpeechSynthesisUtterance(text);const v=pick(lang);
+  if(v)u.voice=v;u.lang=lang==='zh'?'zh-TW':'en-US';u.rate=lang==='zh'?rate:Math.max(.8,rate-.1);
+  u.onend=res;u.onerror=res;S.speak(u)})}
+async function wake(){try{if('wakeLock' in navigator&&!lock)lock=await navigator.wakeLock.request('screen')}catch(e){}}
+function mark(i){segs.forEach((s,k)=>s.el.classList.toggle('on',k===i));
+  if(segs[i])segs[i].el.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
+async function start(i){
+  if(!S){st.textContent='這個瀏覽器不支援朗讀，請改用 Chrome 或 Safari。';return}
+  S.cancel();const my=++token;playing=true;wake();
+  document.getElementById('play').textContent='⏸ 暫停';
+  for(cur=i;cur<segs.length;cur++){
+    if(my!==token)return;mark(cur);const d=segs[cur].d;
+    st.textContent=`第 ${cur+1} / ${segs.length} 段：${d.t}`;
+    if(!enOnly){await say(d.zh,'zh');if(my!==token)return}
+    await say(d.en,'en');if(my!==token)return;
+    await new Promise(r=>setTimeout(r,500));
+  }
+  playing=false;document.getElementById('play').textContent='▶ 從頭播放';st.textContent='第六章播完了。';
+}
+function stop(){token++;S&&S.cancel();playing=false;document.getElementById('play').textContent='▶ 繼續播放';st.textContent=`暫停在第 ${cur+1} 段`}
+document.getElementById('play').onclick=()=>{if(playing)stop();else start(cur<0||cur>=segs.length?0:cur)};
+document.getElementById('next').onclick=()=>start(Math.min(segs.length-1,cur+1));
+document.getElementById('prev').onclick=()=>start(Math.max(0,cur-1));
+const rates=[1,1.25,1.5];
+document.getElementById('speed').onclick=e=>{rate=rates[(rates.indexOf(rate)+1)%rates.length];e.target.textContent=`速度 ${rate}x`;if(playing)start(cur)};
+document.getElementById('mode').onclick=e=>{enOnly=!enOnly;e.target.setAttribute('aria-pressed',enOnly);if(playing)start(cur)};
+</script>
+
+</body></html>

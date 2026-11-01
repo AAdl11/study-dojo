@@ -1,0 +1,598 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>PSYC 4 Ch7 聽覺 Dojo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap">
+<style>
+/* Layout: one long reading column with a sticky station bar; brass = the trumpet that starts the story, teal = the fluid inside the cochlea */
+:root{
+  --bg:#F3F6F8; --panel:#FFFFFF; --fg:#17212C; --muted:#4D5B69; --line:#D3DCE3;
+  --brass:#8F5F00; --brass-soft:#F6E9CC; --teal:#16656E; --teal-soft:#DDEFF0;
+  --good:#1D6B3A; --good-soft:#DDF1E3; --bad:#A0302A; --bad-soft:#F8E0DE;
+  --en:"Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  --zh:"Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F151B; --panel:#18212A; --fg:#E7EDF2; --muted:#A9B6C2; --line:#2C3946;
+  --brass:#E5B451; --brass-soft:#3A2F17; --teal:#6CC4CC; --teal-soft:#16343A;
+  --good:#7FD69B; --good-soft:#163323; --bad:#F29B93; --bad-soft:#3B1D1B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F151B; --panel:#18212A; --fg:#E7EDF2; --muted:#A9B6C2; --line:#2C3946;
+  --brass:#E5B451; --brass-soft:#3A2F17; --teal:#6CC4CC; --teal-soft:#16343A;
+  --good:#7FD69B; --good-soft:#163323; --bad:#F29B93; --bad-soft:#3B1D1B; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--en),var(--zh);font-size:19px;line-height:1.65;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:20px 80px}
+h1,h2,h3{text-wrap:balance;line-height:1.3;margin:0}
+h1{font-size:1.75rem}
+h2{font-size:1.4rem;margin-top:8px}
+h3{font-size:1.12rem}
+.zh{font-family:var(--zh),var(--en)}
+.eyebrow{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--brass);font-weight:700}
+header.top{display:grid;gap:8px;padding-block:8px 18px;border-bottom:2px solid var(--line)}
+.meta{color:var(--muted);font-size:.95rem}
+nav.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;flex-wrap:wrap;gap:8px;padding-block:10px;border-bottom:1px solid var(--line)}
+nav.bar a{font-family:var(--zh);text-decoration:none;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.95rem}
+nav.bar a:focus-visible,button:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+section{display:grid;gap:16px;padding-block:28px 8px;scroll-margin-top:70px}
+.station{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:8px}
+.station .tag{font-family:var(--zh);font-weight:700;color:var(--teal)}
+.station p,.station li{margin:0}
+.station ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.hook{background:var(--brass-soft);border-radius:10px;padding:14px 18px;font-family:var(--zh);font-weight:700}
+.pair{display:grid;gap:2px;padding-block:10px;border-bottom:1px solid var(--line)}
+.pair .e{display:flex;gap:10px;align-items:flex-start;font-size:1.05rem}
+.pair .c{font-family:var(--zh);color:var(--muted);padding-left:44px}
+button.say{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--teal-soft);color:var(--teal);cursor:pointer;display:grid;place-items:center;padding:0}
+button.say svg{width:18px;height:18px}
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.word{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center;min-width:0}
+.word b{font-size:1.02rem}
+.word .st{grid-column:2;color:var(--brass);font-weight:700;font-size:.95rem;letter-spacing:.02em}
+.word .zh{grid-column:2;color:var(--muted);font-size:.92rem}
+.pg{display:grid;gap:8px}
+.pg h3{color:var(--brass)}
+.hl{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px;display:grid;gap:2px}
+.hl .where{font-family:var(--zh);font-weight:700}
+.hl .words{font-style:italic}
+.hl .note{font-family:var(--zh);color:var(--muted);font-size:.93rem}
+.star{color:var(--brass);font-weight:700}
+.legend{font-family:var(--zh);color:var(--muted);font-size:.95rem}
+.rg{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px;display:grid;gap:4px}
+.rg .q{font-weight:700}
+.rg .qz{font-family:var(--zh);color:var(--muted)}
+.rg .ref{font-family:var(--zh);color:var(--teal);font-size:.92rem}
+.quizhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.score{font-weight:700;font-variant-numeric:tabular-nums;background:var(--teal-soft);color:var(--teal);border-radius:999px;padding:4px 14px}
+.qcard{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:10px}
+.qcard .num{font-size:.85rem;color:var(--brass);font-weight:700;letter-spacing:.06em}
+.qcard .stem{font-weight:700;font-size:1.05rem}
+.qcard .stemzh{font-family:var(--zh);color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:inherit;font-size:1rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer;display:grid;gap:2px}
+.opt[disabled]{cursor:default}
+.opt .why{font-family:var(--zh);font-size:.93rem;color:var(--muted)}
+.opt.right{background:var(--good-soft);border-color:var(--good)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt.right .lab{color:var(--good);font-weight:700}
+.opt.wrong .lab{color:var(--bad);font-weight:700}
+.verdict{font-family:var(--zh);font-weight:700}
+.ref2{font-family:var(--zh);color:var(--teal);font-size:.92rem}
+.reset{font:inherit;font-family:var(--zh);background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer}
+footer{padding-top:30px;color:var(--muted);font-family:var(--zh);font-size:.9rem}
+.player{background:var(--panel);border:2px solid var(--brass);border-radius:14px;padding:14px 16px;display:grid;gap:10px;margin-block:14px}
+.player .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.big{font:inherit;font-family:var(--zh);font-weight:700;font-size:1.15rem;border:0;border-radius:999px;padding:12px 22px;cursor:pointer;background:var(--brass);color:var(--panel)}
+.big.alt{background:var(--teal-soft);color:var(--teal)}
+.player label{font-family:var(--zh);display:flex;gap:6px;align-items:center;font-size:.98rem}
+.player select{font:inherit;font-size:.95rem;padding:4px 6px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.now{font-family:var(--zh);color:var(--muted);font-size:.95rem;min-height:1.5em}
+.reading{outline:3px solid var(--brass);outline-offset:3px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">PSYC 4 · Module 6 · Chapter 7 上半</span>
+  <h1>Audition 聽覺：聲音快遞</h1>
+  <div class="meta zh">課本 p.209–223 · Reading Guide 第 1、2、3 項 · 週二 10/13 上課前</div>
+</header>
+
+<div class="player" id="player">
+  <div class="row">
+    <button class="big" id="play" type="button">睡前模式：從頭連續播放</button>
+    <button class="big alt" id="stop" type="button" hidden>停止</button>
+  </div>
+  <div class="row">
+    <label for="mode">聽什麼
+      <select id="mode">
+        <option value="zh">只聽中文故事</option>
+        <option value="zhen">中文故事，接著英文版</option>
+        <option value="en">只聽英文版（英文接中文）</option>
+      </select>
+    </label>
+    <label for="rate">速度
+      <select id="rate">
+        <option value="0.8">慢</option>
+        <option value="0.95" selected>一般</option>
+        <option value="1.1">稍快</option>
+      </select>
+    </label>
+  </div>
+  <div class="now" id="now">按下去以後可以閉上眼睛聽，會一站一站自己播到最後。螢幕請保持亮著，亮度可以調到最低。</div>
+</div>
+<nav class="bar" aria-label="段落">
+  <a href="#story">中文故事</a>
+  <a href="#english">English 版</a>
+  <a href="#words">發音</a>
+  <a href="#mark">畫書</a>
+  <a href="#write">自己寫</a>
+  <a href="#quiz">練習題</a>
+</nav>
+
+<section id="story">
+  <h2 class="zh">一、中文故事：聲音快遞，從喇叭送到大腦</h2>
+  <div class="hook">教授的核心一句：你不是用耳朵聽，是用大腦聽。耳朵只負責收件，「聽到」是大腦開箱以後的事。</div>
+
+  <div class="station zh"><span class="tag">第 1 站　寄件：聲波</span>
+    <p>喇叭一吹，推動空氣分子互相碰撞，一圈一圈往外擴，像池塘的漣漪，這就是聲波。外太空沒有空氣可以碰撞，所以沒有聲音。（p.210）</p>
+    <ul>
+      <li><b>浪有多高</b> = amplitude 振幅 → 聽起來多大聲 loudness，單位 dB 分貝。這是對數尺度：30 dB 是 20 dB 的 10 倍強度。0 dB 是剛好聽得到，130 dB 會痛。（p.210–212）</li>
+      <li><b>浪有多密</b> = frequency 頻率，每秒幾圈 → 聽起來多高 pitch，單位 Hz 赫茲。人類聽得到約 20 到 20,000 Hz。（p.211–212）</li>
+      <li><b>同一個音，小提琴和人聲聽起來不一樣</b> = timbre 音色。只有一個頻率的叫 pure tone 純音；不規則重複的叫 noise 噪音。（p.211–212）</li>
+    </ul>
+  </div>
+
+  <div class="station zh"><span class="tag">第 2 站　外耳：收件櫃台</span>
+    <p>pinna 耳廓像漏斗，把聲音收進來，也幫忙判斷聲音從哪裡來。收進來以後走 auditory canal 耳道這條走廊。（p.213）</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 3 站　中耳：大門和三個搬運工</span>
+    <p>走廊盡頭是 tympanic membrane 鼓膜，被聲波敲得震動，它是外耳和中耳的界線。</p>
+    <p>門後有三個搬運工 ossicles 聽小骨：malleus 槌骨、incus 砧骨、stapes 鐙骨。它們把震動從「空氣世界」搬到「水的世界」。為什麼要搬運工？你在泳池水底聽朋友叫你，聲音很糊，因為聲音從空氣進到水裡會丟掉大部分能量。搬運工把會丟掉的 30 dB 救回大約 23 dB。（p.214）</p>
+    <p>最後一個搬運工 stapes 去推 oval window 卵圓窗，那是中耳和內耳的界線。（p.213）</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 4 站　內耳：蝸牛形的水族倉庫</span>
+    <p>cochlea 耳蝸捲起來像一顆豌豆大的蝸牛殼，裡面裝滿液體。oval window 一被推，液體就起波浪，波浪繞過最裡面的頂端，再從 round window 圓窗推出去。圓窗是洩壓閥，免得裡面壓力太大。（p.214–215）</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 5 站　倉庫裡的吉他弦</span>
+    <p>倉庫中間有一條 basilar membrane 基底膜，像一條吉他弦。</p>
+    <ul>
+      <li>靠近門口的 <b>base 底部</b>：窄、硬 → <b>高音</b>在這裡震最大，像短笛 piccolo。</li>
+      <li>最裡面的 <b>apex 頂端</b>：寬、軟 → <b>低音</b>在這裡震最大，像低音號 tuba。</li>
+    </ul>
+    <p>就像吉他：硬而細的弦彈出高音，粗而鬆的弦彈出低音。教授的影片也是這張圖：base 16 kHz，往 apex 一路降到 500 Hz。（p.215，Figure 7.5 在 p.216）</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 6 站　分揀員按下按鈕：毛細胞</span>
+    <p>基底膜上坐著 organ of Corti 柯蒂氏器，裡面是一排排 hair cells 毛細胞，頭頂有天線 cilia 纖毛，上面蓋著屋頂 tectorial membrane 蓋膜。（p.215）</p>
+    <ul>
+      <li><b>inner hair cells 內毛細胞</b>（約 3,500 個）= 真正的收件員，聽神經的纖維有 95% 接它們。</li>
+      <li><b>outer hair cells 外毛細胞</b> = 擴音員，負責放大聲音，只有 5% 的聽神經纖維接它們。</li>
+    </ul>
+    <p>天線往最高的那根彎 → 鉀離子通道打開。<b>重點在這裡：</b>毛細胞泡的液體 endolymph 內淋巴裡鉀特別多，所以鉀是「衝進」細胞，跟第三章鉀往外跑剛好相反 → 細胞 depolarize 去極化 → 鈣通道打開 → 放出 glutamate 麩胺酸。天線往反方向彎 → 通道關上 → 細胞 hyperpolarize 過極化。（p.215，Figure 7.6 在 p.217）</p>
+    <p>對照第六章吸血鬼村莊：光讓吸血鬼「關掉」；聲音讓分揀員「打開」。</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 7 站　快遞員出門</span>
+    <p>spiral ganglion neurons 螺旋神經節神經元是 bipolar 雙極的：一頭接毛細胞，另一頭的軸突集合起來，就是 auditory nerve 聽神經，也就是第八對腦神經 cranial nerve VIII。（p.215）</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 8 站　一路轉運站（口訣：Can Some Little Insects Make Art）</span>
+    <ul>
+      <li><b>C</b>　Cochlear nuclei 耳蝸核，在 medulla 延腦</li>
+      <li><b>S</b>　Superior olive 上橄欖核，在 pons 橋腦，負責比對兩耳</li>
+      <li><b>L</b>　Lateral lemniscus 外側蹄系，往上走的高速公路</li>
+      <li><b>I</b>　Inferior colliculus 下丘，在 midbrain 中腦</li>
+      <li><b>M</b>　MGN 內側膝狀核，在 thalamus 視丘，總收發室</li>
+      <li><b>A</b>　A1 主聽覺皮質，在 temporal lobe 顳葉</li>
+    </ul>
+    <p>分辨法：看東西走 LGN（L = Light），聽聲音走 MGN（M = Music）。（p.215–218，Figure 7.7 在 p.218）</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 9 站　總部：聽覺皮質</span>
+    <p>A1 在顳葉，就在 lateral sulcus 外側溝的正下方。裡面像鋼琴鍵一樣排列：低音在前面 rostral，高音在後面 caudal。這種「頻率相近的鄰居住隔壁」叫 tonotopic organization，從基底膜一路到 A1 都這樣排。（p.218–219）</p>
+    <p>A1 周圍是 secondary auditory cortex 次級聽覺皮質，處理比較複雜的聲音，例如喀喀聲、一陣雜音、有特定頻率組合的聲音。它分兩條路：<b>what</b> 這是什麼聲音，<b>where</b> 從哪裡來。（p.219）</p>
+    <p>Reading Guide 第 3 項 associative cortices：課本上半沒有用這個字。最接近的是這個次級聽覺皮質，它把單純的訊號組合成有意義的聲音。Module 頁面也說體感皮質跟其他皮質，尤其是視覺皮質，連結很多。週二上課聽教授怎麼講，再補進來。</p>
+  </div>
+
+  <div class="station zh"><span class="tag">第 10 站　大腦怎麼開箱判讀</span>
+    <ul>
+      <li><b>音高</b>：高於 4,000 Hz，看基底膜哪一段震最大，叫 place theory 位置論；低於 4,000 Hz，看神經發射的節奏跟聲音頻率一樣，叫 temporal theory 時間論。（p.219）</li>
+      <li><b>響度</b>：dB 是物理量，loudness 是感覺，兩個不一樣。每加 10 dB（強度 10 倍），只聽起來大聲 2 倍。一樣的 dB，低音聽起來比高音小聲。聲音持續越久聽起來越大聲，到 300 msec 為止，叫 temporal summation。（p.219–220）</li>
+      <li><b>左右方向</b>：比兩耳收到的時間差，最多 0.6 msec。比對的是 superior olive 裡的 binaural neurons 雙耳神經元。正前方和正後方的時間差是 0，所以最難分。（p.220）</li>
+      <li><b>頭影</b>：頭會擋住一部分聲音，離聲音遠的那隻耳朵比較小聲。只對高音有用，低音波長長，會繞過頭。（p.220–221）</li>
+      <li><b>上下方向</b>：靠 pinna 耳廓。（p.221）</li>
+    </ul>
+  </div>
+
+  <div class="station zh"><span class="tag">第 11 站　眼睛才是老大：McGurk effect</span>
+    <p>耳朵聽到「ba-ba」，眼睛同時看到嘴型在說「ga-ga」，大腦給你的答案是「da-da」。（p.221，Figure 7.11）</p>
+    <p>教授 10/13 上課放的影片是另一個版本：聲音一直是「ba」，嘴型換成「fa」，你就聽到「fa」；閉上眼睛，又聽回「ba」。課本的例子和教授的例子都要認得，考題可能用任何一種。</p>
+    <p>看電影時你覺得聲音從演員嘴巴出來，其實喇叭在螢幕上面或旁邊。人類的視覺比聽覺強，視覺會改寫聽覺。這就是教授說的 sensation 和 perception 不一樣的最好例子：耳朵收到的是 ba，大腦判成 da。</p>
+  </div>
+
+  <div class="hook">一句話記住：耳朵收件，大腦開箱，眼睛說了算。</div>
+</section>
+
+<section id="english">
+  <h2 class="zh">二、English 版：同一個故事，教授會用的說法</h2>
+  <p class="legend">按圓形按鈕聽英文。先聽一句，跟著念一次，再看中文。</p>
+  <div id="pairs"></div>
+</section>
+
+<section id="words">
+  <h2 class="zh">三、名詞發音（大寫是重音）</h2>
+  <div class="vocab" id="vocab"></div>
+</section>
+
+<section id="mark">
+  <h2 class="zh">四、畫書：只畫 Reading Guide 用得到的句子</h2>
+  <p class="legend">黃 = 螢光筆畫整句。藍 = 定義框。框 = 圖用鉛筆框起來。<span class="star">★</span> = 最可能考。行數：從該欄最上面第一行字往下數，標題也算一行，頁首的頁碼和章名不算。圖下面的文字，從圖下第一行算起。p.222–223 是聽力疾病和兩個專欄，Reading Guide 沒點到，不畫。</p>
+  <div id="marks"></div>
+</section>
+
+<section id="write">
+  <h2 class="zh">五、自己寫：Reading Guide 練習</h2>
+  <p class="legend">讀完那一頁，闔上書，用自己的話寫在筆記本上，寫完整的句子，不用縮寫。寫不出來的就是還沒懂，拍照給我。可以列印的空白格版本另外傳給你。</p>
+  <div id="rglist"></div>
+</section>
+
+<section id="quiz">
+  <div class="quizhead">
+    <h2 class="zh">六、練習題（30 題，同一個觀念換不同角度考）</h2>
+    <span class="score" id="score">0 / 0</span>
+  </div>
+  <p class="legend">點一個答案，每個選項都會告訴你為什麼對、為什麼錯。</p>
+  <button class="reset" id="reset" type="button">全部重做</button>
+  <div id="qs" style="display:grid;gap:14px"></div>
+</section>
+
+<footer>PSYC 4 · Freberg 第七章 · 週二上課後，把課堂逐字稿傳來，教授講了、課本沒有的，再補進來。</footer>
+</div>
+
+<script>
+const SPK='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+function say(t){try{const s=window.speechSynthesis;if(!s)return;s.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;const v=s.getVoices().find(x=>/^en-US/.test(x.lang));if(v)u.voice=v;s.speak(u);}catch(e){}}
+function sayBtn(t){const b=document.createElement('button');b.className='say';b.type='button';b.innerHTML=SPK;b.setAttribute('aria-label','Play: '+t);b.addEventListener('click',()=>say(t));return b;}
+
+const PAIRS=[
+["You don't hear with your ears. You hear with your brain.","你不是用耳朵聽，是用大腦聽。"],
+["Sensation is receiving signals from the environment. Perception is organizing and interpreting those signals.","Sensation 是從環境接收訊號；perception 是把這些訊號組織起來、詮釋它。"],
+["Sound begins with the movement of an object. The molecules bump into each other and make waves, like ripples in a pond.","聲音從物體移動開始。分子互相碰撞形成波，像池塘的漣漪。"],
+["Sound cannot travel in a vacuum, such as outer space.","聲音在真空中無法傳遞，例如外太空。"],
+["The height of a wave is its amplitude. We perceive amplitude as loudness, and we measure it in decibels.","波的高度是振幅。我們把振幅感覺成響度，單位是分貝。"],
+["The number of cycles per second is the frequency. We perceive frequency as pitch, and we measure it in hertz.","每秒的週期數是頻率。我們把頻率感覺成音高，單位是赫茲。"],
+["Humans hear from about 20 hertz to 20,000 hertz.","人類聽得到大約 20 到 20,000 赫茲。"],
+["A pure tone has a single frequency. Timbre is the unique quality of a complex sound.","純音只有一個頻率。音色是複合聲音獨特的質感。"],
+["The pinna collects sound like a funnel and sends it down the auditory canal.","耳廓像漏斗一樣收集聲音，送進耳道。"],
+["The tympanic membrane, or eardrum, is the boundary between the outer ear and the middle ear.","鼓膜是外耳和中耳的界線。"],
+["The ossicles, the malleus, incus, and stapes, carry the vibration from the air to the fluid of the inner ear without losing too much energy.","聽小骨，也就是槌骨、砧骨、鐙骨，把震動從空氣帶到內耳的液體，不會損失太多能量。"],
+["The stapes pushes on the oval window, the boundary between the middle ear and the inner ear.","鐙骨推卵圓窗，那是中耳和內耳的界線。"],
+["The cochlea is a fluid-filled, snail-shaped structure. The round window acts as an escape valve for pressure.","耳蝸是充滿液體的蝸牛形構造。圓窗是洩壓閥。"],
+["High-frequency sounds make the basilar membrane vibrate most near its base. Low-frequency sounds peak near the apex.","高頻聲音讓基底膜在底部震最大；低頻聲音在頂端震最大。"],
+["The organ of Corti sits on the basilar membrane. Its hair cells turn vibration into neural messages.","柯蒂氏器坐在基底膜上，它的毛細胞把震動轉成神經訊號。"],
+["Inner hair cells are the actual auditory receptors. Outer hair cells amplify sound.","內毛細胞是真正的聽覺受器；外毛細胞負責放大聲音。"],
+["When the cilia bend toward the tallest one, potassium channels open and potassium flows into the cell, because the endolymph is rich in potassium.","纖毛往最高那根彎時，鉀通道打開，鉀流進細胞，因為內淋巴裡鉀很多。"],
+["The hair cell depolarizes, calcium channels open, and the cell releases glutamate.","毛細胞去極化，鈣通道打開，細胞放出麩胺酸。"],
+["Spiral ganglion neurons are bipolar. Their axons form the auditory nerve, cranial nerve eight.","螺旋神經節神經元是雙極的，它們的軸突組成聽神經，也就是第八對腦神經。"],
+["The pathway goes from the cochlear nuclei in the medulla, to the superior olive in the pons, along the lateral lemniscus, to the inferior colliculus in the midbrain, to the medial geniculate nucleus of the thalamus, and then to the primary auditory cortex.","路線是：延腦的耳蝸核，到橋腦的上橄欖核，沿外側蹄系，到中腦的下丘，到視丘的內側膝狀核，最後到主聽覺皮質。"],
+["The primary auditory cortex, A1, is in the temporal lobe, just below the lateral sulcus.","主聽覺皮質 A1 在顳葉，外側溝正下方。"],
+["A1 has tonotopic organization. Low frequencies are rostral and high frequencies are caudal.","A1 是依音頻排列的：低頻在前，高頻在後。"],
+["The secondary auditory cortex processes complex sounds, along a what pathway and a where pathway.","次級聽覺皮質處理複雜的聲音，分成「是什麼」和「在哪裡」兩條路。"],
+["Place theory explains pitch above 4,000 hertz. Temporal theory explains pitch below 4,000 hertz.","位置論解釋 4,000 赫茲以上的音高；時間論解釋 4,000 赫茲以下的音高。"],
+["Loudness doubles with every 10 decibel increase.","每增加 10 分貝，響度只加倍。"],
+["Binaural neurons in the superior olive compare when the sound arrives at each ear.","上橄欖核的雙耳神經元比較聲音到達兩耳的時間。"],
+["In the McGurk effect, we hear ba, we see lips say ga, and we perceive da. Vision changes what we hear.","McGurk 效應：聽到 ba，看到嘴型 ga，感知成 da。視覺改變了我們聽到的東西。"],
+["In the video from class, the sound is always ba. When the lips say fa, we hear fa. When we close our eyes, we hear ba again.","教授上課的影片：聲音一直是 ba，嘴型說 fa 時我們聽到 fa，閉上眼睛又聽回 ba。"]
+];
+const pw=document.getElementById('pairs');
+PAIRS.forEach(([e,c])=>{const d=document.createElement('div');d.className='pair';const r=document.createElement('div');r.className='e';r.append(sayBtn(e));const s=document.createElement('span');s.textContent=e;r.append(s);const z=document.createElement('div');z.className='c';z.textContent=c;d.append(r,z);pw.append(d);});
+
+const VOC=[
+["audition","aw-DISH-un","聽覺"],["amplitude","AM-pli-tood","振幅"],["frequency","FREE-kwen-see","頻率"],["pitch","PITCH","音高"],["loudness","LOUD-ness","響度"],["decibel","DES-ih-bel","分貝"],["hertz","HURTS","赫茲"],["timbre","TAM-ber","音色"],["pure tone","PYOOR TONE","純音"],["pinna","PIN-uh","耳廓"],["auditory canal","AW-dih-tor-ee kuh-NAL","耳道"],["tympanic membrane","tim-PAN-ik MEM-brain","鼓膜"],["ossicles","OSS-ih-kulz","聽小骨"],["malleus","MAL-ee-us","槌骨"],["incus","ING-kus","砧骨"],["stapes","STAY-peez","鐙骨"],["oval window","OH-vul WIN-doh","卵圓窗"],["round window","ROUND WIN-doh","圓窗"],["cochlea","KOK-lee-uh","耳蝸"],["basilar membrane","BAZ-ih-ler MEM-brain","基底膜"],["apex","AY-pex","頂端"],["organ of Corti","OR-gun of KOR-tee","柯蒂氏器"],["tectorial membrane","tek-TOR-ee-ul MEM-brain","蓋膜"],["cilia","SIL-ee-uh","纖毛"],["endolymph","EN-doh-limf","內淋巴"],["perilymph","PAIR-ih-limf","外淋巴"],["inner hair cells","IN-er HAIR selz","內毛細胞"],["outer hair cells","OW-ter HAIR selz","外毛細胞"],["spiral ganglion","SPY-rul GANG-glee-un","螺旋神經節"],["auditory nerve","AW-dih-tor-ee NERV","聽神經"],["cochlear nucleus","KOK-lee-er NOO-klee-us","耳蝸核"],["superior olive","soo-PEER-ee-er OL-iv","上橄欖核"],["lateral lemniscus","LAT-er-ul lem-NIS-kus","外側蹄系"],["inferior colliculus","in-FEER-ee-er kuh-LIK-yuh-lus","下丘"],["medial geniculate nucleus","MEE-dee-ul jeh-NIK-yuh-lit NOO-klee-us","內側膝狀核 MGN"],["primary auditory cortex","PRY-mair-ee AW-dih-tor-ee KOR-tex","主聽覺皮質 A1"],["lateral sulcus","LAT-er-ul SUL-kus","外側溝"],["tonotopic","toh-noh-TOP-ik","依音頻排列的"],["rostral","ROS-trul","前側"],["caudal","KAW-dul","後側"],["place theory","PLACE THEE-uh-ree","位置論"],["temporal theory","TEM-per-ul THEE-uh-ree","時間論"],["temporal summation","TEM-per-ul sum-AY-shun","時間加成"],["binaural","by-NOR-ul","雙耳的"],["McGurk effect","muh-GURK ih-FEKT","McGurk 效應"]
+];
+const vw=document.getElementById('vocab');
+VOC.forEach(([w,st,z])=>{const d=document.createElement('div');d.className='word';d.append(sayBtn(w));const b=document.createElement('b');b.textContent=w;d.append(b);const s=document.createElement('span');s.className='st';s.textContent=st;const zz=document.createElement('span');zz.className='zh';zz.textContent=z;d.append(s,zz);vw.append(d);});
+
+const MARKS=[
+["p.210",[
+ ["右欄第 6–12 行，黃 ★","Sound as a physical stimulus begins with the movement of an object … like ripples in a pond … sound cannot occur in a vacuum","聲音是什麼、為什麼外太空沒有聲音"],
+ ["右欄第 27–29 行，黃 ★","The height, or amplitude, of a wave … perceived as loudness by the listener.","振幅 = 響度"],
+ ["左欄下方定義框 amplitude，藍","amplitude The height of a wave …",""]]],
+["p.211",[
+ ["左欄圖下第 1–2 行，黃","are characteristic of soft sounds, and high-amplitude waves are perceived as loud.",""],
+ ["右欄第 2–10 行，黃 ★","frequency of the wave, or the number of cycles per second … Long wavelengths … low pitch … short wavelengths … higher pitch.","頻率 = 音高"],
+ ["右欄第 11–13 行，黃","The simplest type of sound wave is a pure tone, which has a single frequency",""],
+ ["右欄第 18–20 行，黃","Complex tones combining multiple waves have a characteristic quality known","接到下一頁的 timbre"],
+ ["右欄中間定義框 frequency，藍","frequency The number of cycles of a periodic wave per unit of time …",""],
+ ["Table 7.1 整張框起來 ★","Amplitude → Loudness / Frequency → Pitch / Timbre","這張表就是 Reading Guide 第 1 項的 sound waves"]]],
+["p.212",[
+ ["左欄第 1–5 行，黃","as timbre. The same note played by a violin or sung by a human voice … Waves that do not regularly repeat themselves are perceived as noise",""],
+ ["左欄第 9–13 行，黃","a logarithmic scale of sound intensity based on the decibel (dB) … 30 dB has 10 times the intensity as a sound of 20 dB",""],
+ ["右欄第 1–3 行，黃","The threshold for hearing … is at 0 dB.",""],
+ ["右欄第 7 行後半，黃","At 130 dB, we experience pain.",""],
+ ["右欄第 10–15 行，黃 ★","Frequency … The unit used to measure the frequency of sound is the hertz (Hz) … Human hearing ranges from approximately 20 Hz to 20,000 Hz",""],
+ ["右欄第 24–25 行，黃","The components that make up the ear are generally divided into three parts: the outer, middle, and inner ear.",""]]],
+["p.213",[
+ ["左欄第 2–6 行，黃 ★","The outer ear consists of … the pinna and the auditory canal. The pinna serves to collect and focus sounds, just like a funnel … locating the source of sound.",""],
+ ["左欄第 9 行後半–10 行，黃","Sound collected by the pinna is channeled through the auditory canal",""],
+ ["右欄第 1–4 行，黃 ★","The tympanic membrane, or eardrum, forms the boundary between the outer ear and middle ear … the oval window.","兩個界線，常考"],
+ ["Figure 7.3 框起來 ★","The Anatomy of the Ear","畫圖練習用這張"]]],
+["p.214",[
+ ["左欄第 1–6 行，黃 ★","Three tiny bones, known as the ossicles … malleus (hammer), incus (anvil), and stapes (stirrup) … to transfer sound energy from the outside air to the fluid in the inner ear without losing too much of it.",""],
+ ["右欄第 9–11 行，黃","as the cochlea (“snail” in Greek). The fluid-filled cochlea contains specialized receptor cells that respond to the vibrations",""],
+ ["Figure 7.4 右下的 The Organ of Corti 小圖框起來","inner hair cell / outer hair cell / tectorial membrane / basilar membrane",""]]],
+["p.215",[
+ ["左欄第 11–16 行，黃","the round window … This “escape valve” thus prevents damage from a buildup of pressure within the cochlea.",""],
+ ["左欄第 17–21 行，黃 ★","Within the cochlear duct is a specialized structure known as the organ of Corti … transducing vibrations … into neural messages … rests on the basilar membrane.",""],
+ ["左欄第 36–39 行，黃 ★★","high-frequency sounds will cause a peak vibration of the basilar membrane near its base, and low-frequency sounds will cause a peak vibration closer to its apex.","教授另外放了影片示範，一定考"],
+ ["左欄第 47–48 行，黃 ★","about 3,500 of them are known as inner hair cells, which are the actual auditory receptors.",""],
+ ["左欄第 51–52 行，黃 ★","outer hair cells, which amplify sound.",""],
+ ["右欄第 22–23 行，黃","the endolymph surrounding the hair cells contains a higher concentration of potassium",""],
+ ["右欄第 25–31 行，黃 ★★","potassium will move into the … cell … Potassium’s positive charge depolarizes the hair cell … calcium channels … Most hair cells release the excitatory neurochemical glutamate.","鉀往裡走，跟第三章相反"],
+ ["右欄第 32–34 行，黃 ★","spiral ganglion neurons, which are bipolar in structure, connect the hair cells of the cochlea with the brain.","Reading Guide 的 types of neurons"]]],
+["p.216",[
+ ["Figure 7.5 的 (c) 框起來 ★","Base 20,000 Hz ← → Apex 100 Hz",""],
+ ["圖下左欄第 1–3 行，黃","One set of their fibers makes contact with the hair cells. The other set projects to the dorsal and ventral cochlear nuclei of the medulla",""],
+ ["圖下右欄第 1–7 行，黃 ★","inferior colliculus of the midbrain … superior olive in the pons … lateral lemniscus … medial geniculate nucleus (MGN)","轉運站順序"]]],
+["p.217",[
+ ["Figure 7.6 整張框起來 ★","(a) at rest (b) depolarized (c) hyperpolarized","天線往高彎 = 去極化，往低彎 = 過極化"]]],
+["p.218",[
+ ["Figure 7.7 整張框起來 ★★","下方那排方塊就是整條路線","Can Some Little Insects Make Art"],
+ ["圖下左欄第 6–7 行，黃","The MGN, in turn, projects to the primary auditory cortex located in the temporal lobe.",""],
+ ["圖下右欄第 1–3 行，黃 ★","The primary auditory cortex, also known as A1, is located in the temporal lobe, just below the lateral sulcus",""],
+ ["圖下右欄第 4–8 行，黃","organized in columns … Lower frequencies … rostrally … higher frequencies … caudal",""],
+ ["左下定義框 primary auditory cortex (A1)，藍","",""]]],
+["p.219",[
+ ["左欄圖下第 3–5 行，黃 ★","secondary auditory cortex … activated by more complex types of stimuli",""],
+ ["左欄圖下第 8–9 行，黃 ★","separate pathways … process the quality of a sound (“what”) and its location (“where”)","Reading Guide 第 3 項最接近的地方"],
+ ["左欄圖下第 24–25 行接右欄第 1–6 行，黃 ★","tonotopic organization … neurons responding to one frequency are located next to neurons responding to similar frequencies … from the basilar membrane up through the primary auditory cortex.",""],
+ ["右欄第 8–12 行，黃 ★★","place theory … Place theory works well for sounds above 4,000 Hz.",""],
+ ["右欄第 13–17 行，黃 ★★","Below frequencies of 4,000 Hz … temporal theory, in which patterns of neural firing match the actual frequency",""],
+ ["右欄第 19–23 行，黃 ★","decibel level … and its perceived loudness are related, they are not the same thing … loudness is the human perception","教授的 sensation vs perception"],
+ ["右欄第 24–27 行，黃","Loudness doubles with each 10 dB increase … perceived as only twice as loud.",""],
+ ["右下定義框 tonotopic organization、place theory、temporal theory，藍","",""]]],
+["p.220",[
+ ["圖下左欄第 16–18 行，黃 ★","Localization of Sound … a comparison of the arrival times of",""],
+ ["圖下右欄第 1–4 行，黃","sounds at each ear … 0 msec … straight ahead or behind … 0.6 msec … perpendicular",""],
+ ["圖下右欄第 8–11 行，黃 ★","Distinctions between arrival times … are made by neurons in the superior olive … binaural neurons",""],
+ ["圖下右欄第 17–19 行，黃","the differences in the intensities of sound … a sound “shadow”",""]]],
+["p.221",[
+ ["左欄圖下第 2–3 行，黃","this system works only for high frequency sounds.",""],
+ ["左欄圖下第 6–7 行，黃","The pinna of the ear is essential for localizing the elevation of sounds in the vertical plane",""],
+ ["窄欄第 19–22 行，黃 ★","Sound localization also involves vision … we perceive sound as originating from the actors’ lips","窄欄是 Figure 7.11 左邊那一條。行數接著左欄往下數：左欄第 7 行結尾是 When，窄欄第一行 different-shaped false pinnas 算第 8 行"],
+ ["窄欄第 26 行後半–30 行，黃 ★★","The McGurk effect … is an illusion that results from our combined perceptions of vision and hearing.",""],
+ ["Figure 7.11 框起來 ★★","ba-ba（聽）＋ ga-ga（看）→ da-da",""]]]
+];
+const mw=document.getElementById('marks');
+MARKS.forEach(([p,items])=>{const g=document.createElement('div');g.className='pg';const h=document.createElement('h3');h.textContent=p;g.append(h);items.forEach(([w,t,n])=>{const d=document.createElement('div');d.className='hl';const a=document.createElement('div');a.className='where';a.innerHTML=w.replace(/★+/g,m=>'<span class="star">'+m+'</span>');d.append(a);if(t){const b=document.createElement('div');b.className='words';b.textContent=t;d.append(b);}if(n){const c=document.createElement('div');c.className='note';c.textContent=n;d.append(c);}g.append(d);});mw.append(g);});
+
+const RG=[
+["What is sound as a physical stimulus? What do amplitude, frequency, and timbre each tell us?","聲音作為物理刺激是什麼？振幅、頻率、音色各代表什麼？","p.210–212，Table 7.1"],
+["How are loudness and pitch measured, and what is the range of human hearing?","響度和音高用什麼單位？人類聽力範圍是多少？","p.212"],
+["Name the parts of the outer, middle, and inner ear and the job of each.","外耳、中耳、內耳各有哪些構造？各自的工作是什麼？","p.212–215，Figure 7.3"],
+["Why do we need the ossicles?","為什麼需要聽小骨？","p.214"],
+["Where on the basilar membrane do high and low sounds peak, and why?","高音和低音分別在基底膜哪裡震最大？為什麼？","p.215，Figure 7.5"],
+["What do inner hair cells and outer hair cells each do? What are spiral ganglion neurons?","內毛細胞和外毛細胞各做什麼？螺旋神經節神經元是什麼？","p.215"],
+["Explain the steps from the cilia bending to the release of glutamate.","說明從纖毛彎曲到放出麩胺酸的步驟。","p.215，Figure 7.6 在 p.217"],
+["Trace the auditory pathway from the cochlea to the cortex.","說出從耳蝸到皮質的聽覺路線。","p.215–218，Figure 7.7"],
+["Where is A1, and what is tonotopic organization? What does the secondary auditory cortex do?","A1 在哪裡？什麼是依音頻排列？次級聽覺皮質做什麼？","p.218–219"],
+["Compare place theory and temporal theory. How is loudness different from decibels?","比較位置論和時間論。響度和分貝有什麼不同？","p.219–220"],
+["How do we tell where a sound comes from?","我們怎麼判斷聲音從哪裡來？","p.220–221，Figure 7.10"],
+["What is the McGurk effect, and what does it show about sensation and perception?","McGurk 效應是什麼？它說明了 sensation 和 perception 的什麼？","p.221，Figure 7.11"],
+["Associative cortices: what are they? (Check in Tuesday's class.)","聯合皮質是什麼？（週二上課確認教授的說法）","p.219，待課堂補"]
+];
+const rw=document.getElementById('rglist');
+RG.forEach(([q,z,r],i)=>{const d=document.createElement('div');d.className='rg';d.innerHTML='<div class="q"></div><div class="qz"></div><div class="ref"></div>';d.children[0].textContent=(i+1)+'. '+q;d.children[1].textContent=z;d.children[2].textContent=r;rw.append(d);});
+
+const Q=[
+{s:"A tree falls in an empty forest. From a neuroscience point of view, what is true?",z:"樹在沒人的森林倒下。從神經科學的角度，哪個說法對？",o:[
+["It makes no sound at all, because no one is there.","錯：倒下的樹還是推動了空氣分子，物理上的聲波存在。"],
+["It makes a physical sound stimulus, but there is no perceptual experience of hearing.","對：物理刺激有，但沒有大腦去產生「聽到」的感知。這就是 sensation 和 perception 的差別。"],
+["It makes a sound only if the tree is large enough.","錯：大小只影響振幅，跟有沒有人聽無關。"],
+["It makes sound only in outer space.","錯：外太空是真空，反而完全沒有聲音。"]],a:1,r:"p.210 右欄第 1–5 行"},
+{s:"A musician turns the volume knob up. The note stays the same. Which property of the sound wave changed?",z:"音樂家把音量轉大，音沒有變。聲波的哪個特性改變了？",o:[
+["Frequency","錯：頻率決定音高，音沒變就是頻率沒變。"],
+["Amplitude","對：振幅變高，聽起來更大聲。"],
+["Timbre","錯：音色是不同樂器同一個音的差別。"],
+["Wavelength","錯：波長跟頻率綁在一起，決定音高。"]],a:1,r:"p.210 右欄第 27–29 行，Table 7.1"},
+{s:"A violin and a singer play the same note at the same loudness, but you can tell them apart. Why?",z:"小提琴和歌手用一樣的音量唱同一個音，你還是分得出來。為什麼？",o:[
+["They differ in timbre.","對：timbre 是複合聲音獨特的質感。"],
+["They differ in pitch.","錯：題目說同一個音，音高一樣。"],
+["They differ in amplitude.","錯：題目說一樣大聲。"],
+["One of them is a pure tone.","錯：小提琴和人聲都是複合音，pure tone 幾乎不存在於自然界。"]],a:0,r:"p.211 右欄第 18–20 行到 p.212 左欄第 1–3 行"},
+{s:"Sound A is 20 dB. Sound B is 30 dB. How much more intense is sound B?",z:"A 是 20 分貝，B 是 30 分貝。B 的強度是 A 的幾倍？",o:[
+["1.5 times","錯：dB 不是一般的加減，是對數尺度。"],
+["10 times","對：對數尺度，每多 10 dB 強度乘 10。"],
+["100 times","錯：100 倍是 40 dB 比 20 dB。"],
+["Twice","錯：「兩倍」是聽起來的響度，不是物理強度。"]],a:1,r:"p.212 左欄第 11–13 行"},
+{s:"Sound B is 10 dB more intense than sound A. How much louder does B sound to a listener?",z:"B 比 A 強 10 分貝。聽的人覺得 B 大聲多少？",o:[
+["10 times louder","錯：這是物理強度，不是感覺到的響度。"],
+["About twice as loud","對：每加 10 dB，響度只感覺加倍。"],
+["Exactly the same","錯：會覺得變大聲，只是沒有 10 倍。"],
+["100 times louder","錯：差太多了。"]],a:1,r:"p.219 右欄第 24–27 行"},
+{s:"Which structure is the boundary between the middle ear and the inner ear?",z:"哪個構造是中耳和內耳的界線？",o:[
+["Tympanic membrane","錯：鼓膜是外耳和中耳的界線。"],
+["Pinna","錯：耳廓是外耳看得到的部分。"],
+["Oval window","對：鐙骨推的就是卵圓窗。"],
+["Auditory canal","錯：耳道在外耳。"]],a:2,r:"p.213 右欄第 1–4 行"},
+{s:"When you are under water, your friend's voice sounds muffled. Which part of the ear solves a similar problem?",z:"在水底聽朋友說話很糊。耳朵的哪個部分在解決類似的問題？",o:[
+["The ossicles, which transfer energy from air to the fluid of the inner ear","對：聽小骨把空氣中的震動傳到內耳液體，救回大部分能量。"],
+["The pinna, which blocks water","錯：耳廓是收集聲音，不是擋水。"],
+["The round window, which adds energy","錯：圓窗是洩壓閥，不加能量。"],
+["The auditory nerve, which amplifies the sound","錯：聽神經傳訊號，放大的是外毛細胞。"]],a:0,r:"p.214 左欄第 1–11 行，右欄第 1–4 行"},
+{s:"A piccolo plays a very high note. Where does the basilar membrane vibrate the most?",z:"短笛吹很高的音，基底膜哪裡震最大？",o:[
+["Near the apex, where it is wide and floppy","錯：頂端寬而軟，對低音反應最大。"],
+["Near the base, where it is narrow and stiff","對：高頻在靠近卵圓窗的底部達到高峰。"],
+["Evenly along the whole membrane","錯：基底膜的重點就是不同位置對不同頻率。"],
+["In the round window","錯：圓窗不是基底膜的一部分。"]],a:1,r:"p.215 左欄第 36–39 行，Figure 7.5"},
+{s:"A tuba plays a very low note. Which statement is correct?",z:"低音號吹很低的音，哪個說法對？",o:[
+["The peak is near the apex of the basilar membrane.","對：低頻的高峰靠近頂端。"],
+["The peak is near the base of the basilar membrane.","錯：那是高頻。"],
+["Place theory explains this note best.","錯：4,000 Hz 以下主要用時間論。"],
+["Outer hair cells are the receptors for low notes.","錯：真正的受器是內毛細胞，不分高低音。"]],a:0,r:"p.215 左欄第 36–39 行，p.219 右欄第 13–17 行"},
+{s:"Which cells are the actual auditory receptors?",z:"哪一種細胞是真正的聽覺受器？",o:[
+["Outer hair cells","錯：外毛細胞負責放大聲音。"],
+["Spiral ganglion neurons","錯：它們接收毛細胞的訊號，把訊號送去大腦。"],
+["Inner hair cells","對：約 3,500 個，95% 的聽神經纖維接它們。"],
+["Binaural neurons","錯：它們在上橄欖核比對兩耳。"]],a:2,r:"p.215 左欄第 47–48 行"},
+{s:"The cilia of a hair cell bend toward the tallest cilium. What happens next?",z:"毛細胞的纖毛往最高那根彎，接下來會怎樣？",o:[
+["Potassium leaves the cell and the cell hyperpolarizes.","錯：這是第三章一般神經元的規則。這裡的內淋巴鉀比較多，鉀是往裡走。"],
+["Potassium enters the cell, the cell depolarizes, and it releases more glutamate.","對：內淋巴鉀多，鉀流入 → 去極化 → 鈣通道開 → 放更多 glutamate。"],
+["Sodium enters the cell and starts an action potential in the hair cell.","錯：毛細胞這裡靠的是鉀，而且發 action potential 的是螺旋神經節神經元。"],
+["All potassium channels close.","錯：往最矮那根彎時才會關。"]],a:1,r:"p.215 右欄第 10–31 行，Figure 7.6"},
+{s:"Compare vision (Ch6) and hearing (Ch7). Which statement is correct?",z:"比較第六章視覺和第七章聽覺，哪個說法對？",o:[
+["Light depolarizes photoreceptors, and sound hyperpolarizes hair cells.","錯：剛好相反。"],
+["Light hyperpolarizes photoreceptors, while bending cilia toward the tallest one depolarizes hair cells.","對：光讓吸血鬼關掉；聲音讓分揀員打開。"],
+["Both use the lateral geniculate nucleus of the thalamus.","錯：視覺走 LGN，聽覺走 MGN。"],
+["Both receptors fire action potentials directly to the brain.","錯：兩者的受器都是改變神經傳導物質的釋放量。"]],a:1,r:"p.215 右欄，Figure 7.6；第六章視網膜"},
+{s:"Which neurons connect the hair cells with the brain, and form the auditory nerve?",z:"哪一種神經元連接毛細胞和大腦，並組成聽神經？",o:[
+["Spiral ganglion neurons","對：雙極結構，軸突組成第八對腦神經。"],
+["Ganglion cells of the retina","錯：那是第六章的視神經。"],
+["Outer hair cells","錯：它們是放大用的受器細胞，不是神經元。"],
+["Medial geniculate neurons","錯：MGN 在視丘，是後面的轉運站。"]],a:0,r:"p.215 右欄第 32–34 行"},
+{s:"Put the auditory pathway in order, starting after the auditory nerve.",z:"從聽神經之後開始，把聽覺路線排出正確順序。",o:[
+["Cochlear nuclei → superior olive → lateral lemniscus → inferior colliculus → MGN → A1","對：Can Some Little Insects Make Art。"],
+["Cochlear nuclei → inferior colliculus → superior olive → MGN → A1","錯：上橄欖核在橋腦，在下丘之前。"],
+["Superior olive → cochlear nuclei → MGN → inferior colliculus → A1","錯：第一站是延腦的耳蝸核。"],
+["Cochlear nuclei → LGN → A1","錯：LGN 是視覺的轉運站。"]],a:0,r:"p.216 圖下兩欄，Figure 7.7"},
+{s:"Which part of the thalamus relays hearing information to the cortex?",z:"視丘的哪一部分負責把聽覺訊息轉送到皮質？",o:[
+["Lateral geniculate nucleus","錯：那是視覺。L = Light。"],
+["Medial geniculate nucleus","對：M = Music。"],
+["Inferior colliculus","錯：下丘在中腦，不在視丘。"],
+["Superior olive","錯：上橄欖核在橋腦。"]],a:1,r:"p.216 圖下右欄第 7 行，p.218 圖下左欄第 6–7 行"},
+{s:"Where is the primary auditory cortex (A1)?",z:"主聽覺皮質 A1 在哪裡？",o:[
+["Occipital lobe","錯：那是視覺皮質。"],
+["Temporal lobe, just below the lateral sulcus","對。"],
+["Parietal lobe, behind the central sulcus","錯：那是體感皮質，下半章會講。"],
+["Frontal lobe","錯。"]],a:1,r:"p.218 圖下右欄第 1–3 行"},
+{s:"A researcher records from A1 and plays a low tone, then a high tone. Where do the active columns move?",z:"研究者在 A1 記錄，先放低音再放高音。活化的柱狀區往哪裡移？",o:[
+["From rostral to caudal","對：低頻在前側，高頻在後側。"],
+["From caudal to rostral","錯：方向反了。"],
+["They do not move, because A1 has no map","錯：A1 是依音頻排列的。"],
+["From the left hemisphere to the right hemisphere","錯：跟左右腦無關。"]],a:0,r:"p.218 圖下右欄第 4–8 行，Figure 7.8"},
+{s:"Neurons that respond to similar frequencies sit next to each other, from the basilar membrane to A1. What is this called?",z:"對相近頻率反應的神經元住在隔壁，從基底膜一路到 A1 都這樣。這叫什麼？",o:[
+["Temporal summation","錯：那是聲音持續越久越大聲。"],
+["Tonotopic organization","對。"],
+["Binaural processing","錯：那是比對兩耳。"],
+["The McGurk effect","錯：那是視覺影響聽覺。"]],a:1,r:"p.219 左欄第 24–25 行，右欄第 1–6 行"},
+{s:"A patient can detect simple tones, but cannot tell what a complex sound is or where it comes from. Which area is most likely damaged?",z:"病人聽得到單純的音，但分不出複雜聲音是什麼、從哪來。最可能哪裡受損？",o:[
+["The ossicles","錯：聽小骨壞了，連單純的音都會聽不清楚。"],
+["Secondary auditory cortex","對：它處理複雜聲音，分 what 和 where 兩條路。"],
+["The pinna only","錯：耳廓只幫忙判斷上下方向。"],
+["The round window","錯：圓窗是洩壓閥。"]],a:1,r:"p.219 左欄圖下第 3–9 行"},
+{s:"A tone of 8,000 Hz is played. Which theory best explains how its pitch is coded?",z:"放一個 8,000 Hz 的音，哪個理論最能解釋它的音高怎麼編碼？",o:[
+["Place theory","對：4,000 Hz 以上看基底膜哪個位置震最大。"],
+["Temporal theory","錯：時間論用在 4,000 Hz 以下。"],
+["Gate theory","錯：那是痛覺，下半章會講。"],
+["The McGurk effect","錯。"]],a:0,r:"p.219 右欄第 8–12 行"},
+{s:"A tone of 200 Hz is played. Which theory best explains how its pitch is coded?",z:"放一個 200 Hz 的音，哪個理論最能解釋？",o:[
+["Place theory, because low sounds peak at the base","錯：低音在頂端，而且 4,000 Hz 以下位置不夠精確。"],
+["Temporal theory, because the neural firing pattern matches the frequency","對。"],
+["Tonotopic theory only","錯：課本沒有這個理論名稱。"],
+["Neither; low sounds cannot be coded","錯。"]],a:1,r:"p.219 右欄第 13–17 行"},
+{s:"A 100 Hz tone and a 1,000 Hz tone are both played at 40 dB. Which is true?",z:"100 Hz 和 1,000 Hz 的音都是 40 分貝，哪個說法對？",o:[
+["The 100 Hz tone sounds quieter.","對：同樣強度下，低頻聽起來比較小聲。"],
+["They sound exactly equally loud.","錯：只有在 80–100 dB 的高強度，才幾乎一樣大聲。"],
+["The 100 Hz tone sounds louder.","錯：方向反了。"],
+["Neither can be heard.","錯：40 dB 聽得到。"]],a:0,r:"p.219 右欄第 36–39 行，Figure 7.9"},
+{s:"Two tones have the same frequency and amplitude. One lasts 50 msec and the other lasts 300 msec. Which sounds louder?",z:"兩個音頻率和振幅一樣，一個 50 毫秒，一個 300 毫秒。哪個聽起來比較大聲？",o:[
+["The 50 msec tone","錯。"],
+["The 300 msec tone, because of temporal summation","對：神經反應隨時間累加。"],
+["They sound the same","錯。"],
+["The 300 msec tone, because its frequency is higher","錯：題目說頻率一樣。"]],a:1,r:"p.220 圖下左欄第 8–15 行"},
+{s:"Someone claps directly behind you. Why is it hard to tell whether the sound is in front or behind?",z:"有人在你正後方拍手，為什麼很難分出前面還是後面？",o:[
+["The sound arrives at both ears at the same time.","對：正前方和正後方的時間差都是 0。"],
+["The sound is too loud.","錯：跟音量無關。"],
+["The ossicles cannot carry sound from behind.","錯。"],
+["Clapping is a pure tone.","錯：拍手是複合音，跟方向判斷無關。"]],a:0,r:"p.220 圖下右欄第 1–7 行，Figure 7.10"},
+{s:"Which neurons compare when a sound reaches the left ear and the right ear?",z:"哪一種神經元比較聲音到達左耳和右耳的時間？",o:[
+["Binaural neurons in the superior olive","對。"],
+["Inner hair cells in the cochlea","錯：一隻耳朵的毛細胞只知道自己這邊。"],
+["Neurons in the occipital lobe","錯。"],
+["Outer hair cells","錯。"]],a:0,r:"p.220 圖下右欄第 8–11 行"},
+{s:"The head casts a sound shadow on the far ear. For which sounds does this cue work?",z:"頭會在遠的那隻耳朵造成聲音陰影。這個線索對哪種聲音有用？",o:[
+["Low-frequency sounds","錯：低頻波長長，會繞過頭，不會有明顯陰影。"],
+["High-frequency sounds","對。"],
+["All sounds equally","錯。"],
+["Only sounds from directly in front","錯：正前方兩耳一樣，沒有陰影差。"]],a:1,r:"p.220 圖下右欄第 15–19 行，p.221 左欄第 1–5 行"},
+{s:"You need to tell whether a bird is singing above you or below you. Which structure matters most?",z:"要判斷鳥在你上方還是下方叫，哪個構造最重要？",o:[
+["The pinna","對：耳廓負責判斷垂直方向的高低。"],
+["The round window","錯。"],
+["The superior olive","錯：它主要比對左右兩耳的時間差。"],
+["The basilar membrane","錯：它負責頻率。"]],a:0,r:"p.221 左欄第 6–7 行"},
+{s:"In a video, you hear “ba-ba” while you see the speaker's lips say “ga-ga.” What do you perceive?",z:"影片裡你聽到 ba-ba，同時看到嘴型在說 ga-ga。你會感知到什麼？",o:[
+["ba-ba","錯：如果只聽不看會是 ba-ba，但眼睛看到嘴型就改變了。"],
+["ga-ga","錯：大腦不是直接照抄眼睛。"],
+["da-da","對：這就是 McGurk effect，視覺和聽覺合併的結果。"],
+["Silence","錯。"]],a:2,r:"p.221，Figure 7.11"},
+{s:"Your professor says the McGurk effect is a better example of perception than the Laurel/Yanny clip. Why?",z:"教授說 McGurk 比 Laurel/Yanny 更適合說明 perception。為什麼？",o:[
+["In McGurk, the sound reaching the ears is the same, but the brain's interpretation changes because of vision.","對：sensation 相同，perception 不同。"],
+["In McGurk, people's headphones are different.","錯：這是 Laurel/Yanny 的問題，設備不同讓 sensation 一開始就不同。"],
+["McGurk only happens in people with hearing loss.","錯。"],
+["McGurk shows that hearing is stronger than vision.","錯：剛好相反，視覺比聽覺強。"]],a:0,r:"Module 6 Instructional Content（教授自己寫的）"},
+{s:"At the movies, the voices seem to come from the actors' mouths, even though the speakers are beside the screen. What does this show?",z:"看電影時聲音好像從演員嘴巴出來，其實喇叭在螢幕旁邊。這說明什麼？",o:[
+["Sound localization also involves vision.","對：視覺參與了聲音定位。"],
+["The pinna is broken.","錯。"],
+["Movie sound is a pure tone.","錯。"],
+["The superior olive cannot work in the dark.","錯。"]],a:0,r:"p.221 窄欄第 19–26 行"},
+{s:"Why does the cochlea need a round window?",z:"耳蝸為什麼需要圓窗？",o:[
+["To act as an escape valve, so pressure from the stapes does not damage the cochlea","對：壓力繞過頂端，從圓窗推出去。"],
+["To collect sound from the air","錯：那是耳廓。"],
+["To hold the inner hair cells","錯：毛細胞在柯蒂氏器裡。"],
+["To connect the cochlea to the thalamus","錯。"]],a:0,r:"p.215 左欄第 8–16 行"}
+];
+let answered={},right=0;
+const qw=document.getElementById('qs'),sc=document.getElementById('score');
+function upd(){sc.textContent=right+' / '+Object.keys(answered).length+'（共 '+Q.length+' 題）';}
+function render(){qw.innerHTML='';answered={};right=0;Q.forEach((q,i)=>{const c=document.createElement('div');c.className='qcard';
+ c.innerHTML='<span class="num">QUESTION '+(i+1)+'</span>';const st=document.createElement('div');st.className='stem';st.textContent=q.s;const sz=document.createElement('div');sz.className='stemzh';sz.textContent=q.z;c.append(st,sz);
+ const os=document.createElement('div');os.className='opts';const v=document.createElement('div');v.className='verdict';v.hidden=true;const rf=document.createElement('div');rf.className='ref2';rf.hidden=true;rf.textContent='翻：'+q.r;
+ q.o.forEach(([t,why],k)=>{const b=document.createElement('button');b.type='button';b.className='opt';const l=document.createElement('span');l.className='lab';l.textContent=String.fromCharCode(65+k)+'. '+t;const w=document.createElement('span');w.className='why';w.textContent=why;w.hidden=true;b.append(l,w);
+  b.addEventListener('click',()=>{if(answered[i]!==undefined)return;answered[i]=k;if(k===q.a)right++;[...os.children].forEach((x,j)=>{x.disabled=true;x.querySelector('.why').hidden=false;if(j===q.a)x.classList.add('right');else if(j===k)x.classList.add('wrong');});v.hidden=false;v.textContent=k===q.a?'答對了。':'這題要再看一次。';v.style.color=k===q.a?'var(--good)':'var(--bad)';rf.hidden=false;upd();});os.append(b);});
+ c.append(os,v,rf);qw.append(c);});upd();}
+document.getElementById('reset').addEventListener('click',render);
+render();
+
+/* 連續播放 */
+(function(){
+ const synth=window.speechSynthesis; const now=document.getElementById('now');
+ const playB=document.getElementById('play'), stopB=document.getElementById('stop');
+ let queue=[], idx=0, running=false, wake=null, lastEl=null;
+ function voiceFor(lang){const vs=synth?synth.getVoices():[];if(lang==='zh'){return vs.find(v=>/zh[-_]TW/i.test(v.lang))||vs.find(v=>/zh[-_]HK/i.test(v.lang))||vs.find(v=>/^zh/i.test(v.lang))||null;}return vs.find(v=>/^en[-_]US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;}
+ function split(t){return t.replace(/\s+/g,' ').split(/(?<=[。；！？])/).map(x=>x.trim()).filter(x=>x.length>1);}
+ function build(mode){const q=[];
+  if(mode!=='en'){q.push({t:'第七章上半，聽覺。聲音快遞，從喇叭送到大腦。',l:'zh',el:null});
+   document.querySelectorAll('#story .hook, #story .station').forEach(box=>{
+    const parts=box.classList.contains('hook')?[box]:[...box.querySelectorAll('.tag, p, li')];
+    parts.forEach(el=>split(el.textContent).forEach(t=>q.push({t,l:'zh',el:box})));
+    q.push({pause:900});});}
+  if(mode!=='zh'){q.push({t:'接下來是英文版。',l:'zh',el:null});
+   document.querySelectorAll('#pairs .pair').forEach(pr=>{q.push({t:pr.querySelector('.e span').textContent,l:'en',el:pr});q.push({t:pr.querySelector('.c').textContent,l:'zh',el:pr});q.push({pause:600});});}
+  q.push({t:'這一段聽完了。晚安。',l:'zh',el:null});return q;}
+ function mark(el){if(lastEl&&lastEl!==el)lastEl.classList.remove('reading');if(el){el.classList.add('reading');lastEl=el;}}
+ function next(){if(!running)return;if(idx>=queue.length){finish();return;}
+  const it=queue[idx++];
+  if(it.pause){setTimeout(next,it.pause);return;}
+  mark(it.el);now.textContent='正在播：'+it.t;
+  const u=new SpeechSynthesisUtterance(it.t);u.lang=it.l==='zh'?'zh-TW':'en-US';const v=voiceFor(it.l);if(v)u.voice=v;
+  const r=parseFloat(document.getElementById('rate').value)||0.95;u.rate=it.l==='en'?Math.min(r,0.9):r;
+  u.onend=()=>setTimeout(next,250);u.onerror=()=>setTimeout(next,250);synth.speak(u);}
+ async function start(){if(!synth){now.textContent='這個瀏覽器不能朗讀，請改用 Chrome 打開。';return;}
+  synth.cancel();queue=build(document.getElementById('mode').value);idx=0;running=true;playB.hidden=true;stopB.hidden=false;
+  try{if('wakeLock' in navigator)wake=await navigator.wakeLock.request('screen');}catch(e){}
+  if(!voiceFor('zh')&&document.getElementById('mode').value!=='en'){now.textContent='手機沒有找到中文語音，會用預設的聲音念。';}
+  next();}
+ function finish(){running=false;try{synth.cancel();}catch(e){}mark(null);if(lastEl)lastEl.classList.remove('reading');playB.hidden=false;stopB.hidden=true;playB.textContent='睡前模式：從頭連續播放';now.textContent='播完了。';try{wake&&wake.release();}catch(e){}wake=null;}
+ playB.addEventListener('click',start);
+ stopB.addEventListener('click',()=>{finish();now.textContent='已停止。';});
+ if(synth&&synth.onvoiceschanged!==undefined)synth.onvoiceschanged=()=>{};
+ document.addEventListener('visibilitychange',async()=>{if(running&&document.visibilityState==='visible'&&!wake){try{wake=await navigator.wakeLock.request('screen');}catch(e){}}});
+})();
+</script>
+
+</body></html>
