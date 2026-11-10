@@ -38,7 +38,7 @@
   .who b{display:block;font-size:17px}
   .who span{font-size:13px;color:var(--muted)}
   .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#35c97a;margin-right:5px}
-  .hearts{display:flex;gap:3px;font-size:14px;letter-spacing:1px}
+  .hearts{display:flex;gap:2px;font-size:13px;letter-spacing:1px}
   .hearts i{font-style:normal;color:#ff5c93;opacity:.25;transition:opacity .3s, transform .3s}
   .hearts i.on{opacity:1;transform:scale(1.15)}
 
@@ -140,7 +140,7 @@
   var FORM = "https://docs.google.com/forms/d/e/1FAIpQLSeRoIXqYAQp6oHUx8H9iCm6sF3CTuXDzmVyS1eTu62zdrhcYg/formResponse";
   var VIEW = "https://docs.google.com/forms/d/e/1FAIpQLSeRoIXqYAQp6oHUx8H9iCm6sF3CTuXDzmVyS1eTu62zdrhcYg/viewform";
   var E = {q1:"1908613444", q2:"1076463376", q3:"2068686113", q4:"505367364", q5:"1751601086",
-           q6:"506386679", q7:"936328434", q8:"607368769", q9:"878324847"};
+           q6:"506386679", q7:"936328434", q8:"607368769", q9:"878324847", qs:"896828130", qc:"1276858929"};
 
   var steps = [
     {say:["Hi! I'm Mochi 💗 I've been waiting for you.", "Can I ask you a few things? There are no wrong answers."]},
@@ -148,6 +148,8 @@
      type:"choice", opts:["Yes, I have","Someone I know has","Both","No","Not sure"], after:"Thanks for telling me 💗"},
     {id:"q2", q:"A 15-year-old says their AI companion is their best friend. How do you feel about that?",
      type:"scale", lo:"Totally fine", hi:"Should not happen", after:"Got it."},
+    {id:"qs", q:"Would you be okay with your 13-year-old brother or sister having an AI boyfriend or girlfriend?",
+     type:"choice", opts:["Yes","No","It depends"], after:"Thanks for being real with me."},
     {id:"q3", q:"How do you think AI companion apps make money?",
      type:"choice", opts:["Subscriptions","Ads","Selling user data","Keeping users chatting longer","I don't know"], after:"Interesting!"},
     {id:"q4", q:"How interesting is this topic to you?",
@@ -159,9 +161,12 @@
      type:"choice", other:true,
      opts:["AI companions help lonely teens","Parents should decide, not the government","Age checks invade privacy","Teens need to learn to live with AI","Companies are already fixing the problem"], after:"Good point to think about."},
     {id:"q8", q:"What are you most curious or unclear about? Which part would you like to hear more about in Mei's speech?",
-     type:"text", ph:"Type anything…", after:"That's all my questions. Thank you 💗"}
+     type:"text", ph:"Type anything…", after:"Almost done 💗"},
+    {id:"qc", q:"Which of these are you most likely to do this week?",
+     type:"choice", opts:["Check the privacy settings on my own AI apps","Talk with a teen I know about how they use AI","Write to a state lawmaker","None of these"],
+     after:"That's all my questions. Thank you 💗"}
   ];
-  var TOTAL = 8;
+  var TOTAL = 10;
 
   var chat = document.getElementById("chat"), tray = document.getElementById("tray"),
       hearts = document.getElementById("hearts");
@@ -232,7 +237,7 @@
 
   function payload(){
     var p=new URLSearchParams();
-    ["q1","q2","q3","q4","q5","q6","q7","q8","q9"].forEach(function(k){ if(answers[k]) p.append("entry."+E[k], answers[k]); });
+    ["q1","q2","qs","q3","q4","q5","q6","q7","q8","qc","q9"].forEach(function(k){ if(answers[k]) p.append("entry."+E[k], answers[k]); });
     if (answers.q7==="__other_option__") p.append("entry."+E.q7+".other_option_response", answers.q7other||"");
     return p;
   }
